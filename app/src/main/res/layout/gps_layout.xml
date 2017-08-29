@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout_gps_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        sothree:umanoPanelHeight="180dp"
+        sothree:umanoShadowHeight="4dp"
+        sothree:umanoParallaxOffset="100dp"
+        android:gravity="bottom">
+
+        <org.osmdroid.views.MapView
+            android:id="@+id/gps_mapview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" >
+        </org.osmdroid.views.MapView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#03A9F4"
+            android:id="@+id/dragView">
+
+            <TextView
+                android:id="@+id/gps_header"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@color/larisaBlueColor" />
+
+            <ListView
+                android:id="@+id/gps_listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:divider="#333333"
+                android:dividerHeight="1px" >
+            </ListView>
+
+            <TextView
+                android:id="@+id/gps_TextView"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_gravity="bottom"
+                android:background="@color/white"
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textColorLink="@color/black"
+                android:textSize="12sp"
+                android:typeface="normal"
+                android:visibility="gone" />
+        </LinearLayout>
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+</LinearLayout>

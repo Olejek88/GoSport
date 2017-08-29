@@ -1,0 +1,161 @@
+<resources>
+    <string name="app_name">Go Sport!</string>
+    <string name="pref_push_notification">Включить уведомления</string>
+    <string name="pref_push_notification_key">push_notification</string>
+
+    <string name="menu">Сменить настройки</string>
+    <string name="menu_equipment">Оборудование</string>
+    <string name="menu_maps">Карта</string>
+    <string name="menu_orders">Аренды</string>
+    <string name="menu_prokats">Прокаты</string>
+    <string name="menu_catalog">Каталог</string>
+    <string name="menu_users">Пользователь</string>
+
+    <string name="action_settings">Настройки приложения</string>
+    <string name="action_about">О программе</string>
+    <string name="cancel">Отмена</string>
+    <string name="action_update">Обновить приложение</string>
+    <string name="pref_cat_main">Основные</string>
+    <string name="pref_cat_rfid">Настройки устройства</string>
+    <string name="pref_cat_show">Настройки отображения</string>
+
+    <string name="pref_autonome_mode">Работать автономно</string>
+    <string name="load_test_data">Загрузить тестовые данные</string>
+    <string name="delete_test_data">Удалить справочники</string>
+
+    <string name="pref_update_url">Сервер обновления</string>
+    <string name="pref_update_url_dialog_title">Введите URL сервера обновления</string>
+    <string name="pref_server_url">Сервер системы</string>
+    <string name="pref_server_url_dialog_title">Введите URL сервера системы</string>
+    <string name="login">Войти</string>
+    <string name="init_success">Инициализация успешна</string>
+    <string name="init_fail">Инициализация неудачна</string>
+    <string name="find_fail">Метка не найдена</string>
+    <string name="read_fail">Чтение закончилось неудачей</string>
+    <string name="init">Инициализировать</string>
+    <string name="find">Найти</string>
+    <string name="serverUrl">serverUrl</string>
+    <string name="updateUrl">updateUrl</string>
+    <string name="rfidDriverListPrefKey">rfidDriverListPrefKey</string>
+    <string name="rfidDrvSettingKey">rfidDrvSettingKey</string>
+    <string name="references">Справочники</string>
+    <string name="get_task">Получить наряд</string>
+    <string name="choose_tag">Выберите метку из меню</string>
+    <string name="back">Назад</string>
+    <string name="ok">ОК</string>
+    <string name="make_photo">Снять</string>
+    <string name="image_description">изображение</string>
+    <string name="description"> </string>
+    <string name="id">Идентификатор: %1$s</string>
+    <string name="whois">Должность</string>
+    <string name="current_location">Текущие координаты</string>
+    <string name="no_gps_data">Нет данных GPS</string>
+    <string name="current_status">Текущий статус</string>
+    <string name="operation_list">Список последних операций</string>
+    <string name="gps_status">Состояние GPS</string>
+    <string name="gprs_status">Связь GPRS</string>
+    <string name="server_date_connect">Дата связи с сервером</string>
+    <string name="tasks_quantity">Статистика нарядов</string>
+    <string name="boss_contact">Контакт начальника</string>
+    <string name="type">Тип:</string>
+    <string name="service">Сервис:</string>
+    <string name="critical">Критичность:</string>
+    <string name="last_date">Дата обслуживания</string>
+    <string name="regular_date">Следующая поверка</string>
+    <string name="last_result">Результат обслуживания:</string>
+    <string name="documentation">Документация</string>
+    <string name="pleaseScanImg">Наведите камеру на код</string>
+    <string name="scan_process">Процесс сканирования</string>
+    <string name="empty"></string>
+    <string name="created">Создан: </string>
+    <string name="off">Отключен: </string>
+    <string name="status">Статус: %1$s</string>
+    <string name="closed">Закрыт: </string>
+    <string name="operation_status_title">Статус операции</string>
+    <string name="equipment_title">Оборудование:</string>
+    <string name="operation_title">Операция:</string>
+    <string name="status_title">Статус: </string>
+    <string name="result_title">Результат: </string>
+    <string name="step_image_descr">Изображение шага операции</string>
+    <string name="task_title">Наряд: </string>
+    <string name="stat_status">Состояние:</string>
+    <string name="operation">Операция:</string>
+    <string name="operation_step_title">Шаг:</string>
+    <string name="additional_information">Дополнительная информация</string>
+    <string name="operation_step_descr_title">Описание шага обслуживания</string>
+    <string name="operation_status_change_title">Изменить статус операции</string>
+    <string name="operation_choose_status">Выберите статус завершения операции</string>
+    <string name="divider"> | </string>
+    <string name="num500">500</string>
+    <string name="application_full_name">Тренируйся! Организовывай!</string>
+    <string name="open_documentation">Открыть документацию</string>
+    <string name="bluetooth_server">Bluetooth сервер</string>
+    <string name="title_activity_btserver">BTServerActivity</string>
+
+    <string name="profile_add_name">Имя пользователя</string>
+    <string name="profile_image">Изображение аватар</string>
+
+    <string name="profile_type">Тип пользователя</string>
+    <string name="profile_whois">Должность</string>
+    <string name="profile_login">Логин</string>
+    <string name="profile_password">Пароль</string>
+    <string name="profile_submit_button">Добавить</string>
+    <string name="profile_edit_button">Изменить</string>
+    <string name="profile_submit_delete">Удалить пользователя</string>
+    <string name="driver">Драйвер</string>
+    <string name="update_server">Сервер обновления</string>
+    <string name="system_server">Сервер системы</string>
+
+    <string name="profile_type_administrator">Администратор</string>
+    <string name="profile_type_engeneer">Пользователь</string>
+    <string name="profile_whois_shef">Начальник</string>
+    <string name="profile_whois_engeneer">Инженер</string>
+
+    <string name="image_status_equipment">изображение статуса оборудования</string>
+    <string name="normative">Норматив: </string>
+    <string name="finish_stage">Закончить</string>
+    <string name="measure">Измерить</string>
+    <string name="measure_label">Последнее измерение:</string>
+    <string name="measure_description">Проведите измерение необходимой величины и внесите показания в форму ниже. Также вы можете просмотреть динамику изменения за последние несколько обследований.</string>
+    <string name="operation_time">Время операции:</string>
+    <string name="tire"> - </string>
+    <string name="sec">сек.</string>
+    <string name="sec_with_value">%1$d сек.</string>
+    <string name="input_value">введите данные</string>
+    <string name="program_version">Lets Go Sport! v0.0.1\n Олег Иванов\n (letsgosport.ru) (&#169;)2017</string>
+
+    <string name="gps_track">GPS трек</string>
+    <string name="journal">Журнал</string>
+    <string name="toirSettings">Настройки приложения</string>
+
+    <string name="dialog_accept">Принять</string>
+    <string name="dialog_cancel">Отменить</string>
+    <string name="select_all">Выбрать все операции</string>
+    <string name="operation_cancel_text">Вы пропустили одну или несколько операций. Укажите для них причину/вердикт.</string>
+
+    <string name="run_ar_content">Запуск AR-контента</string>
+    <string name="run_ar_content_key">run_ar_content_key</string>
+    <string name="pref_autonome_mode_key">auto_mode</string>
+    <string name="not_started">не начинался</string>
+    <string name="not_finished">не закончен</string>
+    <string name="dont_ask_text_tags">Не спрашивать текстовые теги</string>
+    <string name="ask_text_tags_key">without_tags_mode</string>
+    <string name="model">Модель: %1$s</string>
+
+    <string name="choose_defect">Выберите дефект</string>
+    <string name="add_new_defect">или введите новый</string>
+    <string name="choose_defect_category">Категория дефекта</string>
+    <string name="defects_category_all">Все категории</string>
+    <string name="defects_category_non_specific">Не специфические дефекты</string>
+    <string name="action_save">Записать</string>
+    <string name="new_status">Сменить статус на</string>
+    <string name="contragents">Клиенты</string>
+    <string name="input_contragents_name">Введите название клиента</string>
+
+    <string name="client_type">Тип контрагента: $1$s</string>
+    <string name="client_phone">Телефон: %1$s</string>
+
+    <string name="events">Зафиксированные дефекты</string>
+    <string name="defect_user">Обнаружил: </string>
+
+</resources>

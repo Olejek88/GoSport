@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/eril_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/status"
+        android:src="@drawable/hockey_128" />
+
+    <TextView
+        android:id="@+id/eril_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:textColor="#222222"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@+id/eril_image"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/eril_type_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eril_title"
+        android:layout_marginLeft="5dp"
+        android:textColor="#222222"
+        android:textSize="14sp"
+        android:layout_toRightOf="@+id/eril_image"
+        android:text="@string/type" />
+
+    <TextView
+        android:id="@+id/eril_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#454545"
+        android:textSize="14sp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/eril_type_label"
+        android:layout_below="@+id/eril_title" />
+
+    <TextView
+        android:id="@+id/eril_inventory_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:textColor="#454545"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@+id/eril_type"
+        android:layout_below="@+id/eril_title" />
+
+    <TextView
+        android:id="@+id/eril_last_operation_date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eril_type_label"
+        android:textColor="#222222"
+        android:textSize="14sp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/eril_image"
+        android:text="@string/service" />
+
+    <TextView
+        android:id="@+id/eril_last_operation_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eril_type_label"
+        android:textColor="#454545"
+        android:textSize="14sp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/eril_last_operation_date_label" />
+
+    <TextView
+        android:id="@+id/eril_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eril_last_operation_date_label"
+        android:textColor="#454545"
+        android:textSize="14sp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:paddingBottom="5dp"
+        android:layout_toRightOf="@+id/eril_image" />
+
+    <TextView
+        android:id="@+id/eril_critical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eril_image"
+        android:background="#ff0000"
+        android:textColor="#eeeeee"
+        android:textSize="14sp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp" />
+
+    <TextView
+        android:id="@+id/eril_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eril_image"
+        android:textColor="#222222"
+        android:textSize="14sp"
+        android:layout_marginBottom="5dp"
+        android:paddingBottom="5dp"
+        android:layout_toRightOf="@+id/eril_critical"
+        android:text="@string/status" />
+
+
+</RelativeLayout>

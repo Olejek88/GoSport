@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/pref_cat_main" >
+        <EditTextPreference
+            android:dialogTitle="@string/pref_update_url_dialog_title"
+            android:key="@string/updateUrl"
+            android:textColor="@color/larisaTextColorABlack"
+            android:title="@string/pref_update_url" />
+        <EditTextPreference
+            android:dialogTitle="@string/pref_server_url_dialog_title"
+            android:key="@string/serverUrl"
+            android:textColor="@color/larisaTextColorABlack"
+            android:title="@string/pref_server_url" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="drvSettingsCategory"
+        android:textColor="@color/larisaTextColorABlack"
+        android:title="Настройки приложения" >
+
+        <PreferenceScreen
+            android:key="@string/rfidDrvSettingKey"
+            android:textColor="@color/larisaTextColorABlack"
+            android:title="Настройки программы" >
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="drvSettingsCategory"
+        android:textColor="@color/larisaTextColorABlack"
+        android:title="Настройки драйверов" >
+
+        <PreferenceScreen
+            android:key="@string/rfidDrvSettingKey"
+            android:textColor="@color/larisaTextColorABlack"
+            android:title="Настройки драйвера RFID" >
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+</PreferenceScreen>
