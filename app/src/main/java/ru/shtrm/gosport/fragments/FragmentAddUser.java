@@ -133,9 +133,6 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                 profile.setPass(pass.getText().toString());
                 profile.setType(typeSpinner.getSelectedItemPosition());
                 profile.setUuid(java.util.UUID.randomUUID().toString());
-                profile.setTagId(tag_id.getText().toString());
-                profile.setWhoIs(whoSpinner.getSelectedItem().toString());
-                profile.setActive(true);
                 try {
                     image_name ="profile"+profile.get_id()+".jpg";
                     storeImage(image_name);

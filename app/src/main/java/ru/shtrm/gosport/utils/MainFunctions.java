@@ -42,7 +42,7 @@ public class MainFunctions {
         realmDB.close();
     }
 
-    public static int getActiveOrdersCount() {
+    public static int getActiveTrainingsCount() {
         int count = 0;
         final Realm realmDB = Realm.getDefaultInstance();
         final User user = realmDB.where(User.class).equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();

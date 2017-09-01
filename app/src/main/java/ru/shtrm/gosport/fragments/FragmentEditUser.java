@@ -1,4 +1,4 @@
-package ru.toir.mobile.fragments;
+package ru.shtrm.gosport.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,11 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import io.realm.Realm;
-import ru.toir.mobile.MainActivity;
-import ru.toir.mobile.R;
-import ru.toir.mobile.db.realm.User;
+import ru.shtrm.gosport.MainActivity;
+import ru.shtrm.gosport.R;
+import ru.shtrm.gosport.db.realm.User;
 
-import static ru.toir.mobile.utils.RoundedImageView.getResizedBitmap;
+import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class FragmentEditUser extends Fragment implements View.OnClickListener {
     private static final int PICK_PHOTO_FOR_AVATAR = 1;

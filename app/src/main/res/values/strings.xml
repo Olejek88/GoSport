@@ -6,9 +6,9 @@
     <string name="menu">Сменить настройки</string>
     <string name="menu_equipment">Оборудование</string>
     <string name="menu_maps">Карта</string>
-    <string name="menu_orders">Аренды</string>
-    <string name="menu_prokats">Прокаты</string>
-    <string name="menu_catalog">Каталог</string>
+    <string name="menu_mytrainings">Мои тренировки</string>
+    <string name="menu_stadium">Стадион</string>
+    <string name="menu_calendar">Тренировки</string>
     <string name="menu_users">Пользователь</string>
 
     <string name="action_settings">Настройки приложения</string>

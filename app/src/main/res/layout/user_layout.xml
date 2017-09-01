@@ -19,7 +19,7 @@
                 android:layout_gravity="top"
                 android:contentDescription="@string/image_description"
                 android:scaleType="center"
-                android:src="@drawable/profile_ivanov" />
+                android:src="@drawable/no_image" />
 
             <TextView
                 android:id="@+id/user_text_name"
@@ -92,42 +92,10 @@
                 android:src="@drawable/circle3" />
 
             <ImageView
-                android:id="@+id/user_location_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_below="@+id/user_text_whois_label"
-                android:layout_marginLeft="15dp"
-                android:contentDescription="@string/image_description"
-                android:src="@drawable/location" />
-
-            <TextView
-                android:id="@+id/user_text_location"
-                android:layout_width="fill_parent"
-                android:layout_height="25dp"
-                android:layout_below="@+id/user_text_whois_label"
-                android:layout_toRightOf="@+id/user_location_icon"
-                android:background="#FAFAFA"
-                android:paddingLeft="10dp"
-                android:textColor="@color/larisaTextColorABlack"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/user_text_location_label"
-                android:layout_width="fill_parent"
-                android:layout_height="25dp"
-                android:layout_below="@+id/user_text_location"
-                android:layout_toRightOf="@+id/user_location_icon"
-                android:background="#FAFAFA"
-                android:paddingLeft="10dp"
-                android:text="@string/current_location"
-                android:textColor="@color/larisaTextColor"
-                android:textSize="14sp" />
-
-            <ImageView
                 android:id="@+id/user_date_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_below="@+id/user_text_location_label"
+                android:layout_below="@+id/user_text_type"
                 android:layout_marginLeft="15dp"
                 android:clickable="false"
                 android:contentDescription="@string/image_description"
@@ -137,7 +105,7 @@
                 android:id="@+id/user_text_date"
                 android:layout_width="fill_parent"
                 android:layout_height="25dp"
-                android:layout_below="@+id/user_text_location_label"
+                android:layout_below="@+id/user_date_icon"
                 android:layout_toRightOf="@+id/user_date_icon"
                 android:background="#FAFAFA"
                 android:paddingLeft="10dp"

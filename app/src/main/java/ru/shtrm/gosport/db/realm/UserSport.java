@@ -1,7 +1,6 @@
 package ru.shtrm.gosport.db.realm;
 
 import java.util.Date;
-import java.util.logging.Level;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

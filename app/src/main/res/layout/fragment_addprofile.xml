@@ -41,7 +41,6 @@
         <Spinner
             android:id="@+id/profile_add_type"
             android:layout_height="wrap_content"
-            android:entries="@array/profile_type"
             android:height="30sp"
             android:padding="5dip"
             android:prompt="@string/profile_type"
@@ -49,7 +48,6 @@
         <Spinner
             android:id="@+id/profile_add_whois"
             android:layout_height="wrap_content"
-            android:entries="@array/profile_whois"
             android:height="30sp"
             android:padding="5dip"
             android:prompt="@string/profile_whois"
@@ -68,8 +66,7 @@
 
         <EditText android:id="@+id/profile_add_tagid"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/profile_tagid" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/profile_button_submit"

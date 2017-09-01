@@ -4,7 +4,7 @@
         icon="@drawable/ic_icon_user"
         title="Профиль" />
     <tab
-        id="@+id/menu_trainings"
+        id="@+id/menu_mytrainings"
         icon="@drawable/ic_directions_run_black_24dp"
         title="Мои тренировки" />
     <tab

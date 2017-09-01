@@ -1,7 +1,6 @@
 package ru.shtrm.gosport.db.realm;
 
 import java.util.Date;
-import java.util.logging.*;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

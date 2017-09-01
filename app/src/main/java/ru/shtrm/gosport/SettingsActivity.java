@@ -43,8 +43,6 @@ import java.util.Enumeration;
 import java.util.List;
 
 import dalvik.system.DexFile;
-import ru.toir.mobile.rfid.RfidDriverBase;
-import ru.toir.mobile.utils.LoadTestData;
 
 
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceClickListener {
@@ -121,73 +119,9 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             e.printStackTrace();
         }
 
-        // строим список драйверов с именами и классами
-        List<String> drvNames = new ArrayList<>();
-        List<String> drvKeys = new ArrayList<>();
-        String name;
-
-        for (String classPath : driverClassList) {
-            name = RfidDriverBase.getDriverName(classPath);
-            if (name != null) {
-                drvNames.add(name);
-                drvKeys.add(classPath);
-            }
-        }
 
         // элемент интерфейса со списком драйверов считывателей
-        ListPreference drvList = (ListPreference) this.findPreference(getResources().getString(
-                R.string.rfidDriverListPrefKey));
         basicSettingScr = (PreferenceScreen) this.findPreference("preferenceBasicScreen");
-        driverSettingScr = (PreferenceScreen) this.findPreference(getResources()
-                .getString(R.string.rfidDrvSettingKey));
-
-        // указываем названия и значения для элементов списка
-        drvList.setEntries(drvNames.toArray(new String[]{""}));
-        drvList.setEntryValues(drvKeys.toArray(new String[]{""}));
-
-        // при изменении драйвера, включаем дополнительный экран с настройками драйвера
-        drvList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-
-                String value = (String) newValue;
-                showRfidDriverScreen(value);
-                return true;
-            }
-        });
-
-        // проверяем есть ли настройки у драйвера
-        String currentDrv = preferences.getString(
-                getResources().getString(R.string.rfidDriverListPrefKey), null);
-        showRfidDriverScreen(currentDrv);
-
-        Preference button = this.findPreference(getString(R.string.load_test_data));
-        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                LoadTestData.LoadAllTestData2();
-                return true;
-            }
-        });
-
-        Preference button2 = this.findPreference(getString(R.string.delete_test_data));
-        button2.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                LoadTestData.DeleteSomeData();
-                return true;
-            }
-        });
-    }
-
-    void showRfidDriverScreen(String value) {
-        // проверяем есть ли настройки у драйвера
-        if (value != null && isDriverSettingsScreen(value, driverSettingScr)) {
-            basicSettingScr.addPreference(driverSettingScr);
-        } else {
-            basicSettingScr.removePreference(driverSettingScr);
-        }
     }
 
     @SuppressWarnings("deprecation")

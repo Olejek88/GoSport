@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#FAFAFA"
+    tools:context="ru.toir_mobile.MainActivity" >
+
+    <item
+        android:id="@+id/action_settings"
+        android:onClick="onActionSettings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"/>
+    <item
+        android:id="@+id/action_update"
+        android:onClick="onActionUpdate"
+        android:orderInCategory="101"
+        android:title="@string/action_update"/>
+    <item
+        android:id="@+id/action_about"
+        android:onClick="onActionAbout"
+        android:orderInCategory="102"
+        android:title="@string/action_about"/>
+</menu>
+

@@ -67,7 +67,7 @@ public class EventAdapter extends RealmBaseAdapter<Event> implements ListAdapter
                 viewHolder.title = (TextView) convertView.findViewById(R.id.emi_title);
                 viewHolder.description = (TextView) convertView.findViewById(R.id.emi_title);
                 viewHolder.date = (TextView) convertView.findViewById(R.id.eril_last_operation_date);
-                viewHolder.sport = (TextView) convertView.findViewById(R.id.emi_image);
+                viewHolder.sport = (TextView) convertView.findViewById(R.id.emi_title);
                 convertView.setTag(viewHolder);
             }
         } else {

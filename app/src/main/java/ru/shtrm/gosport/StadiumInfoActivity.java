@@ -49,15 +49,9 @@ import io.realm.RealmResults;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
-import ru.toir.mobile.db.realm.User;
-import ru.toir.mobile.rest.ToirAPIFactory;
-import ru.toir.mobile.rfid.RfidDialog;
-import ru.toir.mobile.rfid.RfidDriverBase;
-import ru.toir.mobile.rfid.TagStructure;
-import ru.toir.mobile.utils.DataUtils;
+import ru.shtrm.gosport.db.realm.User;
 
-import static ru.toir.mobile.utils.MainFunctions.getEquipmentImage;
-import static ru.toir.mobile.utils.RoundedImageView.getResizedBitmap;
+import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class StadiumInfoActivity extends AppCompatActivity {
     private final static String TAG = "StadiumInfoActivity";
@@ -189,14 +183,12 @@ public class StadiumInfoActivity extends AppCompatActivity {
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogDefect(notification, (ViewGroup) v.getParent());
             }
         });
 
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogStatus(notification, (ViewGroup) v.getParent());
             }
         });
 
@@ -213,21 +205,21 @@ public class StadiumInfoActivity extends AppCompatActivity {
         fab4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                readRFIDTag(notification);
+
             }
         });
 
         fab5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                writeRFIDTag(notification);
+
             }
         });
 
     }
 
     void setMainLayout(Bundle savedInstanceState) {
-        setContentView(R.layout.equipment_layout);
+        setContentView(R.layout.stadium_layout);
         AccountHeader headerResult;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -242,7 +234,7 @@ public class StadiumInfoActivity extends AppCompatActivity {
         // Create the AccountHeader
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
-                .withHeaderBackground(R.drawable.login_header)
+                //.withHeaderBackground(R.drawable.login_header)
                 .withSavedInstance(savedInstanceState)
                 .build();
 
@@ -361,247 +353,9 @@ public class StadiumInfoActivity extends AppCompatActivity {
 
     }
 
-    public void showDialogDefect(final ru.toir.mobile.db.realm.Notification notification, ViewGroup parent) {
-        LayoutInflater inflater = getLayoutInflater();
-        final View alertLayout = inflater.inflate(R.layout.add_defect_dialog, parent, false);
-
-        RealmResults<DefectType> defectType = realmDB.where(DefectType.class).findAll();
-        final Spinner defectTypeSpinner = (Spinner) alertLayout.findViewById(R.id.spinner_defects);
-        final DefectTypeAdapter typeSpinnerAdapter = new DefectTypeAdapter(this, defectType);
-        defectTypeSpinner.setAdapter(typeSpinnerAdapter);
-
-        defectTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                DefectType typeSelected = (DefectType) defectTypeSpinner
-                        .getSelectedItem();
-                if (typeSelected != null) {
-                    DefectType currentDefectType = typeSpinnerAdapter.getItem(defectTypeSpinner.getSelectedItemPosition());
-                    if (currentDefectType != null) {
-                        RealmResults<ru.toir.mobile.db.realm.Event> events = realmDB.where(ru.toir.mobile.db.realm.Event.class).equalTo("DefectType.uuid", currentDefectType.getUuid()).findAll();
-                        Spinner defectSpinner = (Spinner) alertLayout.findViewById(R.id.spinner_defects);
-                        ru.toir.mobile.db.adapters.EventAdapter eventAdapter = new ru.toir.mobile.db.adapters.EventAdapter(getApplicationContext(), events);
-                        defectSpinner.setAdapter(eventAdapter);
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Укажите дефект");
-        alert.setView(alertLayout);
-        alert.setIcon(R.drawable.ic_icon_warnings);
-        alert.setCancelable(false);
-        alert.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                TextView newDefect = (TextView) alertLayout.findViewById(R.id.add_new_comment);
-                DefectType currentDefectType = null;
-                if (defectTypeSpinner.getSelectedItemPosition() >= 0) {
-                    currentDefectType = typeSpinnerAdapter.getItem(defectTypeSpinner.getSelectedItemPosition());
-                }
-                if (newDefect != null) {
-                    Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    final ru.toir.mobile.db.realm.Event event = realmDB.createObject(ru.toir.mobile.db.realm.Event.class);
-                    UUID uuid = UUID.randomUUID();
-                    long next_id = realm.where(ru.toir.mobile.db.realm.Event.class).max("_id").intValue() + 1;
-                    event.set_id(next_id);
-                    event.setUuid(uuid.toString().toUpperCase());
-                    event.setDate(new Date());
-                    event.setComment(newDefect.getText().toString());
-                    event.setProcess(false);
-                    event.setCreatedAt(new Date());
-                    event.setChangedAt(new Date());
-                    event.setEquipment(notification);
-                    if (currentDefectType != null) {
-                        event.setDefectType(currentDefectType);
-                    } else {
-                        event.setDefectType(null);
-                    }
-
-                    AuthorizedUser authUser = AuthorizedUser.getInstance();
-                    User user = realmDB.where(User.class).equalTo("tagId", authUser.getTagId()).findFirst();
-                    if (user != null) {
-                        event.setUser(user);
-                    } else {
-                        event.setUser(null);
-                    }
-
-                    event.setTask(null);
-                    realm.commitTransaction();
-                    realm.close();
-                }
-            }
-        });
-
-        AlertDialog dialog = alert.create();
-        dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
-        dialog.setContentView(R.layout.add_defect_dialog);
-        dialog.show();
-    }
-
-    public void showDialogStatus(final ru.toir.mobile.db.realm.Notification notification, ViewGroup parent) {
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.change_status_dialog, parent, false);
-        RealmResults<EquipmentStatus> equipmentStatus = realmDB.where(EquipmentStatus.class).findAll();
-        final Spinner statusSpinner = (Spinner) alertLayout.findViewById(R.id.spinner_status);
-        final EquipmentStatusAdapter equipmentStatusAdapter = new EquipmentStatusAdapter(this, R.id.spinner_status, equipmentStatus);
-        statusSpinner.setAdapter(equipmentStatusAdapter);
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Статус оборудования");
-        alert.setView(alertLayout);
-        alert.setIcon(R.drawable.ic_icon_tools);
-        alert.setCancelable(false);
-        alert.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Realm realm = Realm.getDefaultInstance();
-                realm.beginTransaction();
-                notification.setEquipmentStatus(equipmentStatusAdapter.getItem(statusSpinner.getSelectedItemPosition()));
-                realm.commitTransaction();
-                realm.close();
-            }
-        });
-
-        TextView statusCurrent = (TextView) alertLayout.findViewById(R.id.current_status);
-        statusCurrent.setText(notification.getEquipmentStatus().getTitle());
-
-        AlertDialog dialog = alert.create();
-        dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
-        //dialog.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.ic_icon_tools);
-        dialog.setContentView(R.layout.add_defect_dialog);
-        dialog.show();
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         realmDB.close();
-    }
-
-    private class ListViewClickListener implements AdapterView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            String path;
-            String objUuid;
-            Documentation documentation = (Documentation) parent.getItemAtPosition(position);
-            // TODO: как все таки пути к файлу формируем
-            if (documentation.getEquipment() != null && documentation.getEquipmentModel() == null) {
-                objUuid = documentation.getEquipment().getUuid();
-            } else if (documentation.getEquipment() == null && documentation.getEquipmentModel() != null) {
-                objUuid = documentation.getEquipmentModel().getUuid();
-            } else if (documentation.getEquipment() != null && documentation.getEquipmentModel() != null) {
-                objUuid = documentation.getEquipment().getUuid();
-            } else {
-                return;
-            }
-
-            path = "/documentation/" + objUuid + "/";
-            File file = new File(getExternalFilesDir(path), documentation.getPath());
-            if (file.exists()) {
-                showDocument(file);
-            } else {
-                // либо сказать что файла нет, либо предложить скачать с сервера
-                Log.d(TAG, "Получаем файл документации.");
-//				ReferenceServiceHelper rsh = new ReferenceServiceHelper(getApplicationContext(),
-//						ReferenceServiceProvider.Actions.ACTION_GET_DOCUMENTATION_FILE);
-//				registerReceiver(mReceiverGetDocumentationFile, mFilterGetDocumentationFile);
-//				rsh.getDocumentationFile(new String[] { documentation.getUuid() });
-
-                // запускаем поток получения файла с сервера
-                AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
-                    @Override
-                    protected String doInBackground(String... params) {
-                        String fileElements[] = params[0].split("/");
-                        String url = GoSportApplication.serverUrl + "/storage/" + params[0];
-                        Call<ResponseBody> call1 = ToirAPIFactory.getFileDownload().getFile(url);
-                        try {
-                            Response<ResponseBody> r = call1.execute();
-                            ResponseBody trueImgBody = r.body();
-                            if (trueImgBody == null) {
-                                return null;
-                            }
-
-                            File file = new File(getApplicationContext().getExternalFilesDir("/documentation/" + fileElements[0]), fileElements[1]);
-                            if (!file.getParentFile().exists()) {
-                                if (!file.getParentFile().mkdirs()) {
-                                    Log.e(TAG, "Не удалось создать папку " +
-                                            file.getParentFile().toString() +
-                                            " для сохранения файла изображения!");
-                                    return null;
-                                }
-                            }
-
-                            FileOutputStream fos = new FileOutputStream(file);
-                            fos.write(trueImgBody.bytes());
-                            fos.close();
-                            return file.getAbsolutePath();
-                        } catch (Exception e) {
-                            Log.e(TAG, e.getLocalizedMessage());
-                        }
-
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(String filePath) {
-                        super.onPostExecute(filePath);
-                        loadDocumentationDialog.dismiss();
-                        if (filePath != null) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Файл загружен успешно и готов к просмотру.",
-                                    Toast.LENGTH_LONG).show();
-                            showDocument(new File(filePath));
-                        } else {
-                            // сообщаем описание неудачи
-                            Toast.makeText(getApplicationContext(), "Ошибка при получении файла.",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                };
-                task.execute(objUuid + "/" + documentation.getPath());
-
-                // показываем диалог получения наряда
-                loadDocumentationDialog = new ProgressDialog(ru.shtrm.aggrra.StadiumInfoActivity.this);
-                loadDocumentationDialog.setMessage("Получаем файл документации");
-                loadDocumentationDialog.setIndeterminate(true);
-                loadDocumentationDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                loadDocumentationDialog.setCancelable(false);
-                loadDocumentationDialog.setButton(
-                        DialogInterface.BUTTON_NEGATIVE, "Отмена",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-//								unregisterReceiver(mReceiverGetDocumentationFile);
-                                Toast.makeText(getApplicationContext(),
-                                        "Получение файла отменено",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                loadDocumentationDialog.show();
-            }
-        }
-
     }
 }
