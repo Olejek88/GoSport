@@ -12,6 +12,7 @@ public class Team extends RealmObject {
     private String title;
     private String description;
     private Sport sport;
+    private Level level;
     private String photo;
     private Date createdAt;
     private Date changedAt;
@@ -62,6 +63,14 @@ public class Team extends RealmObject {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 
     public Date getCreatedAt() {

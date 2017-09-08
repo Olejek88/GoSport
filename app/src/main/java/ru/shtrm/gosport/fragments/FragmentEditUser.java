@@ -270,6 +270,36 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
                     realmDB.commitTransaction();
                 }
 
+                UserSport userSport2 = realmDB.where(UserSport.class).equalTo("user.uuid", user.getUuid()).equalTo("sport.uuid",football.getUuid()).findFirst();
+                if (userSport2!=null) {
+                    realmDB.beginTransaction();
+                    userSport2.setAmplua(ampluaFootballAdapter.getItem(football_amplua_spinner.getSelectedItemPosition()));
+                    userSport2.setLevel(levelFootballAdapter.getItem(football_level_spinner.getSelectedItemPosition()));
+                    if (football_team_spinner.getSelectedItemPosition()>0)
+                        userSport2.setTeam(teamFootballAdapter.getItem(football_team_spinner.getSelectedItemPosition()));
+                    realmDB.commitTransaction();
+                }
+                else {
+                    realmDB.beginTransaction();
+                    Number currentIdNum = realmDB.where(UserSport.class).max("_id");
+                    int nextId;
+                    if(currentIdNum == null) {
+                        nextId = 1;
+                    } else {
+                        nextId = currentIdNum.intValue() + 1;
+                    }
+                    userSport2 = realmDB.createObject(UserSport.class, nextId);
+                    userSport2.setSport(football);
+                    userSport2.setUuid(java.util.UUID.randomUUID().toString());
+                    userSport2.setUser(user);
+                    userSport2.setChangedAt(new Date());
+                    userSport2.setAmplua(ampluaFootballAdapter.getItem(football_amplua_spinner.getSelectedItemPosition()));
+                    userSport2.setLevel(levelFootballAdapter.getItem(football_level_spinner.getSelectedItemPosition()));
+                    if (football_team_spinner.getSelectedItemPosition()>0)
+                        userSport2.setTeam(teamFootballAdapter.getItem(football_team_spinner.getSelectedItemPosition()));
+                    realmDB.commitTransaction();
+                }
+
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentWelcome.newInstance()).commit();
                 break;
 

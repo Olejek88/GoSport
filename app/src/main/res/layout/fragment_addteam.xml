@@ -93,6 +93,30 @@
             android:textColor="#000000"
             android:textSize="16sp" />
 
+        <ImageView
+            android:id="@+id/team_add_icon4"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/menu_ring"
+            android:layout_below="@+id/team_add_icon"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp" />
+
+        <Spinner
+            android:id="@+id/profile_hockey_level"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            style="@android:style/Widget.Holo.Spinner"
+            android:layout_below="@+id/team_add_icon3"
+            android:layout_toEndOf="@+id/team_add_icon4"
+            android:layout_toRightOf="@+id/team_add_icon4"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:prompt="@string/team_level"
+            android:textSize="16sp" />
+
         <Button
             android:id="@+id/team_button_submit"
             android:layout_width="wrap_content"

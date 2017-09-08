@@ -92,7 +92,7 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
                 viewHolder.icon = (ImageView) convertView.findViewById(R.id.eril_image);
                 viewHolder.name = (TextView) convertView.findViewById(R.id.eril_title);
                 viewHolder.type = (TextView) convertView.findViewById(R.id.eril_type);
-                //viewHolder.division = (TextView) convertView.findViewById(R.id.eril_division);
+                viewHolder.level = (TextView) convertView.findViewById(R.id.eril_division);
                 convertView.setTag(viewHolder);
             }
         } else {
@@ -112,8 +112,10 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
                 viewHolder.name.setText(team.getTitle());
                 if (team.getSport() != null)
                     viewHolder.type.setText(team.getSport().getTitle());
+                if (team.getLevel() != null)
+                    viewHolder.level.setText(team.getLevel().getTitle());
                 String path = MainFunctions.getUserImagePath(context);
-                Bitmap image_bitmap = getResizedBitmap(path, team.getPhoto(), 100, 0, team.getChangedAt().getTime());
+                Bitmap image_bitmap = getResizedBitmap(path, team.getPhoto(), 300, 0, team.getChangedAt().getTime());
                 if (image_bitmap != null) {
                     viewHolder.icon.setImageBitmap(image_bitmap);
                 } else {
@@ -131,9 +133,8 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
 
     private static class ViewHolder {
         ImageView icon;
-        TextView uuid;
         TextView name;
-        TextView description;
+        TextView level;
         TextView type;
     }
 

@@ -62,6 +62,7 @@ public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
+
         if (convertView == null) {
             viewHolder = new ViewHolder();
             if (parent.getId() == R.id.simple_spinner) {

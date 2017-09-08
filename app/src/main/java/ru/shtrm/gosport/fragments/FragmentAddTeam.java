@@ -29,8 +29,10 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
+import ru.shtrm.gosport.db.adapters.LevelAdapter;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
 import ru.shtrm.gosport.db.adapters.TeamAdapter;
+import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.User;
@@ -38,8 +40,9 @@ import ru.shtrm.gosport.utils.MainFunctions;
 
 public class FragmentAddTeam extends Fragment implements View.OnClickListener {
     private static final int PICK_PHOTO_FOR_TEAM = 1;
-    Spinner typeSpinner;
+    Spinner typeSpinner, levelSpinner;
     SportAdapter sportAdapter;
+    LevelAdapter levelAdapter;
     private static final String TAG = "FragmentAdd";
     private ImageView iView;
     private EditText title, description;
@@ -63,6 +66,7 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
         Button one = (Button) view.findViewById(R.id.team_button_submit);
         one.setOnClickListener(this); // calling onClick() method
         typeSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
+        levelSpinner = (Spinner) view.findViewById(R.id.profile_hockey_level);
         title = (EditText) view.findViewById(R.id.team_add_title);
         description = (EditText) view.findViewById(R.id.team_add_description);
 
@@ -72,6 +76,13 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
         Spinner typeSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
         sportAdapter = new SportAdapter(getActivity().getApplicationContext(), sport);
         typeSpinner.setAdapter(sportAdapter);
+
+        Sport hockey = realmDB.where(Sport.class).equalTo("title","Хоккей").findFirst();
+        RealmResults<Level> level;
+        level = realmDB.where(Level.class).findAll();
+        Spinner levelSpinner = (Spinner) view.findViewById(R.id.profile_hockey_level);
+        levelAdapter = new LevelAdapter(getActivity().getApplicationContext(), level, hockey);
+        levelSpinner.setAdapter(levelAdapter);
 
         return view;
     }
@@ -140,6 +151,7 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
                 Team team = realmDB.createObject(Team.class,nextId);
                 team.setTitle(title.getText().toString());
                 team.setSport(sportAdapter.getItem(typeSpinner.getSelectedItemPosition()));
+                team.setLevel(levelAdapter.getItem(levelSpinner.getSelectedItemPosition()));
                 team.setDescription(description.getText().toString());
                 team.setChangedAt(new Date());
                 team.setCreatedAt(new Date());

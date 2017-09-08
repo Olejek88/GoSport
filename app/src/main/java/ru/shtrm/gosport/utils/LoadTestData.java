@@ -7,6 +7,7 @@ import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Amplua;
 import ru.shtrm.gosport.db.realm.Team;
+import ru.shtrm.gosport.db.realm.UserSport;
 
 public class LoadTestData {
     public static Sport sport_hockey, sport_football;
@@ -400,6 +401,13 @@ public class LoadTestData {
             @Override
             public void execute(Realm realm) {
                 realmDB.where(Team.class).findAll().deleteAllFromRealm();
+            }
+        });
+
+        realmDB.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realmDB.where(UserSport.class).findAll().deleteAllFromRealm();
             }
         });
 
