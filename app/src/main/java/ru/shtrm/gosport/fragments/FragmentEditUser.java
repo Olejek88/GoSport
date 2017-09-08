@@ -10,9 +10,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -20,20 +22,41 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
+import ru.shtrm.gosport.db.adapters.AmpluaAdapter;
+import ru.shtrm.gosport.db.adapters.LevelAdapter;
+import ru.shtrm.gosport.db.adapters.TeamAdapter;
+import ru.shtrm.gosport.db.realm.Amplua;
+import ru.shtrm.gosport.db.realm.Level;
+import ru.shtrm.gosport.db.realm.Sport;
+import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.db.realm.UserSport;
 
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class FragmentEditUser extends Fragment implements View.OnClickListener {
     private static final int PICK_PHOTO_FOR_AVATAR = 1;
     private ImageView iView;
-    private EditText name,login,pass;
+    private EditText name,age,vk,phone;
     private String image_name;
     private Realm realmDB;
+    private Amplua hockey_amplua, football_amplua;
+    private Team hockey_team, football_team;
+    private Level hockey_level, football_level;
+    Sport hockey,football;
+    private Spinner hockey_amplua_spinner, football_amplua_spinner;
+    private Spinner hockey_team_spinner, football_team_spinner;
+    private Spinner hockey_level_spinner, football_level_spinner;
+    private TeamAdapter teamHockeyAdapter, teamFootballAdapter;
+    private AmpluaAdapter ampluaHockeyAdapter, ampluaFootballAdapter;
+    private LevelAdapter levelFootballAdapter, levelHockeyAdapter;
 
     public FragmentEditUser() {
         // Required empty public constructor
@@ -49,32 +72,102 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
         realmDB = Realm.getDefaultInstance();
         iView = (ImageView) view.findViewById(R.id.profile_add_image);
         iView.setOnClickListener(this); // calling onClick() method
+
         Button one = (Button) view.findViewById(R.id.profile_button_submit);
         one.setOnClickListener(this); // calling onClick() method
         Button delete = (Button) view.findViewById(R.id.profile_button_delete);
         delete.setOnClickListener(this); // calling onClick() method
 
         name = (EditText) view.findViewById(R.id.profile_add_name);
-        login = (EditText) view.findViewById(R.id.profile_add_login);
-        pass = (EditText) view.findViewById(R.id.profile_add_password);
-        //login.setEnabled(false);
+        age = (EditText) view.findViewById(R.id.profile_add_age);
+        phone = (EditText) view.findViewById(R.id.profile_add_phone);
+        vk = (EditText) view.findViewById(R.id.profile_add_vk);
+
+        hockey_amplua_spinner = (Spinner) view.findViewById(R.id.profile_hockey_amplua);
+        hockey_level_spinner = (Spinner) view.findViewById(R.id.profile_hockey_level);
+        hockey_team_spinner = (Spinner) view.findViewById(R.id.profile_hockey_team);
+
+        football_amplua_spinner = (Spinner) view.findViewById(R.id.profile_football_amplua);
+        football_level_spinner = (Spinner) view.findViewById(R.id.profile_football_level);
+        football_team_spinner = (Spinner) view.findViewById(R.id.profile_football_team);
+
+        RealmResults<Level> hockeyLevel;
+        hockey = realmDB.where(Sport.class).equalTo("title","Хоккей").findFirst();
+        hockeyLevel = realmDB.where(Level.class).equalTo("sport.uuid",hockey.getUuid()).findAll();
+        levelHockeyAdapter = new LevelAdapter(getActivity().getApplicationContext(), hockeyLevel, hockey);
+        hockey_level_spinner.setAdapter(levelHockeyAdapter);
+
+        RealmResults<Team> hockeyTeam;
+        //hockeyTeam = realmDB.where(Team.class).equalTo("sport.uuid",hockey.getUuid()).findAll();
+        hockeyTeam = realmDB.where(Team.class).findAll();
+        teamHockeyAdapter = new TeamAdapter(getActivity().getApplicationContext(), hockeyTeam);
+        hockey_team_spinner.setAdapter(teamHockeyAdapter);
+
+        RealmResults<Amplua> hockeyAmplua;
+        hockeyAmplua = realmDB.where(Amplua.class).equalTo("sport.uuid",hockey.getUuid()).findAll();
+        ampluaHockeyAdapter = new AmpluaAdapter(getActivity().getApplicationContext(), hockeyAmplua, hockey);
+        hockey_amplua_spinner.setAdapter(ampluaHockeyAdapter);
+
+        RealmResults<Level> footballLevel;
+        football = realmDB.where(Sport.class).equalTo("title","Футбол").findFirst();
+        footballLevel = realmDB.where(Level.class).equalTo("sport.uuid",football.getUuid()).findAll();
+        levelFootballAdapter = new LevelAdapter(getActivity().getApplicationContext(), footballLevel, football);
+        football_level_spinner.setAdapter(levelFootballAdapter);
+
+        RealmResults<Team> footballTeam;
+        footballTeam = realmDB.where(Team.class).equalTo("sport.uuid",football.getUuid()).findAll();
+        teamFootballAdapter = new TeamAdapter(getActivity().getApplicationContext(), footballTeam);
+        football_team_spinner.setAdapter(teamFootballAdapter);
+
+        RealmResults<Amplua> footballAmplua;
+        footballAmplua = realmDB.where(Amplua.class).equalTo("sport.uuid",football.getUuid()).findAll();
+        ampluaFootballAdapter = new AmpluaAdapter(getActivity().getApplicationContext(), footballAmplua, football);
+        football_amplua_spinner.setAdapter(ampluaFootballAdapter);
 
         User user = realmDB.where(User.class).equalTo("active", true).findFirst();
-        //UsersDBAdapter users = new UsersDBAdapter(
-        //        new ToirDatabaseContext(getActivity().getApplicationContext()));
-        //user = users.getActiveUser();
         if (user==null) {
             Toast.makeText(getActivity().getApplicationContext(), "Пользователь не выбран, пожалуйста выберите или содайте профиль", Toast.LENGTH_LONG).show();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentWelcome.newInstance()).commit();
         }
 
         if (user!=null) {
-            pass.setText(user.getPass());
-            login.setText(user.getLogin());
+            UserSport userSportHockey = realmDB.where(UserSport.class).equalTo("user.uuid", user.getUuid()).equalTo("sport.uuid",hockey.getUuid()).findFirst();
+            UserSport userSportFootball = realmDB.where(UserSport.class).equalTo("user.uuid", user.getUuid()).equalTo("sport.uuid",football.getUuid()).findFirst();
+            phone.setText(user.getPhone());
             name.setText(user.getName());
+            vk.setText(user.getVK());
+            age.setText((Integer.toString(user.getAge())));
             image_name = user.getImage();
+            if (userSportHockey!=null) {
+                for (int r = 0; r < hockeyLevel.size(); r++) {
+                    if (userSportHockey.getLevel().getUuid().equals(hockeyLevel.get(r).getUuid()))
+                        hockey_level_spinner.setSelection(r);
+                }
+                for (int r = 0; r < hockeyAmplua.size(); r++) {
+                    if (userSportHockey.getAmplua().getUuid().equals(hockeyAmplua.get(r).getUuid()))
+                        hockey_amplua_spinner.setSelection(r);
+                }
+                for (int r = 0; r < hockeyTeam.size(); r++) {
+                    if (userSportHockey.getTeam().getUuid().equals(hockeyTeam.get(r).getUuid()))
+                        hockey_team_spinner.setSelection(r);
+                }
+            }
+            if (userSportFootball!=null) {
+                for (int r = 0; r < footballLevel.size(); r++) {
+                    if (userSportFootball.getLevel().getUuid().equals(footballLevel.get(r).getUuid()))
+                        football_level_spinner.setSelection(r);
+                }
+                for (int r = 0; r < footballAmplua.size(); r++) {
+                    if (userSportFootball.getAmplua().getUuid().equals(footballAmplua.get(r).getUuid()))
+                        football_amplua_spinner.setSelection(r);
+                }
+                for (int r = 0; r < footballTeam.size(); r++) {
+                    if (userSportFootball.getTeam().getUuid().equals(footballTeam.get(r).getUuid()))
+                        football_team_spinner.setSelection(r);
+                }
+            }
 
-            String path = getActivity().getExternalFilesDir("/users") + File.separator;
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android" + File.separator + "data" + File.separator + getActivity().getPackageName() + File.separator + "img" + File.separator;
             if (user.getChangedAt()!=null) {
                 Bitmap myBitmap = getResizedBitmap(path, user.getImage(), 0, 600, user.getChangedAt().getTime());
                 if (myBitmap!=null) {
@@ -117,9 +210,6 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        //UsersDBAdapter users = new UsersDBAdapter(
-        //        new ToirDatabaseContext(getActivity().getApplicationContext()));
-
         switch (v.getId()) {
 
             case R.id.profile_add_image:
@@ -128,7 +218,7 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.profile_button_submit:
-                if (name.getText().toString().length()<2 || login.getText().toString().length()<2 || pass.getText().toString().length()<2)
+                if (name.getText().toString().length()<2 || age.getText().toString().length()<2 || phone.getText().toString().length()<2)
                     {
                         Toast.makeText(getActivity().getApplicationContext(),
                                 "Вы должны заполнить все поля!", Toast.LENGTH_LONG).show();
@@ -143,9 +233,43 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
                 User user = realmDB.where(User.class).equalTo("active", true).findFirst();
                 realmDB.beginTransaction();
                 user.setName(name.getText().toString());
-                user.setLogin(login.getText().toString());
-                user.setPass(pass.getText().toString());
+                user.setVK(vk.getText().toString());
+                user.setPhone(phone.getText().toString());
+                user.setAge(Integer.parseInt(age.getText().toString()));
+                user.setChangedAt(new Date());
                 realmDB.commitTransaction();
+
+                UserSport userSport = realmDB.where(UserSport.class).equalTo("user.uuid", user.getUuid()).equalTo("sport.uuid",hockey.getUuid()).findFirst();
+                if (userSport!=null) {
+                    realmDB.beginTransaction();
+                    userSport.setChangedAt(new Date());
+                    userSport.setAmplua(ampluaHockeyAdapter.getItem(hockey_amplua_spinner.getSelectedItemPosition()));
+                    userSport.setLevel(levelHockeyAdapter.getItem(hockey_level_spinner.getSelectedItemPosition()));
+                    if (hockey_team_spinner.getSelectedItemPosition()>0)
+                        userSport.setTeam(teamHockeyAdapter.getItem(hockey_team_spinner.getSelectedItemPosition()));
+                    realmDB.commitTransaction();
+                }
+                else {
+                    realmDB.beginTransaction();
+                    Number currentIdNum = realmDB.where(UserSport.class).max("_id");
+                    int nextId;
+                    if(currentIdNum == null) {
+                        nextId = 1;
+                    } else {
+                        nextId = currentIdNum.intValue() + 1;
+                    }
+                    userSport = realmDB.createObject(UserSport.class, nextId);
+                    userSport.setSport(hockey);
+                    userSport.setUuid(java.util.UUID.randomUUID().toString());
+                    userSport.setUser(user);
+                    userSport.setChangedAt(new Date());
+                    userSport.setAmplua(ampluaHockeyAdapter.getItem(hockey_amplua_spinner.getSelectedItemPosition()));
+                    userSport.setLevel(levelHockeyAdapter.getItem(hockey_level_spinner.getSelectedItemPosition()));
+                    if (hockey_team_spinner.getSelectedItemPosition()>0)
+                        userSport.setTeam(teamHockeyAdapter.getItem(hockey_team_spinner.getSelectedItemPosition()));
+                    realmDB.commitTransaction();
+                }
+
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentWelcome.newInstance()).commit();
                 break;
 

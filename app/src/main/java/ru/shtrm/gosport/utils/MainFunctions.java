@@ -10,6 +10,7 @@ import java.util.Date;
 import io.realm.Realm;
 import ru.shtrm.gosport.AuthorizedUser;
 import ru.shtrm.gosport.db.realm.Journal;
+import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
 
@@ -20,6 +21,19 @@ public class MainFunctions {
     public static String getIMEI(Context context) {
         TelephonyManager mngr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return mngr.getDeviceId();
+    }
+
+    public static void checkRealmNew() {
+        final Realm realmDB = Realm.getDefaultInstance();
+        final Level level = realmDB.where(Level.class).findFirst();
+        if (level == null) {
+            LoadTestData.LoadAllTestData();
+        }
+        realmDB.close();
+    }
+
+    public static String getUserImagePath(Context context) {
+        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android" + File.separator + "data" + File.separator + context.getPackageName() + File.separator + "img" + File.separator;
     }
 
     public static void addToJournal(final String description) {

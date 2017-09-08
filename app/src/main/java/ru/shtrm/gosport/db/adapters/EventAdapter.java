@@ -2,6 +2,7 @@ package ru.shtrm.gosport.db.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -20,9 +21,13 @@ import ru.shtrm.gosport.db.realm.Sport;
 public class EventAdapter extends RealmBaseAdapter<Event> implements ListAdapter {
 
     public static final String TABLE_NAME = "Event";
+    private Context context;
+    protected LayoutInflater inflater;
 
     public EventAdapter(@NonNull Context context, RealmResults<Event> data) {
-        super(context, data);
+        super(data);
+        this.context = context;
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -57,7 +62,7 @@ public class EventAdapter extends RealmBaseAdapter<Event> implements ListAdapter
         viewHolder = new EventAdapter.ViewHolder();
         if (convertView == null) {
             if (parent.getId() == R.id.simple_spinner) {
-                convertView = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
+                convertView = View.inflate(context, android.R.layout.simple_spinner_dropdown_item, null);
                 viewHolder.title = (TextView) convertView.findViewById(android.R.id.text1);
                 convertView.setTag(viewHolder);
             }

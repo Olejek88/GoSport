@@ -26,48 +26,52 @@ import java.io.InputStream;
 import java.util.Date;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
-import ru.shtrm.gosport.db.SortField;
+import ru.shtrm.gosport.db.adapters.SportAdapter;
+import ru.shtrm.gosport.db.adapters.TeamAdapter;
+import ru.shtrm.gosport.db.realm.Sport;
+import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.utils.MainFunctions;
 
-public class FragmentAddUser extends Fragment implements View.OnClickListener {
-    private static final int PICK_PHOTO_FOR_AVATAR = 1;
+public class FragmentAddTeam extends Fragment implements View.OnClickListener {
+    private static final int PICK_PHOTO_FOR_TEAM = 1;
     Spinner typeSpinner;
-    Spinner whoSpinner;
+    SportAdapter sportAdapter;
     private static final String TAG = "FragmentAdd";
     private ImageView iView;
-    private EditText name, age, phone, vk;
+    private EditText title, description;
+    private Sport sport;
     private Realm realmDB;
 
-    public FragmentAddUser() {
+    public FragmentAddTeam() {
         // Required empty public constructor
     }
 
-    public static FragmentAddUser newInstance() {
-        return (new FragmentAddUser());
+    public static FragmentAddTeam newInstance() {
+        return (new FragmentAddTeam());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_addprofile, container, false);
+        View view = inflater.inflate(R.layout.fragment_addteam, container, false);
         realmDB = Realm.getDefaultInstance();
-        iView = (ImageView) view.findViewById(R.id.profile_add_image);
+        iView = (ImageView) view.findViewById(R.id.team_add_image);
         iView.setOnClickListener(this); // calling onClick() method
-        Button one = (Button) view.findViewById(R.id.profile_button_submit);
+        Button one = (Button) view.findViewById(R.id.team_button_submit);
         one.setOnClickListener(this); // calling onClick() method
+        typeSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
+        title = (EditText) view.findViewById(R.id.team_add_title);
+        description = (EditText) view.findViewById(R.id.team_add_description);
 
-        typeSpinner = (Spinner) view.findViewById(R.id.profile_add_type);
+        RealmResults<Sport> sport;
+        sport = realmDB.where(Sport.class).findAll();
 
-        name = (EditText) view.findViewById(R.id.profile_add_name);
-        age = (EditText) view.findViewById(R.id.profile_add_age);
-        phone = (EditText) view.findViewById(R.id.profile_add_phone);
-        vk = (EditText) view.findViewById(R.id.profile_add_vk);
-
-        Spinner typeSpinner = (Spinner) view.findViewById(R.id.profile_add_type);
-        ArrayAdapter<String> typeSpinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.profile_type));
-        typeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        typeSpinner.setAdapter(typeSpinnerAdapter);
+        Spinner typeSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
+        sportAdapter = new SportAdapter(getActivity().getApplicationContext(), sport);
+        typeSpinner.setAdapter(sportAdapter);
 
         return view;
     }
@@ -75,13 +79,13 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
     public void pickImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        startActivityForResult(intent, PICK_PHOTO_FOR_AVATAR);
+        startActivityForResult(intent, PICK_PHOTO_FOR_TEAM);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == Activity.RESULT_OK) {
+        if (requestCode == PICK_PHOTO_FOR_TEAM && resultCode == Activity.RESULT_OK) {
             if (data == null) {
                 //Display an error
                 return;
@@ -90,11 +94,9 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                 InputStream inputStream = getActivity().getApplicationContext().getContentResolver().openInputStream(data.getData());
                 Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
                 if (myBitmap!=null) {
-                    //int height= (int) ((int)200*(float)((float)myBitmap.getHeight()/(float)myBitmap.getWidth()));
-                    //int height= (int) (200*(float)(myBitmap.getHeight()/myBitmap.getWidth()));
-                    int width= (int) (200*(float)(myBitmap.getWidth()/myBitmap.getHeight()));
-                    if (width>0) {
-                        Bitmap myBitmap2 = Bitmap.createScaledBitmap(myBitmap, width, 200, false);
+                    int height = (int) (300*((float)myBitmap.getHeight()/(float)myBitmap.getWidth()));
+                    if (height>0) {
+                        Bitmap myBitmap2 = Bitmap.createScaledBitmap(myBitmap, 300, height, false);
                         iView.setImageBitmap(myBitmap2);
                     }
                 }
@@ -108,63 +110,51 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.profile_add_image:
+            case R.id.team_add_image:
                 // do your code
                 pickImage();
                 break;
 
-            case R.id.profile_button_submit:
-                User user = realmDB.where(User.class).equalTo("name", name.getText().toString()).findFirst();
+            case R.id.team_button_submit:
+                Team team_c = realmDB.where(Team.class).equalTo("title", title.getText().toString()).findFirst();
                 String image_name = "profile";
-                if (user!=null) {
+                if (team_c!=null) {
                      Toast.makeText(getActivity().getApplicationContext(),
-                            "Пользователь с логином " + user.getLogin() + " уже есть на этом устройстве", Toast.LENGTH_LONG).show();
+                            "Такая команда уже есть", Toast.LENGTH_LONG).show();
                      break;
                     }
-                if (name.getText().length()<2 || age.getText().length()<2 || phone.getText().length()<8)
+                if (title.getText().length()<3)
                     {
                         Toast.makeText(getActivity().getApplicationContext(),
                                 "Вы должны заполнить все поля!", Toast.LENGTH_LONG).show();
                         break;
                     }
                 realmDB.beginTransaction();
-                Number currentIdNum = realmDB.where(User.class).max("_id");
+                Number currentIdNum = realmDB.where(Team.class).max("_id");
                 int nextId;
                 if(currentIdNum == null) {
                     nextId = 1;
                 } else {
                     nextId = currentIdNum.intValue() + 1;
                 }
-                User profile = realmDB.createObject(User.class,nextId);
-                profile.setName(name.getText().toString());
-                profile.setImage(image_name);
-                profile.setAge(Integer.parseInt(age.getText().toString()));
-                profile.setPhone(phone.getText().toString());
-                profile.setVK(vk.getText().toString());
-                profile.setType(typeSpinner.getSelectedItemPosition());
-                profile.setChangedAt(new Date());
-                profile.setCreatedAt(new Date());
-                profile.setActive(true);
-                profile.setUuid(java.util.UUID.randomUUID().toString());
+                Team team = realmDB.createObject(Team.class,nextId);
+                team.setTitle(title.getText().toString());
+                team.setSport(sportAdapter.getItem(typeSpinner.getSelectedItemPosition()));
+                team.setDescription(description.getText().toString());
+                team.setChangedAt(new Date());
+                team.setCreatedAt(new Date());
+                team.setUuid(java.util.UUID.randomUUID().toString());
                 try {
-                    image_name ="profile"+profile.get_id()+".jpg";
+                    image_name ="team"+team.get_id()+".jpg";
                     storeImage(image_name);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 Log.e (TAG,"name=" + image_name);
+                team.setPhoto(image_name);
 
-                profile.setImage(image_name);
                 realmDB.commitTransaction();
-
-                user = realmDB.where(User.class).equalTo("name", name.getText().toString()).findFirst();
-                if (user.get_id()>0)
-                    {
-                       ((MainActivity)getActivity()).addProfile(profile);
-                        ((MainActivity)getActivity()).refreshProfileList();
-                       Fragment f = FragmentWelcome.newInstance();
-                       getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
-                    }
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TeamsFragment.newInstance()).commit();
                 break;
             default:
                 break;
@@ -174,8 +164,8 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
 
     public void storeImage(String name) throws IOException {
         Bitmap bmp;
-        File sd_card = Environment.getExternalStorageDirectory();
-        String target_filename = sd_card.getAbsolutePath() + File.separator + "Android" + File.separator + "data" + File.separator + getActivity().getPackageName() + File.separator + "img" + File.separator + name;
+//        String target_filename = sd_card.getAbsolutePath() + File.separator + "Android" + File.separator + "data" + File.separator + getActivity().getPackageName() + File.separator + "img" + File.separator + name;
+        String target_filename = MainFunctions.getUserImagePath(getActivity().getApplicationContext()) + name;
         Log.d(TAG,target_filename);
         File target_file = new File (target_filename);
         if (!target_file.getParentFile().exists()) {

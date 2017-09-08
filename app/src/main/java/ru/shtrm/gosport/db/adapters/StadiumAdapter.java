@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,12 +25,18 @@ import static ru.shtrm.gosport.utils.RoundedImageView.getRoundedBitmap;
 public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAdapter {
 
     public static final String TABLE_NAME = "Stadium";
+    private Context context;
+    protected LayoutInflater inflater;
 
     public StadiumAdapter(@NonNull Context context, RealmResults<Stadium> data) {
-        super(context, data);
+        super(data);
+        this.inflater = LayoutInflater.from(context);
+        this.context = context;
     }
     public StadiumAdapter(@NonNull Context context, RealmList<Stadium> data) {
-        super(context, data);
+        super(data);
+        this.inflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override

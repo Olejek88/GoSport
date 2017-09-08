@@ -14,6 +14,7 @@ public class User extends RealmObject {
     private String pass;
     private int type;
     private int age;
+    private boolean active;    
     private String image;
     private String phone;
     private String vk;
@@ -58,6 +59,14 @@ public class User extends RealmObject {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public int getType() {

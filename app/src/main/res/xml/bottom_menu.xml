@@ -1,7 +1,7 @@
 <tabs>
     <tab
         id="@+id/menu_user"
-        icon="@drawable/ic_icon_user"
+        icon="@drawable/ic_account_box_black_24dp"
         title="Профиль" />
     <tab
         id="@+id/menu_mytrainings"

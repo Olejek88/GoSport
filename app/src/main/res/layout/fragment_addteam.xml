@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout01"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent">
+
+        <ImageView
+            android:id="@+id/team_add_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:background="@color/md_blue_300"
+            android:contentDescription="@string/image_description" />
+
+        <ImageView
+            android:id="@+id/team_add_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/team_add_image"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/menu_hockey" />
+
+        <EditText
+            android:id="@+id/team_add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/team_add_image"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_toRightOf="@+id/team_add_icon"
+            android:gravity="center_vertical|center_horizontal"
+            android:hint="@string/team_add_name"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/team_add_icon2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/menu_competition"
+            android:layout_below="@+id/team_add_icon"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp" />
+
+        <Spinner
+            android:id="@+id/simple_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            style="@android:style/Widget.Holo.Spinner"
+            android:layout_below="@+id/team_add_icon"
+            android:layout_toEndOf="@+id/team_add_icon2"
+            android:layout_toRightOf="@+id/team_add_icon2"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:prompt="@string/team_add_sport"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/team_add_icon3"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/team_add_icon2"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/menu_user" />
+
+        <EditText
+            android:id="@+id/team_add_description"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:layout_below="@+id/team_add_icon2"
+            android:layout_gravity="start"
+            android:layout_toRightOf="@+id/team_add_icon3"
+            android:hint="@string/team_add_description"
+            android:paddingLeft="10dp"
+            android:lines="3"
+            android:minLines="2"
+            android:gravity="top|left"
+            android:maxLines="3"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/team_button_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/team_add_description"
+            android:layout_gravity="center_vertical|center_horizontal|center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:height="35dp"
+            android:background="@color/md_blue_300"
+            android:minHeight="0dp"
+            android:onClick="mOnClickMethod"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/profile_submit_button"
+            android:textColor="#FAFAFA" />
+
+    </RelativeLayout>
+</ScrollView>

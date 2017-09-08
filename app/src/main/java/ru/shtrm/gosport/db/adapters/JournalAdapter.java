@@ -2,6 +2,7 @@ package ru.shtrm.gosport.db.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -18,9 +19,13 @@ import ru.shtrm.gosport.db.realm.Journal;
 
 public class JournalAdapter extends RealmBaseAdapter<Journal> implements ListAdapter {
     public static final String TABLE_NAME = "Journal";
+    private Context context;
+    protected LayoutInflater inflater;
 
     public JournalAdapter(@NonNull Context context, RealmResults<Journal> data) {
-        super(context, data);
+        super(data);
+        this.context = context;
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override

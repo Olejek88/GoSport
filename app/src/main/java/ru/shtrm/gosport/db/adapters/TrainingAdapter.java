@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -32,13 +33,19 @@ import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListAdapter {
 
     public static final String TABLE_NAME = "Training";
+    private Context context;
+    protected LayoutInflater inflater;
 
     public TrainingAdapter(@NonNull Context context, RealmResults<Training> data) {
-        super(context, data);
+        super(data);
+        this.inflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     public TrainingAdapter(@NonNull Context context, RealmList<Training> data) {
-        super(context, data);
+        super(data);
+        this.inflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override

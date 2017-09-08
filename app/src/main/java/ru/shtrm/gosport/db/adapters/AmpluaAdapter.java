@@ -14,17 +14,17 @@ import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
+import ru.shtrm.gosport.db.realm.Amplua;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Team;
 
-public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter {
-    public static final String TABLE_NAME = "Level";
+public class AmpluaAdapter extends RealmBaseAdapter<Amplua> implements ListAdapter {
+    public static final String TABLE_NAME = "Amplua";
     private Context context;
     protected LayoutInflater inflater;
     protected Sport sport;
 
-    public LevelAdapter(@NonNull Context context, RealmResults<Level> data, Sport sport) {
+    public AmpluaAdapter(@NonNull Context context, RealmResults<Amplua> data, Sport sport) {
         super(data);
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -34,13 +34,13 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
     @Override
     public int getCount() {
         Realm realm = Realm.getDefaultInstance();
-        RealmResults<Level> rows = realm.where(Level.class).equalTo("sport.uuid",sport.getUuid()).findAll();
+        RealmResults<Amplua> rows = realm.where(Amplua.class).equalTo("sport.uuid",sport.getUuid()).findAll();
         realm.close();
         return rows.size();
     }
 
     @Override
-    public Level getItem(int position) {
+    public Amplua getItem(int position) {
         if (adapterData != null) {
             return adapterData.get(position);
         }
@@ -49,10 +49,10 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
 
     @Override
     public long getItemId(int position) {
-        Level level;
+        Amplua amplua;
         if (adapterData != null) {
-            level = adapterData.get(position);
-            return level.get_id();
+            amplua = adapterData.get(position);
+            return amplua.get_id();
         }
         return 0;
     }
@@ -62,14 +62,14 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
         ViewHolder viewHolder;
 
         if (convertView == null) {
-            viewHolder = new ViewHolder();
+            viewHolder = new AmpluaAdapter.ViewHolder();
             if (parent.getId() == R.id.reference_listView) {
                 convertView = inflater.inflate(R.layout.listview, parent, false);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.lv_firstLine);
                 viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
                 convertView.setTag(viewHolder);
             }
-            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_level || parent.getId() == R.id.profile_hockey_level) {
+            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_amplua || parent.getId() == R.id.profile_hockey_amplua) {
                 convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.spinner_item);
                 convertView.setTag(viewHolder);
@@ -78,25 +78,28 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Level level;
+        Amplua amplua;
         if (adapterData != null && viewHolder.title !=null) {
-                level = adapterData.get(position);
-                if (level != null)
-                    viewHolder.title.setText(level.getTitle());
-            }
+            amplua = adapterData.get(position);
+            if (amplua != null)
+                viewHolder.title.setText(amplua.getTitle());
+        }
 
         if (convertView == null) {
             TextView textView = new TextView(context);
             if (adapterData != null) {
-                level = adapterData.get(position);
-                if (level != null)
-                    textView.setText(level.getTitle());
+                amplua = adapterData.get(position);
+                if (amplua != null)
+                    textView.setText(amplua.getTitle());
                 textView.setTextSize(16);
-                //textView.setTextColor(convertView.getResources().getColor(R.color.larisaBlueColor));
+                //textView.setTextColor(R.color.larisaBlueColor);
+                //textView.setTextColor(context.getColor(R.color.almostblack));
                 textView.setPadding(10,10,10,10);
             }
             return textView;
         }
+        //if (amplua.getSport().getTitle().equals("Хоккей")) viewHolder.icon.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.hockey_32));
+        //if (amplua.getSport().getTitle().equals("Футбол")) viewHolder.icon.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.football_32));
         return convertView;
     }
 

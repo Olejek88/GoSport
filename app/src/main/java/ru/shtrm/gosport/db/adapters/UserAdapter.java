@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -32,15 +33,18 @@ public class UserAdapter extends RealmBaseAdapter<User> implements ListAdapter {
     private static final int MAX_USERS = 100;
 
     private Context context;
+    protected LayoutInflater inflater;
+
     //private int counter=0;
     private String taskTemplateUuid;
     private boolean[] visibility = new boolean[MAX_USERS];
     private boolean[] completed = new boolean[MAX_USERS];
 
     public UserAdapter(@NonNull Context context, RealmResults<User> data, String taskTemplateUuid) {
-        super(context, data);
+        super(data);
         this.context = context;
         this.taskTemplateUuid = taskTemplateUuid;
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
