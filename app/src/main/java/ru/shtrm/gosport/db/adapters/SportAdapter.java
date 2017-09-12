@@ -65,33 +65,24 @@ public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            if (parent.getId() == R.id.simple_spinner) {
-                convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
-                viewHolder.title = (TextView) convertView.findViewById(R.id.spinner_item);
-                convertView.setTag(viewHolder);
-            }
+            convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
+            viewHolder.title = (TextView) convertView.findViewById(R.id.spinner_item);
+            convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         Sport sport;
+        TextView textView = new TextView(context);
         if (adapterData != null && viewHolder.title !=null) {
             sport = adapterData.get(position);
             if (sport != null) {
                 viewHolder.title.setText(sport.getTitle());
-            }
-        }
-
-        if (convertView == null) {
-            TextView textView = new TextView(context);
-            if (adapterData != null) {
-                sport = adapterData.get(position);
-                if (sport != null)
-                    textView.setText(sport.getTitle());
+                textView.setText(sport.getTitle());
                 textView.setTextSize(16);
-                textView.setPadding(10,10,10,10);
+                textView.setPadding(10, 10, 10, 10);
+                return textView;
             }
-            return textView;
         }
         return convertView;
     }

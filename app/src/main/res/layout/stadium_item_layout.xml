@@ -4,59 +4,54 @@
     android:layout_height="match_parent" >
 
     <ImageView
-        android:id="@+id/eril_image"
+        android:id="@+id/stadium_image"
         android:layout_width="200px"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginBottom="5dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:contentDescription="@string/description"/>
 
     <TextView
-        android:id="@+id/eril_title"
+        android:id="@+id/stadium_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:textColor="#222222"
         android:textSize="16sp"
         android:gravity="center_vertical"
-        android:layout_toRightOf="@+id/eril_image"
+        android:layout_toRightOf="@+id/stadium_image"
+        android:layout_toEndOf="@+id/stadium_image"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/eril_type_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/eril_title"
-        android:layout_marginLeft="5dp"
-        android:textColor="#222222"
-        android:textSize="14sp"
-        android:layout_toRightOf="@+id/eril_image"
-        android:text="@string/type" />
-
-    <TextView
-        android:id="@+id/eril_type"
-        android:layout_width="wrap_content"
+        android:id="@+id/stadium_type"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="#454545"
         android:textSize="14sp"
         android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/eril_type_label"
-        android:layout_below="@+id/eril_title" />
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/stadium_image"
+        android:layout_toEndOf="@+id/stadium_image"
+        android:layout_below="@+id/stadium_title" />
 
     <TextView
-        android:id="@+id/eril_division"
-        android:layout_width="wrap_content"
+        android:id="@+id/stadium_address"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:textColor="#454545"
         android:textSize="14sp"
-        android:layout_toRightOf="@+id/eril_image"
-        android:layout_below="@+id/eril_type_label" />
-
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/stadium_image"
+        android:layout_toEndOf="@+id/stadium_image"
+        android:layout_below="@+id/stadium_type" />
 
 </RelativeLayout>

@@ -105,6 +105,12 @@
     <string name="team_add_sport">Вид спорта</string>
     <string name="team_add_image">Логотип команды</string>
 
+    <string name="stadium_add_name">Название команды</string>
+    <string name="stadium_add_description">Описание</string>
+    <string name="stadium_add_sport">Вид спорта</string>
+    <string name="stadium_add_address">Адрес</string>
+    <string name="stadium_add_photo">Фотография площадки</string>
+
     <string name="profile_type">Тип пользователя</string>
     <string name="profile_whois">Должность</string>
     <string name="profile_login">Логин</string>

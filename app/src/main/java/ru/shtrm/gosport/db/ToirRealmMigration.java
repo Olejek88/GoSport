@@ -234,6 +234,13 @@ class ToirRealmMigration implements RealmMigration {
             oldVersion++;
         }
 
+        if (oldVersion == 6) {
+            Log.d(TAG, "from version 6");
+            schema.get("Stadium")
+                    .addField("address", String.class);
+            oldVersion++;
+        }
+
         testPropsFields(realm);
     }
 

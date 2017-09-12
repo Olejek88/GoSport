@@ -5,11 +5,13 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +26,7 @@ import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -46,10 +49,15 @@ import java.util.UUID;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
+import ru.shtrm.gosport.db.adapters.TrainingAdapter;
+import ru.shtrm.gosport.db.realm.Stadium;
+import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.utils.MainFunctions;
 
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
@@ -62,21 +70,23 @@ public class StadiumInfoActivity extends AppCompatActivity {
     FloatingActionButton fab1;
     FloatingActionButton fab2;
     FloatingActionButton fab3;
-    FloatingActionButton fab4;
-    FloatingActionButton fab5;
     CoordinatorLayout rootLayout;
+
+    private TextView tv_stadium_title;
+    private TextView tv_stadium_sport;
+    private TextView tv_stadium_description;
+    private TextView tv_stadium_address;
+    private ImageView tv_stadium_image;
+    private ListView tv_stadium_trainings;
+
     Animation show_fab_1;
     Animation hide_fab_1;
     Animation show_fab_2;
     Animation hide_fab_2;
     Animation show_fab_3;
     Animation hide_fab_3;
-    Animation show_fab_4;
-
-    Animation hide_fab_4;
-    Animation show_fab_5;
-    Animation hide_fab_5;
     private Realm realmDB;
+    private String stadium_uuid;
 
     private boolean FAB_Status = false;
 
@@ -99,47 +109,22 @@ public class StadiumInfoActivity extends AppCompatActivity {
         listView.setLayoutParams(params);
     }
 
-    /**
-     * Показываем документ из базы во внешнем приложении.
-     *
-     * @param file - файл
-     */
-    private void showDocument(File file) {
-        MimeTypeMap mt = MimeTypeMap.getSingleton();
-        String[] patternList = file.getName().split("\\.");
-        String extension = patternList[patternList.length - 1];
-
-        if (mt.hasExtension(extension)) {
-            String mimeType = mt.getMimeTypeFromExtension(extension);
-            Intent target = new Intent(Intent.ACTION_VIEW);
-            target.setDataAndType(Uri.fromFile(file), mimeType);
-            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-            Intent viewFileIntent = Intent.createChooser(target, "Open File");
-            try {
-                startActivity(viewFileIntent);
-            } catch (ActivityNotFoundException e) {
-                // сообщить пользователю установить подходящее приложение
-            }
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         realmDB = Realm.getDefaultInstance();
         Bundle b = getIntent().getExtras();
-        //stadium_uuid = b.getString("equipment_uuid");
-
+        stadium_uuid = b.getString("stadium_uuid");
         setMainLayout(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.stadium_layout);
+
+        tv_stadium_title = (TextView) findViewById(R.id.stadium_text_name);
+        tv_stadium_sport = (TextView) findViewById(R.id.stadium_text_sport);
+        tv_stadium_description= (TextView) findViewById(R.id.stadium_text_description);
+        tv_stadium_address =(TextView) findViewById(R.id.stadium_text_address);
+        tv_stadium_image =(ImageView) findViewById(R.id.stadium_image);
+        tv_stadium_trainings =(ListView) findViewById(R.id.list_view);
 
         initView();
     }
@@ -147,13 +132,38 @@ public class StadiumInfoActivity extends AppCompatActivity {
     private void initView() {
         rootLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
+        final Stadium stadium = realmDB.where(Stadium.class).equalTo("uuid", stadium_uuid).findFirst();
+        if (stadium == null) {
+            Toast.makeText(getApplicationContext(), "Неизвестный стадион", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        tv_stadium_title.setText(stadium.getTitle());
+        tv_stadium_description.setText(stadium.getDescription());
+        tv_stadium_address.setText(stadium.getAddress());
+        tv_stadium_sport.setText(stadium.getSport().getTitle());
+
+        RealmResults<Training> trainings = realmDB.where(Training.class).equalTo("stadium.uuid", stadium.getUuid()).findAllSorted("date", Sort.DESCENDING);
+        if (trainings.size() > 2) {
+            trainings.subList(0, 5);
+        }
+        TrainingAdapter trainingAdapter = new TrainingAdapter(getApplicationContext(), trainings);
+        tv_stadium_trainings.setAdapter(trainingAdapter);
+
+        Bitmap image_bitmap = getResizedBitmap(MainFunctions.getPicturesDirectory(getApplicationContext()), stadium.getImage(), 0, 300, stadium.getChangedAt().getTime());
+        if (image_bitmap != null) {
+            tv_stadium_image.setImageBitmap(image_bitmap);
+        }
+
+        setListViewHeightBasedOnChildren(tv_stadium_trainings);
+
+        rootLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        
         //Floating Action Buttons
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab_1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab_2);
         fab3 = (FloatingActionButton) findViewById(R.id.fab_3);
-        fab4 = (FloatingActionButton) findViewById(R.id.fab_4);
-        fab5 = (FloatingActionButton) findViewById(R.id.fab_5);
 
         show_fab_1 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab1_show);
         hide_fab_1 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab1_hide);
@@ -161,10 +171,6 @@ public class StadiumInfoActivity extends AppCompatActivity {
         hide_fab_2 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab2_hide);
         show_fab_3 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab3_show);
         hide_fab_3 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab3_hide);
-        show_fab_4 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab4_show);
-        hide_fab_4 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab4_hide);
-        show_fab_5 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab5_show);
-        hide_fab_5 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab5_hide);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,27 +201,8 @@ public class StadiumInfoActivity extends AppCompatActivity {
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getPackageManager().getLaunchIntentForPackage("ru.shtrm.toir");
-                if (intent != null) {
-                    startActivity(intent);
-                }
             }
         });
-
-        fab4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        fab5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
     }
 
     void setMainLayout(Bundle savedInstanceState) {
@@ -224,7 +211,7 @@ public class StadiumInfoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         assert toolbar != null;
-        toolbar.setSubtitle("Обслуживание и ремонт");
+        toolbar.setSubtitle("Информация о площадке");
 
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -234,7 +221,8 @@ public class StadiumInfoActivity extends AppCompatActivity {
         // Create the AccountHeader
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
-                //.withHeaderBackground(R.drawable.login_header)
+                .withHeaderBackground(R.drawable.hockey_header)
+                .withTextColor(ContextCompat.getColor(getApplicationContext(), R.color.almostblack))
                 .withSavedInstance(savedInstanceState)
                 .build();
 
@@ -279,7 +267,7 @@ public class StadiumInfoActivity extends AppCompatActivity {
 
     private void expandFAB() {
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) fab1.getLayoutParams();
-        layoutParams.rightMargin += (int) (fab1.getWidth() * 2.3);
+        layoutParams.rightMargin += (int) (fab1.getWidth() * 2);
         layoutParams.bottomMargin += (int) (fab1.getHeight() * 0.05);
         fab1.setLayoutParams(layoutParams);
         fab1.startAnimation(show_fab_1);
@@ -294,30 +282,16 @@ public class StadiumInfoActivity extends AppCompatActivity {
 
         FrameLayout.LayoutParams layoutParams3 = (FrameLayout.LayoutParams) fab3.getLayoutParams();
         layoutParams3.rightMargin += (int) (fab3.getWidth() * 0.05);
-        layoutParams3.bottomMargin += (int) (fab3.getHeight() * 2.3);
+        layoutParams3.bottomMargin += (int) (fab3.getHeight() * 2);
         fab3.setLayoutParams(layoutParams3);
         fab3.startAnimation(show_fab_3);
         fab3.setClickable(true);
-
-        FrameLayout.LayoutParams layoutParams4 = (FrameLayout.LayoutParams) fab4.getLayoutParams();
-        layoutParams4.rightMargin += (int) (fab4.getWidth() * 1.7);
-        layoutParams4.bottomMargin += (int) (fab4.getHeight() * 0.9);
-        fab4.setLayoutParams(layoutParams4);
-        fab4.startAnimation(show_fab_4);
-        fab4.setClickable(true);
-
-        FrameLayout.LayoutParams layoutParams5 = (FrameLayout.LayoutParams) fab5.getLayoutParams();
-        layoutParams5.rightMargin += (int) (fab5.getWidth() * 0.9);
-        layoutParams5.bottomMargin += (int) (fab5.getHeight() * 1.7);
-        fab5.setLayoutParams(layoutParams5);
-        fab5.startAnimation(show_fab_5);
-        fab5.setClickable(true);
     }
 
     private void hideFAB() {
 
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) fab1.getLayoutParams();
-        layoutParams.rightMargin -= (int) (fab1.getWidth() * 2.3);
+        layoutParams.rightMargin -= (int) (fab1.getWidth() * 2);
         layoutParams.bottomMargin -= (int) (fab1.getHeight() * 0.05);
         fab1.setLayoutParams(layoutParams);
         fab1.startAnimation(hide_fab_1);
@@ -332,25 +306,10 @@ public class StadiumInfoActivity extends AppCompatActivity {
 
         FrameLayout.LayoutParams layoutParams3 = (FrameLayout.LayoutParams) fab3.getLayoutParams();
         layoutParams3.rightMargin -= (int) (fab3.getWidth() * 0.05);
-        layoutParams3.bottomMargin -= (int) (fab3.getHeight() * 2.3);
+        layoutParams3.bottomMargin -= (int) (fab3.getHeight() * 2);
         fab3.setLayoutParams(layoutParams3);
         fab3.startAnimation(hide_fab_3);
         fab3.setClickable(false);
-
-        FrameLayout.LayoutParams layoutParams4 = (FrameLayout.LayoutParams) fab4.getLayoutParams();
-        layoutParams4.rightMargin -= (int) (fab4.getWidth() * 1.7);
-        layoutParams4.bottomMargin -= (int) (fab4.getHeight() * 0.9);
-        fab4.setLayoutParams(layoutParams4);
-        fab4.startAnimation(hide_fab_4);
-        fab4.setClickable(false);
-
-        FrameLayout.LayoutParams layoutParams5 = (FrameLayout.LayoutParams) fab5.getLayoutParams();
-        layoutParams5.rightMargin -= (int) (fab5.getWidth() * 0.9);
-        layoutParams5.bottomMargin -= (int) (fab5.getHeight() * 1.7);
-        fab5.setLayoutParams(layoutParams5);
-        fab5.startAnimation(hide_fab_5);
-        fab5.setClickable(false);
-
     }
 
     @Override

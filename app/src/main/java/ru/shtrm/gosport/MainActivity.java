@@ -50,6 +50,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.fragments.FragmentAddStadium;
 import ru.shtrm.gosport.fragments.FragmentAddUser;
 import ru.shtrm.gosport.fragments.FragmentEditUser;
 import ru.shtrm.gosport.fragments.MapFragment;
@@ -155,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         }
         //LoadTestData.DeleteSomeData();
         //checkRealmNew();
+        //LoadTestData.LoadAllTestData2();
     }
 
     public boolean initDB() {
@@ -215,8 +217,7 @@ public class MainActivity extends AppCompatActivity {
                         if (activeUserID>0) getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
                         break;
                     case R.id.menu_maps:
-                        //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, StadiumsFragment.newInstance()).commit();
-                        //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, MapFragment.newInstance()).commit();
                         break;
                 }
             }
@@ -302,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                         new PrimaryDrawerItem().withName(R.string.menu_calendar).withDescription("Записаться на игру").withIcon(R.drawable.menu_hockey).withIdentifier(FRAGMENT_CALENDAR).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
                         taskPrimaryDrawerItem,
                         new PrimaryDrawerItem().withName("Карта").withDescription("площадок").withIcon(R.drawable.menu_football).withIdentifier(FRAGMENT_MAP).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
-                        new PrimaryDrawerItem().withName("Площадки").withDescription("по типам списком").withIcon(R.drawable.menu_ring).withIdentifier(FRAGMENT_STADIUMS).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
+                        new PrimaryDrawerItem().withName("Площадку").withDescription("добавить").withIcon(R.drawable.menu_ring).withIdentifier(FRAGMENT_STADIUMS).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
                         new PrimaryDrawerItem().withName("Соревнования").withDescription("ближайшие").withIcon(R.drawable.menu_competition).withIdentifier(FRAGMENT_EVENTS).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName("Команды").withDescription("спортивные").withIcon(R.drawable.menu_hockey).withIdentifier(FRAGMENT_TEAMS).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
@@ -316,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
                         if (drawerItem != null) {
                             if (drawerItem.getIdentifier() == FRAGMENT_STADIUMS) {
                                 currentFragment = FRAGMENT_STADIUMS;
-                                //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, StadiumsFragment.newInstance()).commit();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentAddStadium.newInstance()).commit();
                             } else if (drawerItem.getIdentifier() == FRAGMENT_MAP) {
                                 currentFragment = FRAGMENT_MAP;
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, MapFragment.newInstance()).commit();

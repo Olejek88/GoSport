@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ import io.realm.RealmResults;
 import ru.shtrm.gosport.AuthorizedUser;
 import ru.shtrm.gosport.StadiumInfoActivity;
 import ru.shtrm.gosport.R;
+import ru.shtrm.gosport.db.adapters.StadiumAdapter;
 import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.db.realm.User;
 import ru.shtrm.gosport.gps.TaskItemizedOverlay;
@@ -48,9 +50,11 @@ public class MapFragment extends Fragment {
 	private final ArrayList<OverlayItem> overlayItemArray = new ArrayList<>();
 	Location location;
 	ArrayList<OverlayItem> aOverlayItemArray;
+    StadiumAdapter stadiumAdapter;
     Realm realmDB;
     private double curLatitude, curLongitude;
 	private int LastItemPosition = -1;
+    //FloatingActionButton fab_check;
 
     public MapFragment() {
     }
@@ -59,32 +63,30 @@ public class MapFragment extends Fragment {
         return (new MapFragment());
     }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-	 * android.view.ViewGroup, android.os.Bundle)
-	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.gps_layout, container, false);
 
         Toolbar toolbar = (Toolbar)(getActivity()).findViewById(R.id.toolbar);
-        ListView stadiumListView;
+        final ListView stadiumListView;
 
         toolbar.setSubtitle("Карта площадок");
         realmDB = Realm.getDefaultInstance();
         RealmResults<Stadium> stadiums;
 
-        User user = realmDB.where(User.class).equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
+        //User user = realmDB.where(User.class).equalTo("active", true).findFirst();
+        //User user = realmDB.where(User.class).equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
 		LocationManager lm = (LocationManager) getActivity().getSystemService(
 				LOCATION_SERVICE);
 
         if (lm != null) {
-            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            // последняя попытка
+            try {
+                location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            } catch (SecurityException e) {
+                Toast.makeText(getActivity(), "Нет разрешений на определение местоположения", Toast.LENGTH_SHORT).show();
+            }
+
             if (location == null) location = getLastKnownLocation();
 			if (location != null) {
 				curLatitude = location.getLatitude();
@@ -100,8 +102,6 @@ public class MapFragment extends Fragment {
 		GeoPoint point2 = new GeoPoint(curLatitude, curLongitude);
 		mapController.setCenter(point2);
 
-		// добавляем тестовый маркер
-		// aOverlayItemArray = new ArrayList<OverlayItem>();
 		OverlayItem overlayItem = new OverlayItem("We are here", "WAH",
 				new GeoPoint(curLatitude, curLongitude));
 		aOverlayItemArray = new ArrayList<>();
@@ -113,29 +113,32 @@ public class MapFragment extends Fragment {
         stadiumListView = (ListView) rootView
                 .findViewById(R.id.gps_listView);
 
-
         final ArrayList<GeoPoint> waypoints = new ArrayList<>();
         GeoPoint currentPoint = new GeoPoint(curLatitude, curLongitude);
         waypoints.add(currentPoint);
 
         stadiums = realmDB.where(Stadium.class).findAll();
+        if (stadiums!=null) {
+            stadiumAdapter = new StadiumAdapter(getContext(), stadiums, null);
+            stadiumListView.setAdapter(stadiumAdapter);
 
-        for (Stadium item : stadiums) {
-            curLatitude = item.getLatitude();
-            curLongitude = item.getLongitude();
+            for (Stadium item : stadiums) {
+                curLatitude = item.getLatitude();
+                curLongitude = item.getLongitude();
 
-            GeoPoint endPoint = new GeoPoint(curLatitude, curLongitude);
-            waypoints.add(endPoint);
+                GeoPoint endPoint = new GeoPoint(curLatitude, curLongitude);
+                waypoints.add(endPoint);
 
-            StadiumOverlayItem olItem = new StadiumOverlayItem(item.getTitle(), "Stadium", new GeoPoint(curLatitude, curLongitude));
-            Drawable newMarker;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                newMarker = this.getResources().getDrawable(R.drawable.football_32, getActivity().getApplicationContext().getTheme());
-            } else {
-                newMarker = this.getResources().getDrawable(R.drawable.football_32);
+                StadiumOverlayItem olItem = new StadiumOverlayItem(item.getTitle(), "Stadium", new GeoPoint(curLatitude, curLongitude));
+                Drawable newMarker;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    newMarker = this.getResources().getDrawable(R.drawable.football_32, getActivity().getApplicationContext().getTheme());
+                } else {
+                    newMarker = this.getResources().getDrawable(R.drawable.football_32);
+                }
+                olItem.setMarker(newMarker);
+                overlayItemArray.add(olItem);
             }
-            olItem.setMarker(newMarker);
-            overlayItemArray.add(olItem);
         }
 
         stadiumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -157,10 +160,21 @@ public class MapFragment extends Fragment {
 			}
 		});
 
-        stadiumListView.setOnLongClickListener(new View.OnLongClickListener() {
+        stadiumListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-                return false;
+            public boolean onItemLongClick(AdapterView<?> av, View v, int pos, long id)
+            {
+                Stadium stadium = stadiumAdapter.getItem(pos);
+                if (stadium != null) {
+                    String stadium_uuid = stadium.getUuid();
+                    Intent stadiumInfo = new Intent(getActivity(),
+                            StadiumInfoActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("stadium_uuid", stadium_uuid);
+                    stadiumInfo.putExtras(bundle);
+                    getActivity().startActivity(stadiumInfo);
+                }
+                return true;
             }
         });
 
@@ -186,7 +200,7 @@ public class MapFragment extends Fragment {
 		rootView.setFocusableInTouchMode(true);
 		rootView.requestFocus();
 
-		return rootView;
+        return rootView;
 	}
 
     private Location getLastKnownLocation() {
@@ -195,12 +209,17 @@ public class MapFragment extends Fragment {
         List<String> providers = mLocationManager.getProviders(true);
         Location bestLocation = null;
         for (String provider : providers) {
-            Location l = mLocationManager.getLastKnownLocation(provider);
-            if (l == null) {
+            try {
+                location = mLocationManager.getLastKnownLocation(provider);
+            } catch (SecurityException e) {
+                Toast.makeText(getActivity(), "Нет разрешений на определение местоположения", Toast.LENGTH_SHORT).show();
+            }
+
+            if (location == null) {
                 continue;
             }
-            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                bestLocation = l;
+            if (bestLocation == null || location.getAccuracy() < bestLocation.getAccuracy()) {
+                bestLocation = location;
             }
         }
         return bestLocation;
@@ -216,6 +235,13 @@ public class MapFragment extends Fragment {
         public Stadium stadium;
         public StadiumOverlayItem(String a, String b, GeoPoint p) {
             super(a, b, p);
+        }
+    }
+
+    private class submitOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(final View v) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentAddStadium.newInstance()).commit();
         }
     }
 }

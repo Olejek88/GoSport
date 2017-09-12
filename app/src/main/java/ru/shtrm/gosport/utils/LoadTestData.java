@@ -6,6 +6,7 @@ import io.realm.Realm;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Amplua;
+import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.UserSport;
 
@@ -14,6 +15,7 @@ public class LoadTestData {
     public static Level level_hockey, level_football;
     public static Amplua amplua;
     public static Team team;
+    public static Stadium stadium;
 
     public static void LoadAllTestData() {
 
@@ -369,6 +371,53 @@ public class LoadTestData {
             }
         });
 
+
+        realmDB.close();
+    }
+
+    public static void LoadAllTestData2() {
+
+        final Realm realmDB;
+        realmDB = Realm.getDefaultInstance();
+
+        final String stadiumHockeyUuid = "4462ed77-9bf0-4542-b127-a4ecefce49da";
+        final String stadiumFootballUuid = "5562ed77-9bf0-4542-b127-b4ecefce49da";
+
+        final Sport hockey = realmDB.where(Sport.class).equalTo("title","Хоккей").findFirst();
+        final Sport football = realmDB.where(Sport.class).equalTo("title","Хоккей").findFirst();
+
+        // Stadium --------------------
+        realmDB.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                stadium = realmDB.createObject(Stadium.class, 1);
+                stadium.setUuid(stadiumHockeyUuid);
+                stadium.setSport(hockey);
+                stadium.setDescription("Дворец хоккейной школы Трактор. Две площадки: большая и малая.");
+                stadium.setTitle("Школа Трактор");
+                stadium.setLatitude(55.164554);
+                stadium.setLongitude(61.447916);
+                stadium.setImage("traktor");
+                stadium.setChangedAt(new Date());
+                stadium.setCreatedAt(new Date());
+            }
+        });
+
+        realmDB.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                stadium = realmDB.createObject(Stadium.class, 2);
+                stadium.setUuid(stadiumFootballUuid);
+                stadium.setSport(football);
+                stadium.setDescription("Площадка возле стадиона Центральный.");
+                stadium.setTitle("Площадка Динамо");
+                stadium.setLatitude(55.166209);
+                stadium.setLongitude(61.372825);
+                stadium.setImage("traktor");
+                stadium.setChangedAt(new Date());
+                stadium.setCreatedAt(new Date());
+            }
+        });
 
         realmDB.close();
     }
