@@ -27,6 +27,7 @@ import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.utils.MainFunctions;
 
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
@@ -36,7 +37,7 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
     private Context context;
     protected LayoutInflater inflater;
 
-    public TrainingAdapter(@NonNull Context context, RealmResults<Training> data) {
+    public TrainingAdapter(@NonNull Context context, RealmResults<Training> data, Sport sport) {
         super(data);
         this.inflater = LayoutInflater.from(context);
         this.context = context;
@@ -78,15 +79,30 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            if (parent.getId() == R.id.eril_status) {
-                convertView = inflater.inflate(R.layout.simple_item, parent, false);
+            if (parent.getId() == R.id.trainings_listView) {
+                convertView = inflater.inflate(R.layout.training_item_layout, parent, false);
                 viewHolder = new ViewHolder();
-                viewHolder.icon = (ImageView) convertView.findViewById(R.id.eril_image);
+                viewHolder.icon = (ImageView) convertView.findViewById(R.id.training_sport_icon);
+                viewHolder.cost = (TextView) convertView.findViewById(R.id.training_cost);
+                viewHolder.date = (TextView) convertView.findViewById(R.id.training_date);
+                viewHolder.stadium = (TextView) convertView.findViewById(R.id.training_stadium);
+                viewHolder.level = (TextView) convertView.findViewById(R.id.training_sport_level);
+                viewHolder.sport = (TextView) convertView.findViewById(R.id.training_sport);
+                viewHolder.contact = (TextView) convertView.findViewById(R.id.training_contact);
+                viewHolder.team = (TextView) convertView.findViewById(R.id.training_team);
                 convertView.setTag(viewHolder);
             } else {
                 convertView = inflater.inflate(R.layout.simple_item, parent, false);
                 viewHolder = new ViewHolder();
-                viewHolder.icon = (ImageView) convertView.findViewById(R.id.eril_image);
+                viewHolder.title = (TextView) convertView.findViewById(R.id.training_text_name);
+                viewHolder.comment = (TextView) convertView.findViewById(R.id.training_comment);
+                viewHolder.cost = (TextView) convertView.findViewById(R.id.training_cost);
+                viewHolder.date = (TextView) convertView.findViewById(R.id.training_date);
+                viewHolder.level = (TextView) convertView.findViewById(R.id.training_sport_level);
+                viewHolder.sport = (TextView) convertView.findViewById(R.id.training_sport);
+                viewHolder.contact = (TextView) convertView.findViewById(R.id.training_contact);
+                viewHolder.stadium = (TextView) convertView.findViewById(R.id.training_stadium);
+                viewHolder.team = (TextView) convertView.findViewById(R.id.training_team);
                 convertView.setTag(viewHolder);
             }
         } else {
@@ -97,12 +113,30 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
         if (adapterData != null) {
             training = adapterData.get(position);
             if (training != null) {
-                viewHolder.title.setText(training.getTitle());
-                if (parent.getId() == R.id.eril_status) {
-                    if (training.getLevel().get_id() == 1)
+                if (parent.getId() == R.id.trainings_listView) {
+                    if (training.getSport().getTitle().equals("Хоккей")) {
+                        viewHolder.icon.setImageResource(R.drawable.hockey_32);
+                    } else {
                         viewHolder.icon.setImageResource(R.drawable.football_32);
-                } else {
+                    }
                 }
+                else {
+                    viewHolder.title.setText(training.getTitle());
+                    viewHolder.comment.setText(training.getComment());
+                }
+                viewHolder.contact.setText(training.getUser().getName()+" ("+training.getUser().getPhone()+")");
+                viewHolder.team.setText(training.getTeam().getTitle());
+                viewHolder.stadium.setText(training.getStadium().getTitle());
+                viewHolder.cost.setText(training.getCost());
+                viewHolder.sport.setText(training.getSport().getTitle());
+                Date lDate = training.getDate();
+                if (lDate != null) {
+                    String sDate = new SimpleDateFormat("dd.MM.yy HH:mm", Locale.US).format(lDate);
+                    viewHolder.date.setText(sDate);
+                } else {
+                    viewHolder.date.setText(R.string.not_started);
+                }
+                viewHolder.level.setText(training.getLevel().getTitle());
             }
         }
         return convertView;
@@ -119,6 +153,7 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
         TextView sport;
         TextView level;
         TextView stadium;
+        TextView contact;
         TextView date;
     }
 }

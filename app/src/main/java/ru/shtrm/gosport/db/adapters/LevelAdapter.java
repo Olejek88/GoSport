@@ -33,15 +33,21 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
 
     @Override
     public int getCount() {
+        RealmResults<Level> rows;
         Realm realm = Realm.getDefaultInstance();
-        RealmResults<Level> rows = realm.where(Level.class).equalTo("sport.uuid",sport.getUuid()).findAll();
+        if (sport!=null) {
+            rows = realm.where(Level.class).equalTo("sport.uuid", sport.getUuid()).findAll();
+        }
+        else {
+            rows = realm.where(Level.class).findAll();
+        }
         realm.close();
         return rows.size();
     }
 
     @Override
     public Level getItem(int position) {
-        if (adapterData != null) {
+        if (adapterData != null && adapterData.size()>0) {
             return adapterData.get(position);
         }
         return null;
@@ -50,7 +56,7 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
     @Override
     public long getItemId(int position) {
         Level level;
-        if (adapterData != null) {
+        if (adapterData != null && adapterData.size()>0) {
             level = adapterData.get(position);
             return level.get_id();
         }
@@ -69,7 +75,7 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
                 viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
                 convertView.setTag(viewHolder);
             }
-            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_level || parent.getId() == R.id.profile_hockey_level) {
+            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_level || parent.getId() == R.id.profile_hockey_level || parent.getId() == R.id.training_add_level) {
                 convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.spinner_item);
                 convertView.setTag(viewHolder);
@@ -79,7 +85,7 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
         }
 
         Level level;
-        if (adapterData != null && viewHolder.title !=null) {
+        if (adapterData != null && viewHolder.title !=null && adapterData.size()>0) {
                 level = adapterData.get(position);
                 if (level != null)
                     viewHolder.title.setText(level.getTitle());
@@ -87,7 +93,7 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
 
         if (convertView == null) {
             TextView textView = new TextView(context);
-            if (adapterData != null) {
+            if (adapterData != null && adapterData.size()>0) {
                 level = adapterData.get(position);
                 if (level != null)
                     textView.setText(level.getTitle());

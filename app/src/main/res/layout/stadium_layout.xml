@@ -43,6 +43,8 @@
                 android:layout_below="@+id/stadium_image"
                 android:adjustViewBounds="true"
                 android:background="@color/larisaBlueColor"
+                android:elevation="0dp"
+                android:gravity="fill_vertical"
                 android:paddingLeft="15dp"
                 android:paddingTop="10dp"
                 android:scaleType="centerCrop"
@@ -57,6 +59,7 @@
                 android:adjustViewBounds="true"
                 android:paddingBottom="10dp"
                 android:paddingLeft="15dp"
+                android:maxLines="4"
                 android:scaleType="centerCrop"
                 android:textColor="#000000"
                 android:textSize="16sp" />
@@ -74,10 +77,11 @@
             <TextView
                 android:id="@+id/stadium_text_address"
                 android:layout_width="fill_parent"
-                android:layout_height="30dp"
+                android:layout_height="25dp"
                 android:layout_below="@+id/stadium_text_description"
                 android:layout_toRightOf="@id/stadium_icon1"
                 android:background="#FAFAFA"
+                android:gravity="center_vertical"
                 android:paddingLeft="15dp"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -90,24 +94,25 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:contentDescription="@string/image_description"
-                android:src="@drawable/menu_football" />
+                android:src="@drawable/user_type" />
 
             <TextView
                 android:id="@+id/stadium_text_sport"
                 android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:layout_below="@+id/stadium_text_address"
+                android:layout_height="25dp"
+                android:layout_below="@+id/stadium_icon1"
                 android:layout_toRightOf="@id/stadium_icon2"
                 android:background="#FAFAFA"
+                android:gravity="center_vertical"
                 android:paddingLeft="15dp"
                 android:textColor="#000000"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <View
                 android:id="@+id/stadium_divider1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/stadium_text_address"
+                android:layout_below="@+id/stadium_icon2"
                 android:background="#777777" />
 
             <ListView

@@ -28,9 +28,18 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import ru.shtrm.gosport.AuthorizedUser;
 import ru.shtrm.gosport.R;
+import ru.shtrm.gosport.db.adapters.AmpluaAdapter;
+import ru.shtrm.gosport.db.adapters.LevelAdapter;
+import ru.shtrm.gosport.db.adapters.TeamAdapter;
+import ru.shtrm.gosport.db.realm.Amplua;
+import ru.shtrm.gosport.db.realm.Level;
+import ru.shtrm.gosport.db.realm.Sport;
+import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.db.realm.UserSport;
 
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
@@ -76,11 +85,22 @@ public class UserInfoFragment extends Fragment {
         ImageView edit_image;
         ImageView call_image;
 
-		tv_user_name = (TextView) view.findViewById(R.id.user_text_name);
+        TextView tv_hockey_amplua, tv_hockey_level, tv_hockey_team;
+        TextView tv_football_amplua, tv_football_level, tv_football_team;
+
+        tv_user_name = (TextView) view.findViewById(R.id.user_text_name);
         tv_user_phone = (TextView) view.findViewById(R.id.user_text_phone);
         tv_user_age = (TextView) view.findViewById(R.id.user_text_age);
         tv_user_vk = (TextView) view.findViewById(R.id.user_text_vk);
         tv_user_type = (TextView) view.findViewById(R.id.user_text_type);
+
+        tv_hockey_amplua = (TextView) view.findViewById(R.id.profile_hockey_amplua);
+        tv_hockey_level = (TextView) view.findViewById(R.id.profile_hockey_level);
+        tv_hockey_team = (TextView) view.findViewById(R.id.profile_hockey_team);
+
+        tv_football_amplua = (TextView) view.findViewById(R.id.profile_football_amplua);
+        tv_football_level = (TextView) view.findViewById(R.id.profile_football_level);
+        tv_football_team = (TextView) view.findViewById(R.id.profile_football_team);
 
         user_image = (ImageView) view.findViewById(R.id.user_image);
         edit_image = (ImageView) view.findViewById(R.id.user_edit_image);
@@ -125,6 +145,23 @@ public class UserInfoFragment extends Fragment {
             Bitmap user_bitmap = getResizedBitmap(path, user.getImage(), 0, 600, user.getChangedAt().getTime());
             if (user_bitmap != null) {
                 user_image.setImageBitmap(user_bitmap);
+            }
+
+            Sport hockey,football;
+            hockey = realmDB.where(Sport.class).equalTo("title","Хоккей").findFirst();
+            football = realmDB.where(Sport.class).equalTo("title","Футбол").findFirst();
+
+            UserSport userSportHockey = realmDB.where(UserSport.class).equalTo("user.uuid", user.getUuid()).equalTo("sport.uuid",hockey.getUuid()).findFirst();
+            UserSport userSportFootball = realmDB.where(UserSport.class).equalTo("user.uuid", user.getUuid()).equalTo("sport.uuid",football.getUuid()).findFirst();
+            if (userSportHockey!=null) {
+                tv_hockey_amplua.setText(userSportHockey.getAmplua().getTitle());
+                tv_hockey_level.setText(userSportHockey.getLevel().getTitle());
+                tv_hockey_team.setText(userSportHockey.getTeam().getTitle());
+            }
+            if (userSportFootball!=null) {
+                tv_football_amplua.setText(userSportFootball.getAmplua().getTitle());
+                tv_football_level.setText(userSportFootball.getLevel().getTitle());
+                tv_football_team.setText(userSportFootball.getTeam().getTitle());
             }
         }
     }

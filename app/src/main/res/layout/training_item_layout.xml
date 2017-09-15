@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/training_sport_icon"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/description"/>
+
+    <TextView
+        android:id="@+id/training_sport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:textColor="#222222"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@+id/training_sport_icon"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/training_sport_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:textColor="#222222"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:layout_toRightOf="@+id/training_sport" />
+
+    <TextView
+        android:id="@+id/training_sport_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:textColor="#222222"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@+id/training_sport_team"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/training_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#454545"
+        android:textSize="16sp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_below="@+id/training_sport_icon" />
+
+    <TextView
+        android:id="@+id/training_stadium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#454545"
+        android:textSize="16sp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/training_date"
+        android:layout_below="@+id/training_sport_icon" />
+
+    <TextView
+        android:id="@+id/training_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:textColor="#454545"
+        android:textSize="16sp"
+        android:layout_below="@+id/training_date" />
+
+    <TextView
+        android:id="@+id/training_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:textColor="#454545"
+        android:textSize="16sp"
+        android:layout_toRightOf="@+id/training_cost"
+        android:layout_below="@+id/training_stadium" />
+
+</RelativeLayout>

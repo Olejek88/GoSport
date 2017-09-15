@@ -111,6 +111,14 @@
     <string name="stadium_add_address">Адрес</string>
     <string name="stadium_add_photo">Фотография площадки</string>
 
+    <string name="training_add_name">Название тренировки</string>
+    <string name="training_add_comment">Описание тренировки</string>
+    <string name="training_add_cost">Цена тренировки</string>
+    <string name="training_add_date">Выберите дату/даты</string>
+    <string name="training_add_stadium">Стадион</string>
+    <string name="training_add_team">Команда</string>
+    <string name="training_add_level">Уровень</string>
+
     <string name="profile_type">Тип пользователя</string>
     <string name="profile_whois">Должность</string>
     <string name="profile_login">Логин</string>

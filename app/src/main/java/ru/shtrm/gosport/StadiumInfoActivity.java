@@ -147,7 +147,7 @@ public class StadiumInfoActivity extends AppCompatActivity {
         if (trainings.size() > 2) {
             trainings.subList(0, 5);
         }
-        TrainingAdapter trainingAdapter = new TrainingAdapter(getApplicationContext(), trainings);
+        TrainingAdapter trainingAdapter = new TrainingAdapter(getApplicationContext(), trainings, stadium.getSport());
         tv_stadium_trainings.setAdapter(trainingAdapter);
 
         Bitmap image_bitmap = getResizedBitmap(MainFunctions.getPicturesDirectory(getApplicationContext()), stadium.getImage(), 0, 300, stadium.getChangedAt().getTime());
@@ -160,7 +160,7 @@ public class StadiumInfoActivity extends AppCompatActivity {
         rootLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         
         //Floating Action Buttons
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab_4);
         fab1 = (FloatingActionButton) findViewById(R.id.fab_1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab_2);
         fab3 = (FloatingActionButton) findViewById(R.id.fab_3);

@@ -61,7 +61,7 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
 
     @Override
     public Team getItem(int position) {
-        if (adapterData != null) {
+        if (adapterData != null && adapterData.size()>0) {
             return adapterData.get(position);
         }
         return null;
@@ -70,7 +70,7 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
     @Override
     public long getItemId(int position) {
         Team team;
-        if (adapterData != null) {
+        if (adapterData != null && adapterData.size()>0) {
             team = adapterData.get(position);
             return team.get_id();
         }
@@ -82,7 +82,7 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_team || parent.getId() == R.id.profile_hockey_team) {
+            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_team || parent.getId() == R.id.profile_hockey_team || parent.getId() == R.id.training_add_team) {
                 convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
                 viewHolder.name = (TextView) convertView.findViewById(R.id.spinner_item);
                 convertView.setTag(viewHolder);
@@ -101,9 +101,9 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
 
         Team team;
         TextView textView = new TextView(context);
-        if (adapterData != null) {
+        if (adapterData != null && adapterData.size()>0) {
             team = adapterData.get(position);
-            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_team || parent.getId() == R.id.profile_hockey_team) {
+            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_team || parent.getId() == R.id.profile_hockey_team || parent.getId() == R.id.training_add_team) {
                 viewHolder.name.setText(team.getTitle());
                 textView.setText(team.getTitle());
                 textView.setTextSize(16);

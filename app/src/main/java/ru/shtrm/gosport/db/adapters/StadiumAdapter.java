@@ -58,7 +58,7 @@ public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAda
 
     @Override
     public Stadium getItem(int position) {
-        if (adapterData != null) {
+        if (adapterData != null && adapterData.size()>0) {
             return adapterData.get(position);
         }
         return null;
@@ -67,7 +67,7 @@ public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAda
     @Override
     public long getItemId(int position) {
         Stadium stadium;
-        if (adapterData != null) {
+        if (adapterData != null && adapterData.size()>0) {
             stadium = adapterData.get(position);
             return stadium.get_id();
         }
@@ -78,7 +78,7 @@ public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAda
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_team || parent.getId() == R.id.profile_hockey_team) {
+            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.training_add_stadium) {
                 convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
                 viewHolder = new ViewHolder();
                 viewHolder.title = (TextView) convertView.findViewById(R.id.spinner_item);
@@ -107,10 +107,10 @@ public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAda
         }
 
         Stadium stadium;
-        if (adapterData != null) {
+        if (adapterData != null && adapterData.size()>0) {
             stadium = adapterData.get(position);
             if (stadium != null) {
-                if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_team || parent.getId() == R.id.profile_hockey_team) {
+                if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.training_add_stadium) {
                     viewHolder.title.setText(stadium.getTitle());
                 }
                 else {
