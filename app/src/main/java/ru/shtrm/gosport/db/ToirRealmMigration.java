@@ -241,6 +241,30 @@ class ToirRealmMigration implements RealmMigration {
             oldVersion++;
         }
 
+        if (oldVersion == 7) {
+            Log.d(TAG, "from version 7");
+            schema.get("Training")
+                    .addField("players", int.class);
+            oldVersion++;
+        }
+
+        if (oldVersion == 8) {
+            Log.d(TAG, "from version 8");
+
+            schema.create("LocalFiles")
+                    .addField("_id", long.class)
+                    .addField("uuid", String.class)
+                    .addRealmObjectField("user", schema.get("User"))
+                    .addField("object", String.class)
+                    .addField("filename", String.class)
+                    .addField("sent", boolean.class)
+                    .addField("createdAt", Date.class)
+                    .addField("changedAt", Date.class)
+                    .addPrimaryKey("_id");
+
+            oldVersion++;
+        }
+
         testPropsFields(realm);
     }
 

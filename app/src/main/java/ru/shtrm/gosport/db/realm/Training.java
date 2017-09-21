@@ -15,6 +15,7 @@ public class Training extends RealmObject {
     private Team team;
     private String comment;
     private int cost;
+    private int players;
     private Sport sport;
     private Level level;
     private Stadium stadium;
@@ -76,6 +77,14 @@ public class Training extends RealmObject {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public int getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(int players) {
+        this.players = players;
     }
 
     public Sport getSport() {

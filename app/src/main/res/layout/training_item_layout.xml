@@ -42,26 +42,28 @@
 
     <TextView
         android:id="@+id/training_sport_level"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:textColor="#222222"
-        android:textSize="16sp"
-        android:gravity="center_vertical"
         android:layout_toRightOf="@+id/training_sport_team"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:gravity="right|center_vertical"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/larisaBlueColor"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/training_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#454545"
         android:textSize="16sp"
+        android:background="@color/larisaBlueColor"
+        android:textColor="#ffffff"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:layout_below="@+id/training_sport_icon" />
+        android:layout_toRightOf="@+id/training_sport_icon"
+        android:layout_below="@+id/training_sport" />
 
     <TextView
         android:id="@+id/training_stadium"
@@ -72,7 +74,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
         android:layout_toRightOf="@+id/training_date"
-        android:layout_below="@+id/training_sport_icon" />
+        android:layout_below="@+id/training_sport" />
 
     <TextView
         android:id="@+id/training_cost"
@@ -80,9 +82,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:textColor="#454545"
         android:textSize="16sp"
-        android:layout_below="@+id/training_date" />
+        android:background="@color/md_green_300"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/training_sport_icon" />
 
     <TextView
         android:id="@+id/training_contact"
@@ -93,6 +96,6 @@
         android:textColor="#454545"
         android:textSize="16sp"
         android:layout_toRightOf="@+id/training_cost"
-        android:layout_below="@+id/training_stadium" />
+        android:layout_below="@+id/training_sport_icon" />
 
 </RelativeLayout>

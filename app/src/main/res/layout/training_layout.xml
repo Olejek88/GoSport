@@ -5,17 +5,22 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".TrainingInfoActivity">
+    android:layout_marginBottom="50dp"
+    android:fitsSystemWindows="true">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/larisaBlueColor"
         android:gravity="top"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/gps_mapview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -28,17 +33,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <org.osmdroid.views.MapView
-                android:id="@+id/gps_mapview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true" />
-
             <TextView
                 android:id="@+id/training_text_name"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
-                android:layout_below="@+id/gps_mapview"
                 android:adjustViewBounds="true"
                 android:background="@color/larisaBlueColor"
                 android:gravity="fill_vertical"
@@ -205,6 +203,8 @@
                 android:adjustViewBounds="true"
                 android:paddingBottom="10dp"
                 android:maxLines="4"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:scaleType="centerCrop"
                 android:textColor="#000000"
                 android:textSize="16sp" />

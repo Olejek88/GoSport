@@ -10,7 +10,7 @@ import io.realm.RealmConfiguration;
 
 public class ToirRealm {
     // версия схемы базы данных приложения
-    public static final int VERSION = 7;
+    public static final int VERSION = 9;
 
     public static void init(Context context) {
         init(context, "gosport.realm");

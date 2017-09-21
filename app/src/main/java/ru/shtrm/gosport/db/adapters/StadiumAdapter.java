@@ -23,7 +23,6 @@ import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.utils.MainFunctions;
 
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
-import static ru.shtrm.gosport.utils.RoundedImageView.getRoundedBitmap;
 
 public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAdapter {
 

@@ -89,7 +89,7 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
                 viewHolder.level = (TextView) convertView.findViewById(R.id.training_sport_level);
                 viewHolder.sport = (TextView) convertView.findViewById(R.id.training_sport);
                 viewHolder.contact = (TextView) convertView.findViewById(R.id.training_contact);
-                viewHolder.team = (TextView) convertView.findViewById(R.id.training_team);
+                viewHolder.team = (TextView) convertView.findViewById(R.id.training_sport_team);
                 convertView.setTag(viewHolder);
             } else {
                 convertView = inflater.inflate(R.layout.simple_item, parent, false);
@@ -125,9 +125,11 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
                     viewHolder.comment.setText(training.getComment());
                 }
                 viewHolder.contact.setText(training.getUser().getName()+" ("+training.getUser().getPhone()+")");
-                viewHolder.team.setText(training.getTeam().getTitle());
-                viewHolder.stadium.setText(training.getStadium().getTitle());
-                viewHolder.cost.setText(training.getCost());
+                if (training.getTeam()!=null)
+                    viewHolder.team.setText("["+training.getTeam().getTitle()+"]");
+                if (training.getStadium()!=null)
+                    viewHolder.stadium.setText(training.getStadium().getTitle());
+                viewHolder.cost.setText("Цена: " + Integer.toString(training.getCost()) + "р.");
                 viewHolder.sport.setText(training.getSport().getTitle());
                 Date lDate = training.getDate();
                 if (lDate != null) {

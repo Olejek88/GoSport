@@ -228,7 +228,9 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
                 training.setTeam(teamAdapter.getItem(teamSpinner.getSelectedItemPosition()));
                 training.setTitle(title.getText().toString());
                 if (date.getText().length()>0) {
-                    training.setDate(new Date(selectedYear,selectedMonth,selectedDay,selectedHour,selectedMinute));
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(selectedYear,selectedMonth,selectedDay,selectedHour,selectedMinute,0);
+                    training.setDate(cal.getTime());
                 }
                 else {
                     Toast.makeText(getActivity(), "Пожалуйста выберите дату тренировки", Toast.LENGTH_SHORT).show();
@@ -260,7 +262,6 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
         @Override
         public void onItemSelected(AdapterView<?> parentView,
                                    View selectedItemView, int position, long id) {
-            String type = null;
             Sport typeSelected;
             typeSelected = (Sport) typeSpinner.getSelectedItem();
             FillSpinners(typeSelected, parentView);

@@ -31,6 +31,7 @@ class AboutDialog extends Dialog {
         tv = (TextView) findViewById(R.id.legal_text);
         tv.setText(R.string.application_full_name);
         tv = (TextView) findViewById(R.id.info_text);
+        tv.setText("(c)2017 Olejek http://shtrm.ru");
         Linkify.addLinks(tv, Linkify.ALL);
     }
 }

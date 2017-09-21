@@ -30,10 +30,15 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.ScaleBarOverlay;
+import org.osmdroid.views.overlay.compass.CompassOverlay;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
 import ru.shtrm.gosport.AuthorizedUser;
@@ -62,12 +67,13 @@ public class TrainingInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater
-                .inflate(R.layout.user_layout, container, false);
+                .inflate(R.layout.training_layout, container, false);
         Toolbar toolbar = (Toolbar) (getActivity()).findViewById(R.id.toolbar);
         toolbar.setSubtitle("Тренировка");
 
-        Bundle b = getActivity().getIntent().getExtras();
-        training_uuid = b.getString("stadium_uuid");
+        Bundle b = this.getArguments();
+        if (b!=null)
+            training_uuid = b.getString("training_uuid");
 
         realmDB = Realm.getDefaultInstance();
         initView(rootView);
@@ -137,10 +143,14 @@ public class TrainingInfoFragment extends Fragment {
             tv_team.setText(training.getTeam().getTitle());
             tv_stadium.setText(training.getStadium().getTitle());
             tv_comment.setText(training.getComment());
-            tv_cost.setText(training.getCost());
+            tv_cost.setText(Integer.toString(training.getCost()));
             tv_sport.setText(training.getSport().getTitle());
             tv_contact.setText(training.getUser().getName()+" ("+training.getUser().getPhone()+")");
-            tv_date.setText(training.getDate().toString());
+            Date lDate = training.getDate();
+            if (lDate != null) {
+                String sDate = new SimpleDateFormat("dd.MM.yy HH:mm", Locale.US).format(lDate);
+                tv_date.setText(sDate);
+            }
             if (training.getSport().getTitle().equals("Хоккей")) {
                 iv_sport.setImageResource(R.drawable.hockey_32);
             } else {
@@ -176,6 +186,16 @@ public class TrainingInfoFragment extends Fragment {
             //GeoPoint endPoint = new GeoPoint(training.getStadium().getLatitude(), training.getStadium().getLongitude());
             //waypoints.add(endPoint);
         }
+        CompassOverlay compassOverlay = new CompassOverlay(getActivity()
+                .getApplicationContext(), mapView);
+        compassOverlay.enableCompass();
+        mapView.getOverlays().add(compassOverlay);
+        ScaleBarOverlay mScaleBarOverlay = new ScaleBarOverlay(mapView);
+        mScaleBarOverlay.setCentred(true);
+        //play around with these values to get the location on screen in the right place for your applicatio
+        mScaleBarOverlay.setScaleBarOffset(200, 10);
+        mapView.getOverlays().add(mScaleBarOverlay);
+
     }
 
     @Override

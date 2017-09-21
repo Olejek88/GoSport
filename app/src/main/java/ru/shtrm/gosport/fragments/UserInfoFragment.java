@@ -156,12 +156,14 @@ public class UserInfoFragment extends Fragment {
             if (userSportHockey!=null) {
                 tv_hockey_amplua.setText(userSportHockey.getAmplua().getTitle());
                 tv_hockey_level.setText(userSportHockey.getLevel().getTitle());
-                tv_hockey_team.setText(userSportHockey.getTeam().getTitle());
+                if (userSportHockey.getTeam()!=null)
+                    tv_hockey_team.setText(userSportHockey.getTeam().getTitle());
             }
             if (userSportFootball!=null) {
                 tv_football_amplua.setText(userSportFootball.getAmplua().getTitle());
                 tv_football_level.setText(userSportFootball.getLevel().getTitle());
-                tv_football_team.setText(userSportFootball.getTeam().getTitle());
+                if (userSportFootball.getTeam()!=null)
+                    tv_football_team.setText(userSportFootball.getTeam().getTitle());
             }
         }
     }

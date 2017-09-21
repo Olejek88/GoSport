@@ -20,8 +20,6 @@ import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.utils.MainFunctions;
 
-import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
-
 public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter {
     public static final String TABLE_NAME = "Sport";
     private Context context;
@@ -29,8 +27,8 @@ public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter
 
     public SportAdapter(@NonNull Context context, RealmResults<Sport> data) {
         super(data);
-        this.context = context;
         this.inflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override
@@ -62,7 +60,6 @@ public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
@@ -73,15 +70,15 @@ public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter
         }
 
         Sport sport;
-        TextView textView = new TextView(context);
+        //TextView textView = new TextView(context);
         if (adapterData != null && viewHolder.title !=null) {
             sport = adapterData.get(position);
             if (sport != null) {
                 viewHolder.title.setText(sport.getTitle());
-                textView.setText(sport.getTitle());
-                textView.setTextSize(16);
-                textView.setPadding(10, 10, 10, 10);
-                return textView;
+                //textView.setText(sport.getTitle());
+                //textView.setTextSize(16);
+                //textView.setPadding(10, 10, 10, 10);
+                //return textView;
             }
         }
         return convertView;
