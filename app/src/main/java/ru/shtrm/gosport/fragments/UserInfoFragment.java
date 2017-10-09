@@ -154,13 +154,13 @@ public class UserInfoFragment extends Fragment {
             UserSport userSportHockey = realmDB.where(UserSport.class).equalTo("user.uuid", user.getUuid()).equalTo("sport.uuid",hockey.getUuid()).findFirst();
             UserSport userSportFootball = realmDB.where(UserSport.class).equalTo("user.uuid", user.getUuid()).equalTo("sport.uuid",football.getUuid()).findFirst();
             if (userSportHockey!=null) {
-                tv_hockey_amplua.setText(userSportHockey.getAmplua().getTitle());
+                tv_hockey_amplua.setText(userSportHockey.getAmplua().getName());
                 tv_hockey_level.setText(userSportHockey.getLevel().getTitle());
                 if (userSportHockey.getTeam()!=null)
                     tv_hockey_team.setText(userSportHockey.getTeam().getTitle());
             }
             if (userSportFootball!=null) {
-                tv_football_amplua.setText(userSportFootball.getAmplua().getTitle());
+                tv_football_amplua.setText(userSportFootball.getAmplua().getName());
                 tv_football_level.setText(userSportFootball.getLevel().getTitle());
                 if (userSportFootball.getTeam()!=null)
                     tv_football_team.setText(userSportFootball.getTeam().getTitle());

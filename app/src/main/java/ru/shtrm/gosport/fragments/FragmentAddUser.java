@@ -30,6 +30,7 @@ import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.SortField;
 import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.utils.MainFunctions;
 
 public class FragmentAddUser extends Fragment implements View.OnClickListener {
     private static final int PICK_PHOTO_FOR_AVATAR = 1;
@@ -116,6 +117,7 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
             case R.id.profile_button_submit:
                 User user = realmDB.where(User.class).equalTo("name", name.getText().toString()).findFirst();
                 String image_name = "profile";
+                Bitmap bmp;
                 if (user!=null) {
                      Toast.makeText(getActivity().getApplicationContext(),
                             "Пользователь с логином " + user.getLogin() + " уже есть на этом устройстве", Toast.LENGTH_LONG).show();
@@ -147,8 +149,10 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                 profile.setActive(true);
                 profile.setUuid(java.util.UUID.randomUUID().toString());
                 try {
-                    image_name ="profile"+profile.get_id()+".jpg";
-                    storeImage(image_name);
+                    image_name = "profile" + profile.get_id() + ".jpg";
+                    iView.buildDrawingCache();
+                    bmp = iView.getDrawingCache();
+                    MainFunctions.storeImage(image_name, "User", getContext(), bmp);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -170,27 +174,6 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                 break;
         }
 
-    }
-
-    public void storeImage(String name) throws IOException {
-        Bitmap bmp;
-        File sd_card = Environment.getExternalStorageDirectory();
-        String target_filename = sd_card.getAbsolutePath() + File.separator + "Android" + File.separator + "data" + File.separator + getActivity().getPackageName() + File.separator + "img" + File.separator + name;
-        Log.d(TAG,target_filename);
-        File target_file = new File (target_filename);
-        if (!target_file.getParentFile().exists()) {
-            if (!target_file.getParentFile().mkdirs())
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Невозможно создать директорию!", Toast.LENGTH_LONG).show();
-        }
-        iView.buildDrawingCache();
-        bmp = iView.getDrawingCache();
-        FileOutputStream out = new FileOutputStream(target_file);
-        if (bmp!=null) {
-            bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
-        }
-        out.flush();
-        out.close();
     }
 
     @Override

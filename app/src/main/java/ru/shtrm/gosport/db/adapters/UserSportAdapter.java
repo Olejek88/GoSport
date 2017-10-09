@@ -75,7 +75,7 @@ public class UserSportAdapter extends RealmBaseAdapter<UserSport> implements Lis
             UserSport userSport = adapterData.get(position);
             viewHolder.user.setText(userSport.getUser().getName());
             viewHolder.sport.setText(userSport.getSport().getTitle());
-            viewHolder.amplua.setText(userSport.getAmplua().getTitle());
+            viewHolder.amplua.setText(userSport.getAmplua().getName());
             viewHolder.team.setText(userSport.getTeam().getTitle());
             viewHolder.level.setText(userSport.getLevel().getTitle());
             return convertView;

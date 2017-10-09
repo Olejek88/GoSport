@@ -78,6 +78,7 @@ import ru.shtrm.gosport.fragments.TeamsFragment;
 import ru.shtrm.gosport.fragments.TrainingsFragment;
 import ru.shtrm.gosport.fragments.UserInfoFragment;
 import ru.shtrm.gosport.rest.GSportAPIFactory;
+import ru.shtrm.gosport.utils.LoadTestData;
 import ru.shtrm.gosport.utils.MainFunctions;
 
 import static java.security.AccessController.getContext;
@@ -175,9 +176,9 @@ public class MainActivity extends AppCompatActivity {
             // принудительное обновление приложения
             finish();
         }
-        //LoadTestData.DeleteSomeData();
+        LoadTestData.DeleteSomeData();
         //checkRealmNew();
-        //LoadTestData.LoadAllTestData2();
+        LoadTestData.LoadAllTestData();
     }
 
     public boolean initDB() {
@@ -699,6 +700,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Players
+                /*
                 referenceName = User.class.getSimpleName();
                 changedDate = ReferenceUpdate.lastChangedAsStr(referenceName);
                 try {
@@ -709,7 +711,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getLocalizedMessage());
-                }
+                }*/
             }
         });
         thread.start();
@@ -934,7 +936,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        //addToJournal("Отправляем выполненные наряды на сервер");
         Training[] trainingsArray = trainings.toArray(new Training[]{});
         task.execute(trainingsArray);
     }
@@ -974,5 +975,12 @@ public class MainActivity extends AppCompatActivity {
             urlPath = url;
             localPath = local;
         }
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 }

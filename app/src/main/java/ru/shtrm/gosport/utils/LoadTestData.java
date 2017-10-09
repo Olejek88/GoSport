@@ -3,6 +3,7 @@ package ru.shtrm.gosport.utils;
 import java.util.Date;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Amplua;
@@ -12,7 +13,9 @@ import ru.shtrm.gosport.db.realm.UserSport;
 
 public class LoadTestData {
     public static Sport sport_hockey, sport_football;
+    public static RealmList<Sport> sports;
     public static Level level_hockey, level_football;
+    public static RealmList<Level> levels;
     public static Amplua amplua;
     public static Team team;
     public static Stadium stadium;
@@ -76,6 +79,9 @@ public class LoadTestData {
                 sport_football.setCreatedAt(new Date());
             }
         });
+        sports = new RealmList<>();
+        sports.add(sport_hockey);
+        sports.add(sport_football);
 
         realmDB.executeTransaction(new Realm.Transaction() {
             @Override
@@ -280,8 +286,8 @@ public class LoadTestData {
             public void execute(Realm realm) {
                 amplua = realmDB.createObject(Amplua.class,1);
                 amplua.setUuid(ampluaHockeyGoalie);
-                amplua.setTitle("Вратарь");
-                amplua.setSport(sport_hockey);
+                amplua.setName("Вратарь");
+                amplua.setSport(sports);
                 amplua.setChangedAt(new Date());
                 amplua.setCreatedAt(new Date());
             }
@@ -292,8 +298,8 @@ public class LoadTestData {
             public void execute(Realm realm) {
                 amplua = realmDB.createObject(Amplua.class,2);
                 amplua.setUuid(ampluaHockeyDefender);
-                amplua.setTitle("Защитник");
-                amplua.setSport(sport_hockey);
+                amplua.setName("Защитник");
+                amplua.setSport(sports);
                 amplua.setChangedAt(new Date());
                 amplua.setCreatedAt(new Date());
             }
@@ -304,8 +310,8 @@ public class LoadTestData {
             public void execute(Realm realm) {
                 amplua = realmDB.createObject(Amplua.class,3);
                 amplua.setUuid(ampluaHockeyForward);
-                amplua.setTitle("Нападающий");
-                amplua.setSport(sport_hockey);
+                amplua.setName("Нападающий");
+                amplua.setSport(sports);
                 amplua.setChangedAt(new Date());
                 amplua.setCreatedAt(new Date());
             }
@@ -316,61 +322,12 @@ public class LoadTestData {
             public void execute(Realm realm) {
                 amplua = realmDB.createObject(Amplua.class,4);
                 amplua.setUuid(ampluaHockeyUniversal);
-                amplua.setTitle("Универсал");
-                amplua.setSport(sport_hockey);
+                amplua.setName("Универсал");
+                amplua.setSport(sports);
                 amplua.setChangedAt(new Date());
                 amplua.setCreatedAt(new Date());
             }
         });
-
-        realmDB.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                amplua = realmDB.createObject(Amplua.class,5);
-                amplua.setUuid(ampluaFootballGoalie);
-                amplua.setTitle("Вратарь");
-                amplua.setSport(sport_football);
-                amplua.setChangedAt(new Date());
-                amplua.setCreatedAt(new Date());
-            }
-        });
-
-        realmDB.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                amplua = realmDB.createObject(Amplua.class,6);
-                amplua.setUuid(ampluaFootballDefender);
-                amplua.setTitle("Защитник");
-                amplua.setSport(sport_football);
-                amplua.setChangedAt(new Date());
-                amplua.setCreatedAt(new Date());
-            }
-        });
-
-        realmDB.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                amplua = realmDB.createObject(Amplua.class,7);
-                amplua.setUuid(ampluaFootballForward);
-                amplua.setTitle("Нападающий");
-                amplua.setSport(sport_football);
-                amplua.setChangedAt(new Date());
-                amplua.setCreatedAt(new Date());
-            }
-        });
-
-        realmDB.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                amplua = realmDB.createObject(Amplua.class,8);
-                amplua.setUuid(ampluaFootballUniversal);
-                amplua.setTitle("Универсал");
-                amplua.setSport(sport_football);
-                amplua.setChangedAt(new Date());
-                amplua.setCreatedAt(new Date());
-            }
-        });
-
 
         realmDB.close();
     }

@@ -27,12 +27,14 @@ import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import ru.shtrm.gosport.AuthorizedUser;
 import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.adapters.LevelAdapter;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
 import ru.shtrm.gosport.db.adapters.TeamAdapter;
 import ru.shtrm.gosport.db.realm.Level;
+import ru.shtrm.gosport.db.realm.LocalFiles;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.User;
@@ -129,6 +131,7 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
             case R.id.team_button_submit:
                 Team team_c = realmDB.where(Team.class).equalTo("title", title.getText().toString()).findFirst();
                 String image_name = "profile";
+                Bitmap bmp;
                 if (team_c!=null) {
                      Toast.makeText(getActivity().getApplicationContext(),
                             "Такая команда уже есть", Toast.LENGTH_LONG).show();
@@ -158,13 +161,14 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
                 team.setUuid(java.util.UUID.randomUUID().toString());
                 try {
                     image_name ="team"+team.get_id()+".jpg";
-                    storeImage(image_name);
+                    iView.buildDrawingCache();
+                    bmp = iView.getDrawingCache();
+                    MainFunctions.storeImage(image_name,"Team",getContext(), bmp);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 Log.e (TAG,"name=" + image_name);
                 team.setPhoto(image_name);
-
                 realmDB.commitTransaction();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TeamsFragment.newInstance()).commit();
                 break;
@@ -172,27 +176,6 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
                 break;
         }
 
-    }
-
-    public void storeImage(String name) throws IOException {
-        Bitmap bmp;
-//        String target_filename = sd_card.getAbsolutePath() + File.separator + "Android" + File.separator + "data" + File.separator + getActivity().getPackageName() + File.separator + "img" + File.separator + name;
-        String target_filename = MainFunctions.getUserImagePath(getActivity().getApplicationContext()) + name;
-        Log.d(TAG,target_filename);
-        File target_file = new File (target_filename);
-        if (!target_file.getParentFile().exists()) {
-            if (!target_file.getParentFile().mkdirs())
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Невозможно создать директорию!", Toast.LENGTH_LONG).show();
-        }
-        iView.buildDrawingCache();
-        bmp = iView.getDrawingCache();
-        FileOutputStream out = new FileOutputStream(target_file);
-        if (bmp!=null) {
-            bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
-        }
-        out.flush();
-        out.close();
     }
 
     @Override

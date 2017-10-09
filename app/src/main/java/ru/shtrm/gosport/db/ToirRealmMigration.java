@@ -67,7 +67,7 @@ class ToirRealmMigration implements RealmMigration {
                     .addPrimaryKey("_id");
 
             schema.create("Sport")
-                    .addField("_id", long.class)
+                    .addField("_idd", long.class)
                     .addField("uuid", String.class)
                     .addField("title", String.class)
                     .addField("createdAt", Date.class)
@@ -261,6 +261,28 @@ class ToirRealmMigration implements RealmMigration {
                     .addField("createdAt", Date.class)
                     .addField("changedAt", Date.class)
                     .addPrimaryKey("_id");
+
+            oldVersion++;
+        }
+        
+        if (oldVersion == 9) {
+            Log.d(TAG, "from version 9");
+            schema.create("ReferenceUpdate")
+                    .addField("referenceName", String.class)
+                    .addField("updateDate", Date.class)
+                    .addPrimaryKey("referenceName");
+            oldVersion++;
+        }
+
+        if (oldVersion == 10) {
+            Log.d(TAG, "from version 10");
+            schema.get("Amplua")
+                    .removeField("sport")
+                    .removeField("title");
+
+            schema.get("Amplua")
+                    .addRealmListField("sport", schema.get("Sport"))
+                    .addField("name", String.class);
 
             oldVersion++;
         }

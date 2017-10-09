@@ -16,7 +16,7 @@ public class GoSportApplication extends Application {
 		super.onCreate();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        serverUrl = preferences.getString(getString(R.string.serverUrl), "");
+        serverUrl = "http://192.168.1.124:3000";
 
         // инициализируем базу данных Realm
         ToirRealm.init(this);

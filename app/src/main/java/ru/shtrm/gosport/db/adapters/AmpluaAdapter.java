@@ -52,7 +52,7 @@ public class AmpluaAdapter extends RealmBaseAdapter<Amplua> implements ListAdapt
         Amplua amplua;
         if (adapterData != null) {
             amplua = adapterData.get(position);
-            return amplua.get_id();
+            return amplua.get_idd();
         }
         return 0;
     }
@@ -82,7 +82,7 @@ public class AmpluaAdapter extends RealmBaseAdapter<Amplua> implements ListAdapt
         if (adapterData != null && viewHolder.title !=null) {
             amplua = adapterData.get(position);
             if (amplua != null)
-                viewHolder.title.setText(amplua.getTitle());
+                viewHolder.title.setText(amplua.getName());
         }
 
         if (convertView == null) {
@@ -90,7 +90,7 @@ public class AmpluaAdapter extends RealmBaseAdapter<Amplua> implements ListAdapt
             if (adapterData != null) {
                 amplua = adapterData.get(position);
                 if (amplua != null)
-                    textView.setText(amplua.getTitle());
+                    textView.setText(amplua.getName());
                 textView.setTextSize(16);
                 //textView.setTextColor(R.color.larisaBlueColor);
                 //textView.setTextColor(context.getColor(R.color.almostblack));

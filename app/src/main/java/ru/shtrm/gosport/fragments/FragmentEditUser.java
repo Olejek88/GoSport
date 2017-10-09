@@ -38,6 +38,7 @@ import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.User;
 import ru.shtrm.gosport.db.realm.UserSport;
+import ru.shtrm.gosport.utils.MainFunctions;
 
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
@@ -226,6 +227,9 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
                     }
                 try {
                     // название файла аватара не меняется
+                    iView.buildDrawingCache();
+                    Bitmap bmp = iView.getDrawingCache();
+                    MainFunctions.storeImage(image_name, "User", getContext(), bmp);
                     storeImage(image_name);
                 } catch (IOException e) {
                     e.printStackTrace();

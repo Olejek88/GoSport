@@ -34,10 +34,13 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import ru.shtrm.gosport.AuthorizedUser;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
+import ru.shtrm.gosport.db.realm.LocalFiles;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Team;
+import ru.shtrm.gosport.db.realm.User;
 import ru.shtrm.gosport.utils.MainFunctions;
 
 public class FragmentAddStadium extends Fragment implements View.OnClickListener {
@@ -142,6 +145,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
             case R.id.team_button_submit:
                 Team team_c = realmDB.where(Team.class).equalTo("title", title.getText().toString()).findFirst();
                 String image_name = "profile";
+                Bitmap bmp;
                 if (team_c!=null) {
                      Toast.makeText(getActivity().getApplicationContext(),
                             "Такая команда уже есть", Toast.LENGTH_LONG).show();
@@ -170,7 +174,9 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                 team.setUuid(java.util.UUID.randomUUID().toString());
                 try {
                     image_name ="team"+team.get_id()+".jpg";
-                    storeImage(image_name);
+                    iView.buildDrawingCache();
+                    bmp = iView.getDrawingCache();
+                    MainFunctions.storeImage(image_name,"Team",getContext(), bmp);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -193,9 +199,11 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
         Log.d(TAG,target_filename);
         File target_file = new File (target_filename);
         if (!target_file.getParentFile().exists()) {
-            if (!target_file.getParentFile().mkdirs())
+            if (!target_file.getParentFile().mkdirs()) {
                 Toast.makeText(getActivity().getApplicationContext(),
-                        "Невозможно создать директорию!", Toast.LENGTH_LONG).show();
+                    "Невозможно создать директорию!", Toast.LENGTH_LONG).show();
+                return;
+            }
         }
         iView.buildDrawingCache();
         bmp = iView.getDrawingCache();
@@ -205,6 +213,26 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
         }
         out.flush();
         out.close();
+
+        realmDB.beginTransaction();
+        Number currentIdNum = realmDB.where(LocalFiles.class).max("_id");
+        int nextId;
+        if(currentIdNum == null) {
+            nextId = 1;
+        } else {
+            nextId = currentIdNum.intValue() + 1;
+        }
+        AuthorizedUser authorizedUser = AuthorizedUser.getInstance();
+        User user = realmDB.where(User.class).equalTo("uuid", authorizedUser.getUuid()).findFirst();
+        LocalFiles localFile = realmDB.createObject(LocalFiles.class, nextId);
+        localFile.setUser(user);
+        localFile.setSent(false);
+        localFile.setObject("Stadium");
+        localFile.setUuid(java.util.UUID.randomUUID().toString());
+        localFile.setFileName(name);
+        localFile.setChangedAt(new Date());
+        localFile.setCreatedAt(new Date());
+        realmDB.commitTransaction();
     }
 
     @Override

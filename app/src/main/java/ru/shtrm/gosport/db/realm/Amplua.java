@@ -2,6 +2,7 @@ package ru.shtrm.gosport.db.realm;
 
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -11,19 +12,19 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Amplua extends RealmObject {
     @PrimaryKey
-    private long _id;
+    private long _idd;
     private String uuid;
-    private String title;
-    private Sport sport;
+    private String name;
+    private RealmList<Sport> sports;
     private Date createdAt;
     private Date changedAt;
 
-    public long get_id() {
-        return _id;
+    public long get_idd() {
+        return _idd;
     }
 
-    public void set_id(long _id) {
-        this._id = _id;
+    public void set_idd(long _idd) {
+        this._idd = _idd;
     }
 
     public String getUuid() {
@@ -34,20 +35,20 @@ public class Amplua extends RealmObject {
         this.uuid = uuid;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Sport getSport() {
-        return sport;
+    public RealmList<Sport> getSport() {
+        return sports;
     }
 
-    public void setSport(Sport sport) {
-        this.sport = sport;
+    public void setSport(RealmList<Sport> sports) {
+        this.sports = sports;
     }
 
     public Date getCreatedAt() {

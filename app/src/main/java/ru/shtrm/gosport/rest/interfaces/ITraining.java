@@ -11,15 +11,15 @@ import retrofit2.http.Query;
 import ru.shtrm.gosport.db.realm.Training;
 
 public interface ITraining {
-    @GET("/api/objects/training")
+    @GET("/api/trainings")
     Call<List<Training>> training();
 
-    @GET("/api/objects/training")
+    @GET("/api/trainings")
     Call<List<Training>> training(@Query("changedAfter") String changedAfter);
 
-    @GET("/api/objects/training")
+    @GET("/api/trainings")
     Call<List<Training>> trainingById(@Query("id") String id);
 
-    @POST("/api/objects/training")
+    @POST("/api/trainings")
     Call<ResponseBody> sendTraining(@Body List<Training> training);
 }
