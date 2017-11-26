@@ -12,19 +12,19 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Amplua extends RealmObject {
     @PrimaryKey
-    private long _idd;
+    private String _id;
     private String uuid;
     private String name;
-    private RealmList<Sport> sports;
+    private RealmList<Sport> sport;
     private Date createdAt;
     private Date changedAt;
 
-    public long get_idd() {
-        return _idd;
+    public String get_id() {
+        return _id;
     }
 
-    public void set_idd(long _idd) {
-        this._idd = _idd;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getUuid() {
@@ -44,11 +44,11 @@ public class Amplua extends RealmObject {
     }
 
     public RealmList<Sport> getSport() {
-        return sports;
+        return sport;
     }
 
-    public void setSport(RealmList<Sport> sports) {
-        this.sports = sports;
+    public void setSport(RealmList<Sport> sport) {
+        this.sport = sport;
     }
 
     public Date getCreatedAt() {

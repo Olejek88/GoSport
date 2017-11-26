@@ -85,9 +85,9 @@ public class TeamsFragment extends Fragment {
             object_uuid = bundle.getString("object_uuid");
         }
         if (teamTypeUuid != null) {
-            teams = realmDB.where(Team.class).greaterThan("_id",2).equalTo("sport.uuid", teamTypeUuid).findAll();
+            teams = realmDB.where(Team.class).equalTo("sport.uuid", teamTypeUuid).findAll();
         } else {
-            teams = realmDB.where(Team.class).greaterThan("_id",2).findAll();
+            teams = realmDB.where(Team.class).findAll();
         }
         TeamAdapter teamAdapter = new TeamAdapter(getContext(), teams);
         teamListView.setAdapter(teamAdapter);

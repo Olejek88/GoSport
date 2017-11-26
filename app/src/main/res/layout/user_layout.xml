@@ -109,7 +109,7 @@
                 android:layout_toRightOf="@+id/user_age_icon"
                 android:background="#FAFAFA"
                 android:paddingLeft="10dp"
-                android:text="@string/profile_age"
+                android:text="@string/birth_date"
                 android:textColor="@color/larisaTextColor"
                 android:textSize="14sp" />
 

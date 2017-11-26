@@ -67,6 +67,7 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
         return null;
     }
 
+    /*
     @Override
     public long getItemId(int position) {
         Team team;
@@ -75,7 +76,7 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
             return team.get_id();
         }
         return 0;
-    }
+    }*/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

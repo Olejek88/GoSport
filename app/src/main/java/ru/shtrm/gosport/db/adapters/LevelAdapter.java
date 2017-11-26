@@ -53,6 +53,7 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
         return null;
     }
 
+    /*
     @Override
     public long getItemId(int position) {
         Level level;
@@ -61,7 +62,7 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
             return level.get_id();
         }
         return 0;
-    }
+    }*/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

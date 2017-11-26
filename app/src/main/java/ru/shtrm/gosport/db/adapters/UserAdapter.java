@@ -76,6 +76,7 @@ public class UserAdapter extends RealmBaseAdapter<User> implements ListAdapter {
         return null;
     }
 
+    /*
     @Override
     public long getItemId(int position) {
         if (adapterData != null) {
@@ -83,7 +84,7 @@ public class UserAdapter extends RealmBaseAdapter<User> implements ListAdapter {
         } else {
             return 0;
         }
-    }
+    }*/
 
     public void setItemVisibility(int position) {
         visibility[position] = !visibility[position];

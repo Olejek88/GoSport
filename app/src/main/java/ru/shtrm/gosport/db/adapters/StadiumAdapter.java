@@ -63,6 +63,7 @@ public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAda
         return null;
     }
 
+    /*
     @Override
     public long getItemId(int position) {
         Stadium stadium;
@@ -71,7 +72,7 @@ public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAda
             return stadium.get_id();
         }
         return 0;
-    }
+    }*/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

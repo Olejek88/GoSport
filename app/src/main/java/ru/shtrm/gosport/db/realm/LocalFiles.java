@@ -7,7 +7,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class LocalFiles extends RealmObject {
     @PrimaryKey
-    private long _id;
+    private String _id;
     private String uuid;
     private String filename;
     private User user;
@@ -16,11 +16,11 @@ public class LocalFiles extends RealmObject {
     private Date createdAt;
     private Date changedAt;
 
-    public long get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(long _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 

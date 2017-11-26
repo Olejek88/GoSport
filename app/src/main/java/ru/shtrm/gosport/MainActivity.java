@@ -176,9 +176,9 @@ public class MainActivity extends AppCompatActivity {
             // принудительное обновление приложения
             finish();
         }
-        LoadTestData.DeleteSomeData();
+        //LoadTestData.DeleteSomeData();
         //checkRealmNew();
-        LoadTestData.LoadAllTestData();
+        //LoadTestData.LoadAllTestData();
     }
 
     public boolean initDB() {
@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity {
         cnt = 0;
         for (User item : profilesList) {
             addProfile(item);
-            users_id[cnt] = item.get_id();
+            users_id[cnt] = item.getid();
             cnt = cnt + 1;
             if (cnt > MAX_USER_PROFILE) break;
         }
@@ -505,9 +505,9 @@ public class MainActivity extends AppCompatActivity {
             myBitmap = getResizedBitmap(MainFunctions.getUserImagePath(getApplicationContext()), item.getImage(), 0, 600, new Date().getTime());
 
         if (myBitmap != null) {
-            new_profile = new ProfileDrawerItem().withName(item.getName()).withEmail(item.getPhone()).withIcon(myBitmap).withIdentifier((int) item.get_id() + 2).withOnDrawerItemClickListener(onDrawerItemClickListener);
+            new_profile = new ProfileDrawerItem().withName(item.getName()).withEmail(item.getPhone()).withIcon(myBitmap).withIdentifier((int) item.getid() + 2).withOnDrawerItemClickListener(onDrawerItemClickListener);
         } else
-            new_profile = new ProfileDrawerItem().withName(item.getName()).withEmail(item.getPhone()).withIcon(R.drawable.profile_default_small).withIdentifier((int) item.get_id() + 2).withOnDrawerItemClickListener(onDrawerItemClickListener);
+            new_profile = new ProfileDrawerItem().withName(item.getName()).withEmail(item.getPhone()).withIcon(R.drawable.profile_default_small).withIdentifier((int) item.getid() + 2).withOnDrawerItemClickListener(onDrawerItemClickListener);
         iprofilelist.add(new_profile);
         headerResult.addProfile(new_profile, headerResult.getProfiles().size());
     }
@@ -516,13 +516,13 @@ public class MainActivity extends AppCompatActivity {
         profilesList = realmDB.where(User.class).findAll();
         cnt = 0;
         for (User item : profilesList) {
-            users_id[cnt] = item.get_id();
+            users_id[cnt] = item.getid();
             cnt = cnt + 1;
             if (cnt > MAX_USER_PROFILE) break;
         }
     }
 
-    public void deleteProfile(int id) {
+    public void deleteProfile(long id) {
         int id_remove;
         for (cnt = 0; cnt < iprofilelist.size(); cnt++) {
             if (users_id[cnt] == id) {
@@ -546,7 +546,7 @@ public class MainActivity extends AppCompatActivity {
         if (iprofilelist != null) {
             if (iprofilelist.size() > 0) {
                 for (cnt = 0; cnt < iprofilelist.size(); cnt++) {
-                    if (users_id[cnt] == user.get_id()) {
+                    if (users_id[cnt] == user.getid()) {
                         headerResult.setActiveProfile(iprofilelist.get(cnt));
 
                         realmDB.beginTransaction();
@@ -634,6 +634,19 @@ public class MainActivity extends AppCompatActivity {
                 String changedDate;
                 String referenceName;
 
+                // Sport
+                referenceName = Sport.class.getSimpleName();
+                changedDate = ReferenceUpdate.lastChangedAsStr(referenceName);
+                try {
+                    Response<List<Sport>> response = GSportAPIFactory.getSportService().sport(changedDate).execute();
+                    if (response.isSuccessful()) {
+                        List<Sport> list = response.body();
+                        ReferenceUpdate.saveReferenceData(referenceName, list, currentDate);
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, e.getLocalizedMessage());
+                }
+
                 // Amplua
                 referenceName = Amplua.class.getSimpleName();
                 changedDate = ReferenceUpdate.lastChangedAsStr(referenceName);
@@ -660,20 +673,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, e.getLocalizedMessage());
                 }
 
-                // Sport
-                referenceName = Sport.class.getSimpleName();
-                changedDate = ReferenceUpdate.lastChangedAsStr(referenceName);
-                try {
-                    Response<List<Sport>> response = GSportAPIFactory.getSportService().sport(changedDate).execute();
-                    if (response.isSuccessful()) {
-                        List<Sport> list = response.body();
-                        ReferenceUpdate.saveReferenceData(referenceName, list, currentDate);
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, e.getLocalizedMessage());
-                }
-
                 // Stadium
+                /*
                 referenceName = Stadium.class.getSimpleName();
                 changedDate = ReferenceUpdate.lastChangedAsStr(referenceName);
                 try {
@@ -684,9 +685,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getLocalizedMessage());
-                }
+                }*/
 
                 // Team
+                /*
                 referenceName = Team.class.getSimpleName();
                 changedDate = ReferenceUpdate.lastChangedAsStr(referenceName);
                 try {
@@ -697,7 +699,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getLocalizedMessage());
-                }
+                }*/
 
                 // Players
                 /*

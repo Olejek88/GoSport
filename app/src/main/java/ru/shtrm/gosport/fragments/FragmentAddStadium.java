@@ -66,11 +66,13 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_addstadium, container, false);
         realmDB = Realm.getDefaultInstance();
 
-        final MapView mapView = (MapView) view.findViewById(R.id.gps_mapview);
-        mapView.setTileSource(TileSourceFactory.MAPNIK);
-        mapView.setBuiltInZoomControls(true);
-        IMapController mapController = mapView.getController();
-        mapController.setZoom(17);
+        final MapView mapView = (MapView) view.findViewById(R.id.stadium_mapview);
+        if (mapView!=null) {
+            mapView.setTileSource(TileSourceFactory.MAPNIK);
+            mapView.setBuiltInZoomControls(true);
+            IMapController mapController = mapView.getController();
+            mapController.setZoom(17);
+        }
 
         iView = (EditText) view.findViewById(R.id.stadium_add_photo);
         iView.setOnClickListener(this);
@@ -173,7 +175,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                 team.setCreatedAt(new Date());
                 team.setUuid(java.util.UUID.randomUUID().toString());
                 try {
-                    image_name ="team"+team.get_id()+".jpg";
+                    image_name ="team_"+team.get_id()+".jpg";
                     iView.buildDrawingCache();
                     bmp = iView.getDrawingCache();
                     MainFunctions.storeImage(image_name,"Team",getContext(), bmp);

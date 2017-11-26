@@ -130,26 +130,33 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                         break;
                     }
                 realmDB.beginTransaction();
-                Number currentIdNum = realmDB.where(User.class).max("_id");
+                Number currentIdNum = realmDB.where(User.class).max("id");
                 int nextId;
                 if(currentIdNum == null) {
                     nextId = 1;
                 } else {
                     nextId = currentIdNum.intValue() + 1;
                 }
+                String vk_input=vk.getText().toString();
+                String vk_output="http://vk.com/undefined";
+                if (vk_input.contains("vk") && !vk_input.contains("http"))
+                    vk_output="http://".concat(vk_input);
+                if (!vk_input.contains("vk") && !vk_input.contains("http"))
+                    vk_output="http://vk.com/".concat(vk_input);
+
                 User profile = realmDB.createObject(User.class,nextId);
                 profile.setName(name.getText().toString());
                 profile.setImage(image_name);
                 profile.setAge(Integer.parseInt(age.getText().toString()));
                 profile.setPhone(phone.getText().toString());
-                profile.setVK(vk.getText().toString());
+                profile.setVK(vk_output);
                 profile.setType(typeSpinner.getSelectedItemPosition());
                 profile.setChangedAt(new Date());
                 profile.setCreatedAt(new Date());
                 profile.setActive(true);
                 profile.setUuid(java.util.UUID.randomUUID().toString());
                 try {
-                    image_name = "profile" + profile.get_id() + ".jpg";
+                    image_name = "profile_" + profile.get_id() + ".jpg";
                     iView.buildDrawingCache();
                     bmp = iView.getDrawingCache();
                     MainFunctions.storeImage(image_name, "User", getContext(), bmp);
@@ -162,7 +169,7 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                 realmDB.commitTransaction();
 
                 user = realmDB.where(User.class).equalTo("name", name.getText().toString()).findFirst();
-                if (user.get_id()>0)
+                if (user!=null && user.get_id().length()>0)
                     {
                        ((MainActivity)getActivity()).addProfile(profile);
                         ((MainActivity)getActivity()).refreshProfileList();

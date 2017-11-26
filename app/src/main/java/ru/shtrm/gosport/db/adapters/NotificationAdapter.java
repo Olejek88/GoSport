@@ -52,6 +52,7 @@ public class NotificationAdapter extends RealmBaseAdapter<Notification> implemen
         return null;
     }
 
+    /*
     @Override
     public long getItemId(int position) {
         Notification notification;
@@ -61,7 +62,7 @@ public class NotificationAdapter extends RealmBaseAdapter<Notification> implemen
         }
 
         return 0;
-    }
+    }*/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

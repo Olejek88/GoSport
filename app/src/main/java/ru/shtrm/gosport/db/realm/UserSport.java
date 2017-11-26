@@ -8,7 +8,7 @@ import ru.shtrm.gosport.db.realm.User;
 
 public class UserSport extends RealmObject {
     @PrimaryKey
-    private long _id;
+    private String _id;
     private String uuid;
     private User user;
     private Sport sport;
@@ -18,11 +18,11 @@ public class UserSport extends RealmObject {
     private Date createdAt;
     private Date changedAt;
 
-    public long get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(long _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 

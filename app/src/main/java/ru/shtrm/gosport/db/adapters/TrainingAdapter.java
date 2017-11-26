@@ -65,6 +65,7 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
         return null;
     }
 
+    /*
     @Override
     public long getItemId(int position) {
         Training training;
@@ -73,7 +74,7 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
             return training.get_id();
         }
         return 0;
-    }
+    }*/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

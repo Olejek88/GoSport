@@ -8,18 +8,18 @@ import io.realm.annotations.PrimaryKey;
 
 public class UserTraining extends RealmObject {
     @PrimaryKey
-    private long _id;
+    private String _id;
     private String uuid;
     private User user;
     private Training training;
     private Date createdAt;
     private Date changedAt;
 
-    public long get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(long _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 

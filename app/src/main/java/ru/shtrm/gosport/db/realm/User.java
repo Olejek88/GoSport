@@ -7,25 +7,35 @@ import io.realm.annotations.PrimaryKey;
 
 public class User extends RealmObject {
     @PrimaryKey
-    private long _id;
+    private long id;
+    private String _id;
     private String uuid;
     private String name;
     private String login;
     private String pass;
     private int type;
     private int age;
-    private boolean active;    
+    private Date birthDate;
+    private boolean active;
     private String image;
     private String phone;
     private String vk;
     private Date createdAt;
     private Date changedAt;
 
-    public long get_id() {
+    public long getid() {
+        return id;
+    }
+
+    public void setid(long id) {
+        this.id = id;
+    }
+
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(long _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
@@ -83,6 +93,14 @@ public class User extends RealmObject {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getImage() {

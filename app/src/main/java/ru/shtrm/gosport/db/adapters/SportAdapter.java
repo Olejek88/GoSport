@@ -47,6 +47,7 @@ public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter
         return null;
     }
 
+    /*
     @Override
     public long getItemId(int position) {
         Sport sport;
@@ -55,7 +56,7 @@ public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter
             return sport.get_id();
         }
         return 0;
-    }
+    }*/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

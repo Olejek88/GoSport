@@ -8,9 +8,9 @@ import io.realm.annotations.PrimaryKey;
 
 public class Training extends RealmObject {
     @PrimaryKey
-    private long _id;
+    private String _id;
     private String uuid;
-    private String title;
+    private String name;
     private User user;
     private Team team;
     private String comment;
@@ -23,11 +23,11 @@ public class Training extends RealmObject {
     private Date createdAt;
     private Date changedAt;
 
-    public long get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(long _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
@@ -40,11 +40,11 @@ public class Training extends RealmObject {
     }
 
     public String getTitle() {
-        return title;
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitle(String name) {
+        this.name = name;
     }
 
     public User getUser() {

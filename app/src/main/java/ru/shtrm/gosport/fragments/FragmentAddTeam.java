@@ -79,7 +79,7 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
         sportAdapter = new SportAdapter(getActivity().getApplicationContext(), sport);
         typeSpinner.setAdapter(sportAdapter);
 
-        Sport hockey = realmDB.where(Sport.class).equalTo("title","Хоккей").findFirst();
+        Sport hockey = realmDB.where(Sport.class).equalTo("name","Хоккей").findFirst();
         RealmResults<Level> level;
         level = realmDB.where(Level.class).findAll();
         Spinner levelSpinner = (Spinner) view.findViewById(R.id.profile_hockey_level);
@@ -160,7 +160,7 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
                 team.setCreatedAt(new Date());
                 team.setUuid(java.util.UUID.randomUUID().toString());
                 try {
-                    image_name ="team"+team.get_id()+".jpg";
+                    image_name ="team_"+team.get_id()+".jpg";
                     iView.buildDrawingCache();
                     bmp = iView.getDrawingCache();
                     MainFunctions.storeImage(image_name,"Team",getContext(), bmp);

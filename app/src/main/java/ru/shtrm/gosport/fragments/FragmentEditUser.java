@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,38 +94,55 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
         football_team_spinner = (Spinner) view.findViewById(R.id.profile_football_team);
 
         RealmResults<Level> hockeyLevel;
-        hockey = realmDB.where(Sport.class).equalTo("title","Хоккей").findFirst();
-        hockeyLevel = realmDB.where(Level.class).equalTo("sport.uuid",hockey.getUuid()).findAll();
-        levelHockeyAdapter = new LevelAdapter(getActivity().getApplicationContext(), hockeyLevel, hockey);
-        hockey_level_spinner.setAdapter(levelHockeyAdapter);
-
+        RealmResults<Amplua> hockeyAmplua;
+        hockey = realmDB.where(Sport.class).equalTo("name","Хоккей").findFirst();
+        if (hockey!=null) {
+            hockeyLevel = realmDB.where(Level.class).equalTo("sport.uuid", hockey.getUuid()).findAll();
+            levelHockeyAdapter = new LevelAdapter(getActivity().getApplicationContext(), hockeyLevel, hockey);
+            hockey_level_spinner.setAdapter(levelHockeyAdapter);
+            hockeyAmplua = realmDB.where(Amplua.class).equalTo("sport.uuid",hockey.getUuid()).findAll();
+            ampluaHockeyAdapter = new AmpluaAdapter(getActivity().getApplicationContext(), hockeyAmplua, hockey);
+            hockey_amplua_spinner.setAdapter(ampluaHockeyAdapter);
+        }
+        else {
+            Toast toast = Toast.makeText(getActivity(), "Пожалуйста обновите справочники",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.BOTTOM, 0, 0);
+            toast.show();
+            return view;
+        }
         RealmResults<Team> hockeyTeam;
         //hockeyTeam = realmDB.where(Team.class).equalTo("sport.uuid",hockey.getUuid()).findAll();
         hockeyTeam = realmDB.where(Team.class).findAll();
         teamHockeyAdapter = new TeamAdapter(getActivity().getApplicationContext(), hockeyTeam);
         hockey_team_spinner.setAdapter(teamHockeyAdapter);
 
-        RealmResults<Amplua> hockeyAmplua;
-        hockeyAmplua = realmDB.where(Amplua.class).equalTo("sport.uuid",hockey.getUuid()).findAll();
-        ampluaHockeyAdapter = new AmpluaAdapter(getActivity().getApplicationContext(), hockeyAmplua, hockey);
-        hockey_amplua_spinner.setAdapter(ampluaHockeyAdapter);
-
         RealmResults<Level> footballLevel;
-        football = realmDB.where(Sport.class).equalTo("title","Футбол").findFirst();
-        footballLevel = realmDB.where(Level.class).equalTo("sport.uuid",football.getUuid()).findAll();
-        levelFootballAdapter = new LevelAdapter(getActivity().getApplicationContext(), footballLevel, football);
-        football_level_spinner.setAdapter(levelFootballAdapter);
-
         RealmResults<Team> footballTeam;
-        footballTeam = realmDB.where(Team.class).equalTo("sport.uuid",football.getUuid()).findAll();
-        teamFootballAdapter = new TeamAdapter(getActivity().getApplicationContext(), footballTeam);
-        football_team_spinner.setAdapter(teamFootballAdapter);
-
         RealmResults<Amplua> footballAmplua;
-        footballAmplua = realmDB.where(Amplua.class).equalTo("sport.uuid",football.getUuid()).findAll();
-        ampluaFootballAdapter = new AmpluaAdapter(getActivity().getApplicationContext(), footballAmplua, football);
-        football_amplua_spinner.setAdapter(ampluaFootballAdapter);
 
+        football = realmDB.where(Sport.class).equalTo("name","Футбол").findFirst();
+
+        if (football!=null) {
+            footballLevel = realmDB.where(Level.class).equalTo("sport.uuid", football.getUuid()).findAll();
+            levelFootballAdapter = new LevelAdapter(getActivity().getApplicationContext(), footballLevel, football);
+            football_level_spinner.setAdapter(levelFootballAdapter);
+
+            footballTeam = realmDB.where(Team.class).equalTo("sport.uuid", football.getUuid()).findAll();
+            teamFootballAdapter = new TeamAdapter(getActivity().getApplicationContext(), footballTeam);
+            football_team_spinner.setAdapter(teamFootballAdapter);
+
+            footballAmplua = realmDB.where(Amplua.class).equalTo("sport.uuid", football.getUuid()).findAll();
+            ampluaFootballAdapter = new AmpluaAdapter(getActivity().getApplicationContext(), footballAmplua, football);
+            football_amplua_spinner.setAdapter(ampluaFootballAdapter);
+        }
+        else {
+            Toast toast = Toast.makeText(getActivity(), "Пожалуйста обновите справочники",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.BOTTOM, 0, 0);
+            toast.show();
+            return view;
+        }
         User user = realmDB.where(User.class).equalTo("active", true).findFirst();
         if (user==null) {
             Toast.makeText(getActivity().getApplicationContext(), "Пользователь не выбран, пожалуйста выберите или содайте профиль", Toast.LENGTH_LONG).show();
@@ -234,10 +252,17 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                String vk_input=vk.getText().toString();
+                String vk_output="http://vk.com/undefined";
+                if (vk_input.contains("vk") && !vk_input.contains("http"))
+                    vk_output="http://".concat(vk_input);
+                if (!vk_input.contains("vk") && !vk_input.contains("http"))
+                    vk_output="http://vk.com/".concat(vk_input);
+
                 User user = realmDB.where(User.class).equalTo("active", true).findFirst();
                 realmDB.beginTransaction();
                 user.setName(name.getText().toString());
-                user.setVK(vk.getText().toString());
+                user.setVK(vk_output);
                 user.setPhone(phone.getText().toString());
                 user.setAge(Integer.parseInt(age.getText().toString()));
                 user.setChangedAt(new Date());
@@ -309,7 +334,7 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
 
             case R.id.profile_button_delete:
                 user = realmDB.where(User.class).equalTo("active", true).findFirst();
-                ((MainActivity)getActivity()).deleteProfile((int) user.get_id());
+                ((MainActivity)getActivity()).deleteProfile(user.getid());
                 realmDB.beginTransaction();
                 user.deleteFromRealm();
                 realmDB.commitTransaction();

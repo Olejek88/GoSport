@@ -46,15 +46,16 @@ public class EventAdapter extends RealmBaseAdapter<Event> implements ListAdapter
         return null;
     }
 
+    /*
     @Override
-    public long getItemId(int position) {
+    public String getItemId(int position) {
         Event event;
         if (adapterData != null) {
             event = adapterData.get(position);
             return event.get_id();
         }
-        return 0;
-    }
+        return "";
+    }*/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

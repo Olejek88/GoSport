@@ -47,15 +47,6 @@ public class AmpluaAdapter extends RealmBaseAdapter<Amplua> implements ListAdapt
         return null;
     }
 
-    @Override
-    public long getItemId(int position) {
-        Amplua amplua;
-        if (adapterData != null) {
-            amplua = adapterData.get(position);
-            return amplua.get_idd();
-        }
-        return 0;
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
