@@ -118,7 +118,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,1);
                 level_hockey.setUuid(levelHockeyNewbee);
                 level_hockey.setTitle("Новичок");
-                level_hockey.setSport(sport_hockey);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -130,7 +130,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,2);
                 level_hockey.setUuid(levelHockeyDebutant);
                 level_hockey.setTitle("Дебютант");
-                level_hockey.setSport(sport_hockey);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -142,7 +142,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,3);
                 level_hockey.setUuid(levelHockeyLubitel);
                 level_hockey.setTitle("Любитель");
-                level_hockey.setSport(sport_hockey);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -154,7 +154,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,4);
                 level_hockey.setUuid(levelHockeyLubitelPlus);
                 level_hockey.setTitle("Любитель+");
-                level_hockey.setSport(sport_hockey);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -166,7 +166,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,5);
                 level_hockey.setUuid(levelHockeyRazryadnik);
                 level_hockey.setTitle("Разрядник");
-                level_hockey.setSport(sport_hockey);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -178,7 +178,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,6);
                 level_hockey.setUuid(levelHockeyMaster);
                 level_hockey.setTitle("Мастер");
-                level_hockey.setSport(sport_hockey);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -190,7 +190,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,7);
                 level_hockey.setUuid(levelHockeyVeteran);
                 level_hockey.setTitle("Ветеран");
-                level_hockey.setSport(sport_hockey);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -202,7 +202,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,8);
                 level_hockey.setUuid(levelFootballNewbee);
                 level_hockey.setTitle("Новичок");
-                level_hockey.setSport(sport_football);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -214,7 +214,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,9);
                 level_hockey.setUuid(levelFootballDebutant);
                 level_hockey.setTitle("Дебютант");
-                level_hockey.setSport(sport_football);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -226,7 +226,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,10);
                 level_hockey.setUuid(levelFootballLubitel);
                 level_hockey.setTitle("Любитель");
-                level_hockey.setSport(sport_football);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -238,7 +238,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,11);
                 level_hockey.setUuid(levelFootballLubitelPlus);
                 level_hockey.setTitle("Любитель+");
-                level_hockey.setSport(sport_football);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -250,7 +250,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,12);
                 level_hockey.setUuid(levelFootballRazryadnik);
                 level_hockey.setTitle("Разрядник");
-                level_hockey.setSport(sport_football);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -262,7 +262,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,13);
                 level_hockey.setUuid(levelFootballMaster);
                 level_hockey.setTitle("Мастер");
-                level_hockey.setSport(sport_football);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }
@@ -274,7 +274,7 @@ public class LoadTestData {
                 level_hockey = realmDB.createObject(Level.class,14);
                 level_hockey.setUuid(levelFootballVeteran);
                 level_hockey.setTitle("Ветеран");
-                level_hockey.setSport(sport_football);
+                level_hockey.setSport(sports);
                 level_hockey.setChangedAt(new Date());
                 level_hockey.setCreatedAt(new Date());
             }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tl_global_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+                <Spinner
+                        android:id="@+id/simple_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@android:style/Widget.Holo.Spinner"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:spinnerMode="dropdown" />
+
+                <ListView
+                        android:id="@+id/events_listView"
+                        android:layout_width="match_parent"
+                        style="@android:style/Widget.Holo.ListView"
+                        android:divider="#333333"
+                        android:dividerHeight="1px"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="60dp"
+                        android:layout_height="wrap_content">
+                </ListView>
+        </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="60dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/ic_plus_white_36dp"
+        app:backgroundTint="@color/larisaBlueColor"
+        app:fabSize="normal" />
+
+</android.support.design.widget.CoordinatorLayout>

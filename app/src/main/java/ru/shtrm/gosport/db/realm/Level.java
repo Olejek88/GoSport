@@ -2,6 +2,7 @@ package ru.shtrm.gosport.db.realm;
 
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -10,7 +11,7 @@ public class Level extends RealmObject {
     private String _id;
     private String uuid;
     private String name;
-    private Sport sport;
+    private RealmList<Sport> sport;
     private String icon;
     private Date createdAt;
     private Date changedAt;
@@ -39,11 +40,11 @@ public class Level extends RealmObject {
         this.name = name;
     }
 
-    public Sport getSport() {
+    public RealmList<Sport> getSport() {
         return sport;
     }
 
-    public void setSport(Sport sport) {
+    public void setSport(RealmList<Sport> sport) {
         this.sport = sport;
     }
 

@@ -24,7 +24,7 @@ public class EventAdapter extends RealmBaseAdapter<Event> implements ListAdapter
     private Context context;
     protected LayoutInflater inflater;
 
-    public EventAdapter(@NonNull Context context, RealmResults<Event> data) {
+    public EventAdapter(@NonNull Context context, RealmResults<Event> data, Sport sport) {
         super(data);
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -71,9 +71,8 @@ public class EventAdapter extends RealmBaseAdapter<Event> implements ListAdapter
                 convertView = inflater.inflate(R.layout.simple_listview, parent, false);
                 viewHolder = new EventAdapter.ViewHolder();
                 viewHolder.title = (TextView) convertView.findViewById(R.id.emi_title);
-                viewHolder.description = (TextView) convertView.findViewById(R.id.emi_title);
                 viewHolder.date = (TextView) convertView.findViewById(R.id.eril_last_operation_date);
-                viewHolder.sport = (TextView) convertView.findViewById(R.id.emi_title);
+                viewHolder.sport = (TextView) convertView.findViewById(R.id.emi_type);
                 convertView.setTag(viewHolder);
             }
         } else {

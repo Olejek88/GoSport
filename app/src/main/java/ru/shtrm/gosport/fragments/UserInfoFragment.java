@@ -124,7 +124,8 @@ public class UserInfoFragment extends Fragment {
             //if (user.getTagId().length() > 20) tv_user_id.setText("ID: " + user.getTagId().substring(4, 24));
 			tv_user_name.setText(user.getName());
             //tv_user_birth.setText(Integer.toString(user.getAge()));
-            tv_user_birth.setText(fmt.format(user.getBirthDate().getTime()));
+            if (user.getBirthDate()!=null)
+                tv_user_birth.setText(fmt.format(user.getBirthDate().getTime()));
             tv_user_phone.setText(user.getPhone());
             if (user.getType()==1)
                 tv_user_type.setText("Игрок");

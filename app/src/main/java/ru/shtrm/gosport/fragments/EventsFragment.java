@@ -15,40 +15,40 @@ import android.widget.Spinner;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import ru.shtrm.gosport.EventInfoActivity;
 import ru.shtrm.gosport.R;
+import ru.shtrm.gosport.StadiumInfoActivity;
+import ru.shtrm.gosport.db.adapters.EventAdapter;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
-import ru.shtrm.gosport.db.adapters.TeamAdapter;
 import ru.shtrm.gosport.db.adapters.TrainingAdapter;
+import ru.shtrm.gosport.db.realm.Event;
 import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Team;
+import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.db.realm.Training;
 
-public class TrainingsFragment extends Fragment {
+public class EventsFragment extends Fragment {
     private Realm realmDB;
 	private boolean isInit;
 
 	private Spinner typeSpinner;
-	private ListView trainingListView;
+	private ListView eventsListView;
 
     FloatingActionButton fab_check;
 
     private String object_uuid;
 
-    public static TrainingsFragment newInstance() {
-		return new TrainingsFragment();
+    public static EventsFragment newInstance() {
+		return new EventsFragment();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.training_list_layout, container, false);
+        View rootView = inflater.inflate(R.layout.events_list_layout, container, false);
         Toolbar toolbar = (Toolbar)(getActivity()).findViewById(R.id.toolbar);
-        toolbar.setSubtitle("Тренировки");
+        toolbar.setSubtitle("Соревнования");
         realmDB = Realm.getDefaultInstance();
-
-        fab_check = (FloatingActionButton) rootView.findViewById(R.id.fab_check);
-        fab_check.setOnClickListener(new submitOnClickListener());
 
         SpinnerListener spinnerListener = new SpinnerListener();
         RealmResults<Sport> sports = realmDB.where(Sport.class).findAll();
@@ -59,8 +59,8 @@ public class TrainingsFragment extends Fragment {
         typeSpinner.setAdapter(sportAdapter);
         typeSpinner.setOnItemSelectedListener(spinnerListener);
 
-        trainingListView = (ListView) rootView.findViewById(R.id.trainings_listView);
-        trainingListView.setOnItemClickListener(new ListviewClickListener());
+        eventsListView = (ListView) rootView.findViewById(R.id.trainings_listView);
+        eventsListView.setOnItemClickListener(new ListviewClickListener());
 
         initView();
 
@@ -71,22 +71,22 @@ public class TrainingsFragment extends Fragment {
 	}
 
 	private void initView() {
-		FillListViewTraining(null);
+		FillListViewEvents(null);
     }
 
-	private void FillListViewTraining(Sport sport) {
-        RealmResults<Training> trainings;
+	private void FillListViewEvents(Sport sport) {
+        RealmResults<Event> events;
         Bundle bundle = this.getArguments();
         if(bundle != null) {
             object_uuid = bundle.getString("object_uuid");
         }
         if (sport != null) {
-            trainings = realmDB.where(Training.class).equalTo("sport.uuid", sport.getUuid()).findAll();
+            events = realmDB.where(Event.class).equalTo("sport.uuid", sport.getUuid()).findAll();
         } else {
-            trainings = realmDB.where(Training.class).findAll();
+            events = realmDB.where(Event.class).findAll();
         }
-        TrainingAdapter traningAdapter = new TrainingAdapter(getContext(), trainings, sport);
-        trainingListView.setAdapter(traningAdapter);
+        EventAdapter eventAdapter = new EventAdapter(getContext(), events, sport);
+        eventsListView.setAdapter(eventAdapter);
     }
 
 	@Override
@@ -110,13 +110,14 @@ public class TrainingsFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parentView,
                                 View selectedItemView, int position, long id) {
-            Training training = (Training) parentView.getItemAtPosition(position);
-            if (training != null) {
+            Event event = (Event) parentView.getItemAtPosition(position);
+            if (event != null) {
+                String event_uuid = event.getUuid();
+                Intent eventInfo = new Intent(getActivity(), EventInfoActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("training_uuid", training.getUuid());
-                TrainingInfoFragment trainingInfoFragment = TrainingInfoFragment.newInstance();
-                trainingInfoFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, trainingInfoFragment).commit();
+                bundle.putString("event_uuid", event_uuid);
+                eventInfo.putExtras(bundle);
+                getActivity().startActivity(eventInfo);
             }
         }
     }
@@ -139,15 +140,7 @@ public class TrainingsFragment extends Fragment {
                 type = typeSelected.getUuid();
             }
 
-            FillListViewTraining(typeSelected);
+            FillListViewEvents(typeSelected);
         }
     }
-
-    private class submitOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(final View v) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentAddTraining.newInstance()).commit();
-        }
-    }
-
 }

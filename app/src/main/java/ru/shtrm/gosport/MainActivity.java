@@ -69,6 +69,7 @@ import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.fragments.EventsFragment;
 import ru.shtrm.gosport.fragments.FragmentAddStadium;
 import ru.shtrm.gosport.fragments.FragmentAddUser;
 import ru.shtrm.gosport.fragments.FragmentEditUser;
@@ -234,7 +235,8 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TrainingsFragment.newInstance()).commit();
                         break;
                     case R.id.menu_user:
-                        if (activeUserID>0) getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
+                        //if (activeUserID>0)
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
                         break;
                     case R.id.menu_maps:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, MapFragment.newInstance()).commit();
@@ -350,6 +352,12 @@ public class MainActivity extends AppCompatActivity {
                             } else if (drawerItem.getIdentifier() == FRAGMENT_TEAMS) {
                                 currentFragment = FRAGMENT_TEAMS;
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TeamsFragment.newInstance()).commit();
+                            } else if (drawerItem.getIdentifier() == FRAGMENT_ADDSTADIUM) {
+                                currentFragment = FRAGMENT_ADDSTADIUM;
+                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentAddStadium.newInstance()).commit();
+                            } else if (drawerItem.getIdentifier() == FRAGMENT_EVENTS) {
+                                currentFragment = FRAGMENT_EVENTS;
+                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, EventsFragment.newInstance()).commit();
                             } else if (drawerItem.getIdentifier() == FRAGMENT_USER) {
                                 currentFragment = FRAGMENT_USER;
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
