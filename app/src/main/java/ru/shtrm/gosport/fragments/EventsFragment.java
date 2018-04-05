@@ -59,7 +59,7 @@ public class EventsFragment extends Fragment {
         typeSpinner.setAdapter(sportAdapter);
         typeSpinner.setOnItemSelectedListener(spinnerListener);
 
-        eventsListView = (ListView) rootView.findViewById(R.id.trainings_listView);
+        eventsListView = (ListView) rootView.findViewById(R.id.events_listView);
         eventsListView.setOnItemClickListener(new ListviewClickListener());
 
         initView();

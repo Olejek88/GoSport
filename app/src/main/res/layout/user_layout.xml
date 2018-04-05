@@ -217,7 +217,6 @@
                 android:id="@+id/profile_hockey_level"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profile_text_hockey"
-                style="@android:style/Widget.Holo.Spinner"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginEnd="15dp"
@@ -228,7 +227,6 @@
                 android:id="@+id/profile_hockey_amplua"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profile_hockey_level"
-                style="@android:style/Widget.Holo.Spinner"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginEnd="15dp"
@@ -239,7 +237,6 @@
                 android:id="@+id/profile_hockey_team"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profile_hockey_amplua"
-                style="@android:style/Widget.Holo.Spinner"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginEnd="15dp"
@@ -283,7 +280,6 @@
             <TextView
                 android:id="@+id/profile_football_level"
                 android:layout_height="wrap_content"
-                style="@android:style/Widget.Holo.Spinner"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginEnd="15dp"
@@ -294,7 +290,6 @@
             <TextView
                 android:id="@+id/profile_football_amplua"
                 android:layout_height="wrap_content"
-                style="@android:style/Widget.Holo.Spinner"
                 android:layout_below="@+id/profile_football_level"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
@@ -305,7 +300,6 @@
             <TextView
                 android:id="@+id/profile_football_team"
                 android:layout_height="wrap_content"
-                style="@android:style/Widget.Holo.Spinner"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginEnd="15dp"

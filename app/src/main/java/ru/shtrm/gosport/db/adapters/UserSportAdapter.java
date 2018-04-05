@@ -64,9 +64,7 @@ public class UserSportAdapter extends RealmBaseAdapter<UserSport> implements Lis
                 convertView = inflater.inflate(R.layout.listview, parent, false);
                 viewHolder = new ViewHolder();
                 viewHolder.sport = (TextView) convertView.findViewById(R.id.info_text);
-                viewHolder.amplua = (TextView) convertView.findViewById(R.id.info_text);
-                viewHolder.team = (TextView) convertView.findViewById(R.id.info_text);
-                viewHolder.level = (TextView) convertView.findViewById(R.id.info_text);
+                //viewHolder.amplua = (TextView) convertView.findViewById(R.id.profile_football_amplua);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();

@@ -60,9 +60,11 @@ public class AmpluaAdapter extends RealmBaseAdapter<Amplua> implements ListAdapt
                 viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
                 convertView.setTag(viewHolder);
             }
-            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_amplua || parent.getId() == R.id.profile_hockey_amplua) {
+            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_amplua
+                    || parent.getId() == R.id.profile_hockey_amplua) {
                 convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.spinner_item);
+                viewHolder.title.setTextColor(context.getResources().getColor(R.color.larisaTextColor));
                 convertView.setTag(viewHolder);
             }
         } else {
@@ -83,7 +85,7 @@ public class AmpluaAdapter extends RealmBaseAdapter<Amplua> implements ListAdapt
                 if (amplua != null)
                     textView.setText(amplua.getName());
                 textView.setTextSize(16);
-                //textView.setTextColor(R.color.larisaBlueColor);
+                textView.setTextColor(context.getResources().getColor(R.color.larisaTextColor));
                 //textView.setTextColor(context.getColor(R.color.almostblack));
                 textView.setPadding(10,10,10,10);
             }

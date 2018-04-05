@@ -7,7 +7,6 @@ import io.realm.annotations.PrimaryKey;
 import ru.shtrm.gosport.db.realm.User;
 
 public class UserSport extends RealmObject {
-    @PrimaryKey
     private String _id;
     private String uuid;
     private User user;

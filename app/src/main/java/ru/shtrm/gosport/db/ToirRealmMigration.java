@@ -329,6 +329,17 @@ class ToirRealmMigration implements RealmMigration {
                     .addRealmListField("sport", schema.get("Sport"));
             oldVersion++;
         }
+        if (oldVersion == 14) {
+            Log.d(TAG, "from version 14");
+            schema.get("Event")
+                    .addField("image", String.class);
+            oldVersion++;
+        }
+        if (oldVersion == 15) {
+            Log.d(TAG, "from version 15");
+            schema.get("UserSport").removePrimaryKey();
+            oldVersion++;
+        }
 
         testPropsFields(realm);
     }

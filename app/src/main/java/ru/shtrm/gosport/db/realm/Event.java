@@ -10,6 +10,7 @@ public class Event extends RealmObject {
     private String _id;
     private String uuid;
     private String title;
+    private String image;
     private String description;
     private Sport sport;
     private Date date;
@@ -38,6 +39,14 @@ public class Event extends RealmObject {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getDescription() {

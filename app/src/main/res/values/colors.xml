@@ -19,8 +19,8 @@
 
 	    <color name="colorPrimaryDark">#2F3E9E</color>
 	    <color name="colorPrimaryLight">#C4C9E8</color>
-	    <color name="colorAccent">#02A8F3</color>
-        <color name="colorSecondary">#EEEEEE</color>
+	    <color name="colorAccent">#12A8F3</color>
+        <color name="colorSecondary">#333333</color>
 
     <color name="larisaBlueColor">#1565c0</color>
     <color name="larisaTextColor">#575757</color>

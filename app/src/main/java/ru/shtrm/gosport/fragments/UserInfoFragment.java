@@ -52,13 +52,6 @@ public class UserInfoFragment extends Fragment {
         return (new UserInfoFragment());
     }
 
-    /*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onCreateView(android.view.LayouLogtInflater,
-	 * android.view.ViewGroup, android.os.Bundle)
-	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -109,10 +102,10 @@ public class UserInfoFragment extends Fragment {
         edit_image = (ImageView) view.findViewById(R.id.user_edit_image);
         call_image = (ImageView) view.findViewById(R.id.user_phone_icon);
 
-
         edit_image.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentEditUser.newInstance("EditProfile")).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_container, FragmentEditUser.newInstance("EditProfile")).commit();
             }
         });
 
@@ -121,11 +114,11 @@ public class UserInfoFragment extends Fragment {
         if (user == null) {
             Toast.makeText(getActivity(), "Нет такого пользователя!", Toast.LENGTH_SHORT).show();
         } else {
-            //if (user.getTagId().length() > 20) tv_user_id.setText("ID: " + user.getTagId().substring(4, 24));
 			tv_user_name.setText(user.getName());
-            //tv_user_birth.setText(Integer.toString(user.getAge()));
             if (user.getBirthDate()!=null)
                 tv_user_birth.setText(fmt.format(user.getBirthDate().getTime()));
+            else
+                tv_user_birth.setText("не указана");
             tv_user_phone.setText(user.getPhone());
             if (user.getType()==1)
                 tv_user_type.setText("Игрок");
@@ -165,6 +158,9 @@ public class UserInfoFragment extends Fragment {
                         tv_hockey_team.setText(userSportHockey.getTeam().getTitle());
 
                 }
+                else {
+                    tv_hockey_amplua.setText("не выбрано");
+                }
             }
 
             if (football!=null) {
@@ -174,6 +170,9 @@ public class UserInfoFragment extends Fragment {
                     tv_football_level.setText(userSportFootball.getLevel().getTitle());
                     if (userSportFootball.getTeam() != null)
                         tv_football_team.setText(userSportFootball.getTeam().getTitle());
+                }
+                else {
+                    tv_football_amplua.setText("не выбрано");
                 }
             }
         }

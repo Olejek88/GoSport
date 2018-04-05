@@ -75,7 +75,7 @@
                 android:src="@drawable/user_location" />
 
             <TextView
-                android:id="@+id/event_text_address"
+                android:id="@+id/event_text_date"
                 android:layout_width="fill_parent"
                 android:layout_height="25dp"
                 android:layout_below="@+id/event_text_description"
@@ -107,23 +107,6 @@
                 android:paddingLeft="15dp"
                 android:textColor="#000000"
                 android:textSize="16sp" />
-
-            <View
-                android:id="@+id/event_divider1"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/event_icon2"
-                android:background="#777777" />
-
-            <ListView
-                android:id="@+id/list_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/event_divider1"
-                android:divider="#333333"
-                android:dividerHeight="1px"
-                android:layout_marginBottom="10dp"
-                android:paddingBottom="10dp" />
 
         </RelativeLayout>
 

@@ -21,7 +21,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -109,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int DRAWER_EXIT = 14;
 
     private static final String TAG = "MainActivity";
+    public static String UserAge = "";
+
     public int currentFragment = NO_FRAGMENT;
     Bundle savedInstance = null;
     int activeUserID = 0;
@@ -579,9 +580,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void ShowSettings() {
+    /*public void ShowSettings() {
         TextView system_server;
-    }
+    }*/
 
     @Override
     protected void onResume() {
@@ -682,7 +683,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Stadium
-                /*
                 referenceName = Stadium.class.getSimpleName();
                 changedDate = ReferenceUpdate.lastChangedAsStr(referenceName);
                 try {
@@ -693,10 +693,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getLocalizedMessage());
-                }*/
+                }
 
                 // Team
-                /*
                 referenceName = Team.class.getSimpleName();
                 changedDate = ReferenceUpdate.lastChangedAsStr(referenceName);
                 try {
@@ -707,10 +706,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getLocalizedMessage());
-                }*/
+                }
 
                 // Players
-                /*
                 referenceName = User.class.getSimpleName();
                 changedDate = ReferenceUpdate.lastChangedAsStr(referenceName);
                 try {
@@ -721,7 +719,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getLocalizedMessage());
-                }*/
+                }
             }
         });
         thread.start();
