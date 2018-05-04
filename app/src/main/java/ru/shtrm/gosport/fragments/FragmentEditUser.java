@@ -3,6 +3,7 @@ package ru.shtrm.gosport.fragments;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -164,12 +165,15 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
             UserSport userSportFootball = realmDB.where(UserSport.class).equalTo("user.uuid", user.getUuid()).equalTo("sport.uuid", football.getUuid()).findFirst();
             phone.setText(user.getPhone());
             name.setText(user.getName());
-            vk.setText(user.getVK());
+            vk.setText(user.getVk());
             if (user.getBirthDate() != null)
                 age.setText(user.getBirthDate().getYear() + "-" + user.getBirthDate().getMonth() + "-" + user.getBirthDate().getDay());
             else
                 age.setText(dateAndTime.get(Calendar.YEAR) + "-" + dateAndTime.get(Calendar.MONTH) + "-" + dateAndTime.get(Calendar.DAY_OF_MONTH));
             image_name = user.getImage();
+            if (image_name==null)
+                image_name = "profile_"+user.get_id()+".jpg";
+
             if (userSportHockey != null) {
                 for (int r = 0; r < hockeyLevel.size(); r++) {
                     if (userSportHockey.getLevel().getUuid().equals(hockeyLevel.get(r).getUuid()))
@@ -250,14 +254,14 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
                 return;
             }
             try {
-                InputStream inputStream = getActivity().getApplicationContext().getContentResolver().openInputStream(data.getData());
+                InputStream inputStream = getActivity().getApplicationContext()
+                        .getContentResolver().openInputStream(data.getData());
                 Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
                 if (myBitmap != null) {
-                    int height = (int) (200 * (float) myBitmap.getHeight() / (float) myBitmap.getWidth());
-                    if (height > 0) {
-                        Bitmap myBitmap2 = Bitmap.createScaledBitmap(myBitmap, 200, height, false);
+                    Bitmap myBitmap2 = MainFunctions.storeNewImage
+                            (myBitmap, getActivity().getApplicationContext(), 1024);
+                    if (myBitmap2!=null)
                         iView.setImageBitmap(myBitmap2);
-                    }
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -281,11 +285,10 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
                     break;
                 }
                 try {
-                    // название файла аватара не меняется
+                    // название файла аватара не меняется (если оно было)
                     iView.buildDrawingCache();
                     Bitmap bmp = iView.getDrawingCache();
                     MainFunctions.storeImage(image_name, "User", getContext(), bmp);
-                    storeImage(image_name);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -299,7 +302,7 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
                 User user = realmDB.where(User.class).equalTo("active", true).findFirst();
                 realmDB.beginTransaction();
                 user.setName(name.getText().toString());
-                user.setVK(vk_output);
+                user.setVk(vk_output);
                 user.setPhone(phone.getText().toString());
                 user.setBirthDate(dateAndTime.getTime());
                 //user.setAge(Integer.parseInt(age.getText().toString()));
@@ -393,9 +396,5 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
     public void onDestroyView() {
         super.onDestroyView();
         realmDB.close();
-    }
-
-    public void setAge(String setAge) {
-        age.setText(setAge);
     }
 }
