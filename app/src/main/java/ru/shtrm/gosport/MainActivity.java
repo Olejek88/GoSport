@@ -24,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -78,10 +77,8 @@ import ru.shtrm.gosport.fragments.TeamsFragment;
 import ru.shtrm.gosport.fragments.TrainingsFragment;
 import ru.shtrm.gosport.fragments.UserInfoFragment;
 import ru.shtrm.gosport.rest.GSportAPIFactory;
-import ru.shtrm.gosport.utils.LoadTestData;
 import ru.shtrm.gosport.utils.MainFunctions;
 
-import static java.security.AccessController.getContext;
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class MainActivity extends AppCompatActivity {
@@ -108,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int DRAWER_EXIT = 14;
 
     private static final String TAG = "MainActivity";
+
+    public static String NO_SYNC = "no_sync";
     public static String UserAge = "";
 
     public int currentFragment = NO_FRAGMENT;
@@ -615,7 +614,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Получение справочников
      */
-    private void getReferences () {
+    private static void getReferences () {
         AsyncTask<String[], Integer, Void> aTask = new AsyncTask<String[], Integer, Void>() {
             @Override
             protected Void doInBackground(String[]... params) {

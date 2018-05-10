@@ -2,33 +2,35 @@ package ru.shtrm.gosport.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import io.realm.Realm;
 import ru.shtrm.gosport.AuthorizedUser;
+import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.db.realm.Journal;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.LocalFiles;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
 
+import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
+
 public class MainFunctions {
 
-    private Realm realmDB;
+    private static Realm realmDB;
     private static final String TAG = "Func";
-
-    public static String getIMEI(Context context) {
-        TelephonyManager mngr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        return mngr.getDeviceId();
-    }
 
     public static void checkRealmNew() {
         final Realm realmDB = Realm.getDefaultInstance();
@@ -40,7 +42,9 @@ public class MainFunctions {
     }
 
     public static String getUserImagePath(Context context) {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android" + File.separator + "data" + File.separator + context.getPackageName() + File.separator + "img" + File.separator;
+        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
+                + "Android" + File.separator + "data" + File.separator + context.getPackageName()
+                + File.separator + "files" + File.separator;
     }
 
     public static void addToJournal(final String description) {
@@ -78,19 +82,78 @@ public class MainFunctions {
     }
 
     public static String getPicturesDirectory(Context context) {
-        String filename = Environment.getExternalStorageDirectory().getAbsolutePath()
-                + File.separator
-                + "Android"
-                + File.separator
-                + "data"
-                + File.separator
+        return Environment.getExternalStorageDirectory()
+                + "/Android/data/"
                 + context.getPackageName()
+                + "/Files"
                 + File.separator;
-        return filename;
+    }
+
+    public static Bitmap storeNewImage(Bitmap image, Context context, int width, String image_name) {
+        final Realm realmDB = Realm.getDefaultInstance();
+        File mediaStorageDir = new File(getPicturesDirectory(context));
+
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+        if (image_name.equals("")) {
+            String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm", Locale.US).format(new Date());
+            image_name="file_"+ timeStamp +".jpg";
+        }
+        // Create a media file name
+        File pictureFile;
+        pictureFile = new File(mediaStorageDir.getPath() + File.separator + image_name);
+
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            if (image != null) {
+                int height = (int) (width * (float) image.getHeight() / (float) image.getWidth());
+                if (height > 0) {
+                    Bitmap myBitmap = Bitmap.createScaledBitmap(image, width, height, false);
+                    myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.flush();
+                    fos.close();
+
+                    realmDB.beginTransaction();
+                    AuthorizedUser authorizedUser = AuthorizedUser.getInstance();
+                    User user = realmDB.where(User.class).equalTo("uuid", authorizedUser.getUuid()).findFirst();
+                    String uuid = java.util.UUID.randomUUID().toString();
+                    LocalFiles localFile = realmDB.createObject(LocalFiles.class, uuid);
+                    localFile.setUser(user);
+                    localFile.setSent(false);
+                    localFile.setObject("file");
+                    localFile.setUuid(uuid);
+                    localFile.setFileName(image_name);
+                    localFile.setChangedAt(new Date());
+                    localFile.setCreatedAt(new Date());
+                    realmDB.commitTransaction();
+                    return myBitmap;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d(TAG, "Error accessing file: " + e.getMessage());
+        }
+        return null;
     }
 
     public static void storeImage(String name, String object, Context context, Bitmap bmp) throws IOException {
 //        String target_filename = sd_card.getAbsolutePath() + File.separator + "Android" + File.separator + "data" + File.separator + getActivity().getPackageName() + File.separator + "img" + File.separator + name;
+
+        File picDir = context.getExternalFilesDir(name);
+        assert picDir != null;
+        Log.d(TAG, picDir.getName());
+        Bitmap bm = getResizedBitmap(picDir.getParent(), picDir.getName(), 1024, 0, new Date().getTime());
+
+
+
         String target_filename = MainFunctions.getUserImagePath(context) + name;
         final Realm realmDB = Realm.getDefaultInstance();
         Log.d(TAG,target_filename);
@@ -127,6 +190,16 @@ public class MainFunctions {
         realmDB.commitTransaction();
     }
 
+    public static String getVkProfile(String vk_input) {
+        String vk_output = "http://vk.com/undefined";
+        if (vk_input.contains("vk") && !vk_input.contains("http"))
+            vk_output = "http://".concat(vk_input);
+        if (!vk_input.contains("vk") && !vk_input.contains("http"))
+            vk_output = "http://vk.com/".concat(vk_input);
+        if (vk_input.contains("vk") && vk_input.contains("http"))
+            vk_output = vk_input;
+        return vk_output;
+    }
 }
 
 

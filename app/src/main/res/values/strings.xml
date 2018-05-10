@@ -31,19 +31,9 @@
     <string name="pref_server_url">Сервер системы</string>
     <string name="pref_server_url_dialog_title">Введите URL сервера системы</string>
     <string name="login">Войти</string>
-    <string name="init_success">Инициализация успешна</string>
-    <string name="init_fail">Инициализация неудачна</string>
-    <string name="find_fail">Метка не найдена</string>
-    <string name="read_fail">Чтение закончилось неудачей</string>
-    <string name="init">Инициализировать</string>
-    <string name="find">Найти</string>
     <string name="serverUrl">serverUrl</string>
     <string name="updateUrl">updateUrl</string>
-    <string name="rfidDriverListPrefKey">rfidDriverListPrefKey</string>
-    <string name="rfidDrvSettingKey">rfidDrvSettingKey</string>
     <string name="references">Справочники</string>
-    <string name="get_task">Получить наряд</string>
-    <string name="choose_tag">Выберите метку из меню</string>
     <string name="back">Назад</string>
     <string name="ok">ОК</string>
     <string name="make_photo">Снять</string>
@@ -130,54 +120,14 @@
     <string name="update_server">Сервер обновления</string>
     <string name="system_server">Сервер системы</string>
 
-    <string name="profile_type_administrator">Администратор</string>
-    <string name="profile_type_engeneer">Пользователь</string>
-    <string name="profile_whois_shef">Начальник</string>
-    <string name="profile_whois_engeneer">Инженер</string>
-
-    <string name="image_status_equipment">изображение статуса оборудования</string>
-    <string name="normative">Норматив: </string>
-    <string name="finish_stage">Закончить</string>
-    <string name="measure">Измерить</string>
-    <string name="measure_label">Последнее измерение:</string>
-    <string name="measure_description">Проведите измерение необходимой величины и внесите показания в форму ниже. Также вы можете просмотреть динамику изменения за последние несколько обследований.</string>
-    <string name="operation_time">Время операции:</string>
     <string name="tire"> - </string>
-    <string name="sec">сек.</string>
-    <string name="sec_with_value">%1$d сек.</string>
     <string name="input_value">введите данные</string>
     <string name="program_version">Lets Go Sport! v0.0.1\n Олег Иванов\n (letsgosport.ru) (&#169;)2017</string>
 
-    <string name="gps_track">GPS трек</string>
-    <string name="journal">Журнал</string>
     <string name="toirSettings">Настройки приложения</string>
 
     <string name="dialog_accept">Принять</string>
     <string name="dialog_cancel">Отменить</string>
-    <string name="select_all">Выбрать все операции</string>
-    <string name="operation_cancel_text">Вы пропустили одну или несколько операций. Укажите для них причину/вердикт.</string>
-
-    <string name="run_ar_content">Запуск AR-контента</string>
-    <string name="run_ar_content_key">run_ar_content_key</string>
-    <string name="pref_autonome_mode_key">auto_mode</string>
-    <string name="not_started">не начинался</string>
-    <string name="not_finished">не закончен</string>
-    <string name="dont_ask_text_tags">Не спрашивать текстовые теги</string>
-    <string name="ask_text_tags_key">without_tags_mode</string>
-    <string name="model">Модель: %1$s</string>
-
-    <string name="choose_defect">Выберите дефект</string>
-    <string name="add_new_defect">или введите новый</string>
-    <string name="choose_defect_category">Категория дефекта</string>
-    <string name="defects_category_all">Все категории</string>
-    <string name="defects_category_non_specific">Не специфические дефекты</string>
-    <string name="action_save">Записать</string>
-    <string name="new_status">Сменить статус на</string>
-    <string name="contragents">Клиенты</string>
-    <string name="input_contragents_name">Введите название клиента</string>
-
-    <string name="client_type">Тип контрагента: $1$s</string>
-    <string name="client_phone">Телефон: %1$s</string>
 
     <string name="phone">Телефон</string>
     <string name="profile_age">Возраст</string>
@@ -185,10 +135,20 @@
     <string name="profile_level">Уровень игрока</string>
     <string name="profile_team">Команда</string>
     <string name="profile_amplua">Амплуа игрока</string>
+    <string name="profile_birth">Дата рождения</string>
 
     <string name="team_level">Уровень команды</string>
     <string name="birth_date">Дата рождения</string>
 
     <string name="football">Футбол</string>
     <string name="hockey">Хоккей</string>
+    <string name="not_started">Не начиналась</string>
+    <string name="training_time">Время тренировки</string>
+
+    <string name="formatted_date">%1$d/%2$d/%3$d</string>
+    <string name="level">Уровень: %1$s</string>
+    <string name="amplua">Амплуа: %1$s</string>
+    <string name="team">Команда: %1$s</string>
+
+    <string name="not_selected">Не выбрана</string>
 </resources>

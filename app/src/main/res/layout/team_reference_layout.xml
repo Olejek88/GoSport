@@ -16,7 +16,7 @@
                         android:id="@+id/simple_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@android:style/Widget.Holo.Spinner"
+                        style="@android:style/Widget.Holo.Light.Spinner"
                         android:layout_marginRight="5dp"
                         android:layout_marginLeft="5dp"
                         android:spinnerMode="dropdown" />

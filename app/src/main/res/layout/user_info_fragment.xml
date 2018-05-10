@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="user"
+            type="ru.shtrm.gosport.db.realm.User" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="70dp"
+            android:background="#FAFAFA"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/user_info_common"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/user_image"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:background="@color/md_blue_300"
+                    android:contentDescription="@string/image_description"
+                    android:scaleType="center"
+                    android:src="@drawable/user_no_image" />
+
+                <TextView
+                    android:id="@+id/user_text_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/user_image"
+                    android:adjustViewBounds="true"
+                    android:background="#1565c0"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingStart="15dp"
+                    android:scaleType="centerCrop"
+                    android:text="@{user.name}"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/user_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/user_text_name"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/user_profile" />
+
+                <TextView
+                    android:id="@+id/user_text_type"
+                    android:layout_width="fill_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/user_text_name"
+                    android:layout_toEndOf="@+id/user_icon"
+                    android:layout_toRightOf="@+id/user_icon"
+                    android:background="#FAFAFA"
+                    android:paddingLeft="10dp"
+                    android:text="@{user.type==0 ? @string/profile_type_player : @string/profile_type_orgs}"
+                    android:textColor="@color/larisaTextColorABlack"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/user_text_type_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/user_text_type"
+                    android:layout_toEndOf="@+id/user_icon"
+                    android:layout_toRightOf="@+id/user_icon"
+                    android:background="#FAFAFA"
+                    android:paddingLeft="10dp"
+                    android:text="@string/profile_type"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/user_age_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/user_text_type_label"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:clickable="false"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/user_age" />
+
+                <TextView
+                    android:id="@+id/user_text_age"
+                    android:layout_width="fill_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/user_text_type_label"
+                    android:layout_toEndOf="@+id/user_age_icon"
+                    android:layout_toRightOf="@+id/user_age_icon"
+                    android:background="#FAFAFA"
+                    android:paddingLeft="10dp"
+                    android:text="@{user.getBirthDateFormatted()}"
+                    android:textColor="@color/larisaTextColorABlack"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/user_text_age_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/user_text_age"
+                    android:layout_toEndOf="@+id/user_age_icon"
+                    android:layout_toRightOf="@+id/user_age_icon"
+                    android:background="#FAFAFA"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:text="@string/profile_birth"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/user_phone_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/user_text_age_label"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:clickable="false"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/user_phone" />
+
+                <TextView
+                    android:id="@+id/user_text_phone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/user_text_age_label"
+                    android:layout_toEndOf="@+id/user_phone_icon"
+                    android:layout_toRightOf="@+id/user_phone_icon"
+                    android:background="#FAFAFA"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/larisaTextColorABlack"
+                    android:text="@{user.phone}"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/user_text_phone_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/user_text_phone"
+                    android:layout_toEndOf="@+id/user_phone_icon"
+                    android:layout_toRightOf="@+id/user_phone_icon"
+                    android:background="#FAFAFA"
+                    android:paddingLeft="10dp"
+                    android:text="@string/phone"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/user_vk_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/user_text_phone_label"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:clickable="false"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/user_vk" />
+
+                <TextView
+                    android:id="@+id/user_text_vk"
+                    android:layout_width="fill_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/user_text_phone_label"
+                    android:layout_toEndOf="@+id/user_vk_icon"
+                    android:layout_toRightOf="@+id/user_vk_icon"
+                    android:background="#FAFAFA"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/larisaTextColorABlack"
+                    android:text="@{user.vk}"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/user_text_vk_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/user_text_vk"
+                    android:layout_toEndOf="@+id/user_vk_icon"
+                    android:layout_toRightOf="@+id/user_vk_icon"
+                    android:background="#FAFAFA"
+                    android:paddingEnd="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingStart="10dp"
+                    android:text="@string/profile_add_vk"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp" />
+
+                <View
+                    android:id="@+id/profile_divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/user_vk_icon"
+                    android:background="@color/larisaBlueColor" />
+
+                <ImageView
+                    android:id="@+id/profile_hockey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/profile_divider1"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:contentDescription="@string/image_description"
+                    android:maxWidth="32dp"
+                    android:src="@drawable/hockey_32" />
+
+                <TextView
+                    android:id="@+id/profile_text_hockey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/profile_divider1"
+                    android:layout_gravity="start"
+                    android:layout_toEndOf="@+id/profile_hockey"
+                    android:layout_toRightOf="@+id/profile_hockey"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingStart="10dp"
+                    android:text="@string/hockey"
+                    android:textColor="#222222"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/profile_hockey_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_text_hockey"
+                    android:textColor="@color/larisaTextColor"
+                    android:text="@string/level"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginStart="15dp" />
+
+                <TextView
+                    android:id="@+id/profile_hockey_amplua"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_hockey_level"
+                    android:textColor="@color/larisaTextColor"
+                    android:text="@string/amplua"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginStart="15dp" />
+
+                <TextView
+                    android:id="@+id/profile_hockey_team"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_hockey_amplua"
+                    android:textColor="@color/larisaTextColor"
+                    android:text="@string/team"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginStart="15dp" />
+
+                <View
+                    android:id="@+id/profile_divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/profile_hockey_team"
+                    android:background="@color/larisaBlueColor" />
+
+                <ImageView
+                    android:id="@+id/profile_football"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/profile_divider2"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:contentDescription="@string/image_description"
+                    android:maxWidth="32dp"
+                    android:src="@drawable/football_32" />
+
+                <TextView
+                    android:id="@+id/profile_text_football"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/profile_divider2"
+                    android:layout_gravity="start"
+                    android:layout_toEndOf="@+id/profile_football"
+                    android:layout_toRightOf="@+id/profile_football"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingStart="10dp"
+                    android:text="@string/football"
+                    android:textColor="@color/larisaTextColorABlack"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/profile_football_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_football"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginStart="15dp" />
+
+                <TextView
+                    android:id="@+id/profile_football_amplua"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_football_level"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginStart="15dp" />
+
+                <TextView
+                    android:id="@+id/profile_football_team"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_football_amplua"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp"
+                    android:text="@string/team"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginStart="15dp" />
+            </RelativeLayout>
+        </ScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/user_edit_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
+            android:src="@drawable/ic_plus_white_36dp"
+            app:fabSize="auto"
+            android:layout_gravity="center|end" />
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

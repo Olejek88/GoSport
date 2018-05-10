@@ -18,24 +18,5 @@
         android:key="drvSettingsCategory"
         android:textColor="@color/larisaTextColorABlack"
         android:title="Настройки приложения" >
-
-        <PreferenceScreen
-            android:key="@string/rfidDrvSettingKey"
-            android:textColor="@color/larisaTextColorABlack"
-            android:title="Настройки программы" >
-        </PreferenceScreen>
     </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="drvSettingsCategory"
-        android:textColor="@color/larisaTextColorABlack"
-        android:title="Настройки драйверов" >
-
-        <PreferenceScreen
-            android:key="@string/rfidDrvSettingKey"
-            android:textColor="@color/larisaTextColorABlack"
-            android:title="Настройки драйвера RFID" >
-        </PreferenceScreen>
-    </PreferenceCategory>
-
 </PreferenceScreen>

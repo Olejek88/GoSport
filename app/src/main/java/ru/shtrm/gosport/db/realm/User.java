@@ -1,6 +1,8 @@
 package ru.shtrm.gosport.db.realm;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -99,6 +101,11 @@ public class User extends RealmObject {
         return birthDate;
     }
 
+    public String getBirthDateFormatted(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        return formatter.format(birthDate);
+    }
+
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
@@ -111,20 +118,20 @@ public class User extends RealmObject {
         this.image = image;
     }
 
-    public String getVK() {
-        return vk;
-    }
-
-    public void setVK(String vk) {
-        this.vk = vk;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getVk() {
+        return vk;
+    }
+
+    public void setVk(String vk) {
+        this.vk = vk;
     }
 
     public Date getCreatedAt() {

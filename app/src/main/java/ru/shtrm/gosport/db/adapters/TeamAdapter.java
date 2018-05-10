@@ -83,10 +83,13 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_team || parent.getId() == R.id.profile_hockey_team || parent.getId() == R.id.training_add_team) {
+            if (parent.getId() == R.id.simple_spinner ||
+                    parent.getId() == R.id.profile_football_team ||
+                    parent.getId() == R.id.profile_hockey_team ||
+                    parent.getId() == R.id.training_add_team) {
                 convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
-                viewHolder.name.setTextColor(context.getResources().getColor(R.color.larisaTextColor));
                 viewHolder.name = (TextView) convertView.findViewById(R.id.spinner_item);
+                viewHolder.name.setTextColor(context.getResources().getColor(R.color.larisaTextColor));
                 convertView.setTag(viewHolder);
             }
             else {
@@ -110,6 +113,7 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
                 textView.setText(team.getTitle());
                 textView.setTextSize(16);
                 textView.setPadding(10, 10, 10, 10);
+                textView.setTextColor(context.getResources().getColor(R.color.larisaTextColor));
             } else {
                 viewHolder.name.setText(team.getTitle());
                 if (team.getSport() != null)
