@@ -26,6 +26,7 @@
         android:textColor="#222222"
         android:textSize="16sp"
         android:gravity="center_vertical"
+        android:layout_toEndOf="@+id/training_sport_icon"
         android:layout_toRightOf="@+id/training_sport_icon"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -38,6 +39,7 @@
         android:textColor="#222222"
         android:gravity="center_vertical"
         android:textSize="16sp"
+        android:layout_toEndOf="@+id/training_sport"
         android:layout_toRightOf="@+id/training_sport" />
 
     <TextView
@@ -47,8 +49,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/training_sport_team"
         android:layout_toRightOf="@+id/training_sport_team"
-        android:gravity="right|center_vertical"
+        android:gravity="end|center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/larisaBlueColor"
         android:textSize="16sp" />
@@ -58,10 +61,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:background="@color/larisaBlueColor"
+        android:background="@drawable/label"
         android:textColor="#ffffff"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/training_sport_icon"
         android:layout_toRightOf="@+id/training_sport_icon"
         android:layout_below="@+id/training_sport" />
 
@@ -71,8 +77,11 @@
         android:layout_height="wrap_content"
         android:textColor="#454545"
         android:textSize="16sp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/training_date"
         android:layout_toRightOf="@+id/training_date"
         android:layout_below="@+id/training_sport" />
 
@@ -80,22 +89,28 @@
         android:id="@+id/training_cost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
         android:textSize="16sp"
-        android:background="@color/md_green_300"
+        android:background="@drawable/label_green"
         android:textColor="#ffffff"
-        android:layout_below="@+id/training_sport_icon" />
+        android:layout_below="@+id/training_date" />
 
     <TextView
         android:id="@+id/training_contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
+        android:padding="5dp"
         android:textColor="#454545"
         android:textSize="16sp"
         android:layout_toRightOf="@+id/training_cost"
+        android:layout_toEndOf="@+id/training_cost"
         android:layout_below="@+id/training_sport_icon" />
 
 </RelativeLayout>

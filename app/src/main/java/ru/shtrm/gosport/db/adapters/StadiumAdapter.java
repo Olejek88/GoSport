@@ -2,7 +2,6 @@ package ru.shtrm.gosport.db.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-
-import java.io.File;
 
 import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
@@ -93,7 +90,7 @@ public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAda
                 viewHolder.address = (TextView) convertView.findViewById(R.id.stadium_address);
                 convertView.setTag(viewHolder);
             } else {
-                convertView = inflater.inflate(R.layout.stadium_layout, parent, false);
+                convertView = inflater.inflate(R.layout.stadium_info_fragment, parent, false);
                 viewHolder = new ViewHolder();
                 viewHolder.image = (ImageView) convertView.findViewById(R.id.stadium_image);
                 viewHolder.descr = (TextView) convertView.findViewById(R.id.stadium_text_description);

@@ -1,8 +1,11 @@
 package ru.shtrm.gosport.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -14,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import io.realm.Realm;
@@ -25,6 +29,7 @@ import ru.shtrm.gosport.db.realm.LocalFiles;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
 
+import static android.content.Context.LOCATION_SERVICE;
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class MainFunctions {
@@ -199,6 +204,32 @@ public class MainFunctions {
         if (vk_input.contains("vk") && vk_input.contains("http"))
             vk_output = vk_input;
         return vk_output;
+    }
+
+    public static Location getLastKnownLocation(Context context) {
+        LocationManager mLocationManager;
+        Location location=null;
+        mLocationManager = (LocationManager)context.getSystemService(LOCATION_SERVICE);
+        if (mLocationManager==null) return null;
+        List<String> providers = mLocationManager.getProviders(true);
+        if (providers==null) return null;
+        Location bestLocation = null;
+        for (String provider : providers) {
+            try {
+                location = mLocationManager.getLastKnownLocation(provider);
+            } catch (SecurityException e) {
+                Toast.makeText(context, "Нет разрешений на определение местоположения",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            if (location == null) {
+                continue;
+            }
+            if (bestLocation == null || location.getAccuracy() < bestLocation.getAccuracy()) {
+                bestLocation = location;
+            }
+        }
+        return bestLocation;
     }
 }
 

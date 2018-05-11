@@ -1,6 +1,5 @@
 package ru.shtrm.gosport.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -17,22 +16,17 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
-import ru.shtrm.gosport.db.adapters.TeamAdapter;
 import ru.shtrm.gosport.db.adapters.TrainingAdapter;
 import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.Training;
 
 public class TrainingsFragment extends Fragment {
     private Realm realmDB;
-	private boolean isInit;
 
 	private Spinner typeSpinner;
 	private ListView trainingListView;
 
     FloatingActionButton fab_check;
-
-    private String object_uuid;
 
     public static TrainingsFragment newInstance() {
 		return new TrainingsFragment();
@@ -41,7 +35,6 @@ public class TrainingsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.training_list_layout, container, false);
         Toolbar toolbar = (Toolbar)(getActivity()).findViewById(R.id.toolbar);
         toolbar.setSubtitle("Тренировки");
@@ -78,7 +71,7 @@ public class TrainingsFragment extends Fragment {
         RealmResults<Training> trainings;
         Bundle bundle = this.getArguments();
         if(bundle != null) {
-            object_uuid = bundle.getString("object_uuid");
+            String object_uuid = bundle.getString("object_uuid");
         }
         if (sport != null) {
             trainings = realmDB.where(Training.class).equalTo("sport.uuid", sport.getUuid()).findAll();
@@ -93,7 +86,7 @@ public class TrainingsFragment extends Fragment {
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 
 		super.setUserVisibleHint(isVisibleToUser);
-		if (isVisibleToUser && isInit) {
+		if (isVisibleToUser) {
 			initView();
 		}
 	}
@@ -116,7 +109,8 @@ public class TrainingsFragment extends Fragment {
                 bundle.putString("training_uuid", training.getUuid());
                 TrainingInfoFragment trainingInfoFragment = TrainingInfoFragment.newInstance();
                 trainingInfoFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, trainingInfoFragment).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_container, trainingInfoFragment).commit();
             }
         }
     }
@@ -146,7 +140,8 @@ public class TrainingsFragment extends Fragment {
     private class submitOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(final View v) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentAddTraining.newInstance()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().
+                    replace(R.id.frame_container, FragmentAddTraining.newInstance()).commit();
         }
     }
 

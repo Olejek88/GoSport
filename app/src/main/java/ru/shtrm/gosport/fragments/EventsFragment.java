@@ -17,14 +17,10 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.EventInfoActivity;
 import ru.shtrm.gosport.R;
-import ru.shtrm.gosport.StadiumInfoActivity;
 import ru.shtrm.gosport.db.adapters.EventAdapter;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
-import ru.shtrm.gosport.db.adapters.TrainingAdapter;
 import ru.shtrm.gosport.db.realm.Event;
 import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Stadium;
-import ru.shtrm.gosport.db.realm.Training;
 
 public class EventsFragment extends Fragment {
     private Realm realmDB;

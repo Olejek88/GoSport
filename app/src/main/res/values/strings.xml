@@ -95,7 +95,7 @@
     <string name="team_add_sport">Вид спорта</string>
     <string name="team_add_image">Логотип команды</string>
 
-    <string name="stadium_add_name">Название команды</string>
+    <string name="stadium_add_name">Название площадки</string>
     <string name="stadium_add_description">Описание</string>
     <string name="stadium_add_sport">Вид спорта</string>
     <string name="stadium_add_address">Адрес</string>
@@ -108,6 +108,13 @@
     <string name="training_add_stadium">Стадион</string>
     <string name="training_add_team">Команда</string>
     <string name="training_add_level">Уровень</string>
+    <string name="training_contact">%1$s (%2$s)</string>
+    <string name="training_team">[%1$s]</string>
+    <string name="training_cost">Цена: %1$dр.</string>
+    <string name="training_date">Дата тренировки</string>
+    <string name="training_team_label">Команда</string>
+    <string name="training_cost_label">Дата тренировки</string>
+    <string name="training_phone_label">Контакт</string>
 
     <string name="profile_type">Тип пользователя</string>
     <string name="profile_whois">Должность</string>

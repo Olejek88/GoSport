@@ -1,6 +1,8 @@
 package ru.shtrm.gosport.db.realm;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -133,5 +135,10 @@ public class Training extends RealmObject {
 
     public void setChangedAt(Date changedAt) {
         this.changedAt = changedAt;
+    }
+
+    public String getDateFormatted(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        return formatter.format(date);
     }
 }

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="training"
+            type="ru.shtrm.gosport.db.realm.Training" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
+        android:background="#ffffff">
+
+        <RelativeLayout
+            android:id="@+id/training_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/training_add_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/menu_football" />
+
+            <EditText
+                android:id="@+id/training_add_title"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_toEndOf="@+id/training_add_icon"
+                android:layout_toRightOf="@+id/training_add_icon"
+                android:gravity="center_vertical|center_horizontal"
+                android:hint="@string/training_add_name"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingStart="10dp"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/training_add_sport_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/training_add_icon"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/menu_hockey" />
+
+            <Spinner
+                android:id="@+id/simple_spinner"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="false"
+                android:layout_below="@+id/training_add_icon"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toEndOf="@+id/training_add_sport_icon"
+                android:layout_toRightOf="@+id/training_add_sport_icon"
+                android:prompt="@string/team_add_sport"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/training_add_stadium_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/training_add_sport_icon"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/menu_location" />
+
+            <Spinner
+                android:id="@+id/training_add_stadium"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="false"
+                android:layout_below="@+id/training_add_sport_icon"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toEndOf="@+id/training_add_stadium_icon"
+                android:layout_toRightOf="@+id/training_add_stadium_icon"
+                android:prompt="@string/training_add_stadium"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/training_add_team_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/training_add_stadium_icon"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/user_team" />
+
+            <Spinner
+                android:id="@+id/training_add_team"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="false"
+                android:layout_below="@+id/training_add_stadium_icon"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toEndOf="@+id/training_add_team_icon"
+                android:layout_toRightOf="@+id/training_add_team_icon"
+                android:prompt="@string/training_add_team"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/training_add_level_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/training_add_team_icon"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/user_level" />
+
+            <Spinner
+                android:id="@+id/training_add_level"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="false"
+                android:layout_below="@+id/training_add_team_icon"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toEndOf="@+id/training_add_level_icon"
+                android:layout_toRightOf="@+id/training_add_level_icon"
+                android:prompt="@string/training_add_level"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/training_add_cost_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/training_add_level_icon"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/menu_user" />
+
+            <EditText
+                android:id="@+id/training_add_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/training_add_level_icon"
+                android:layout_gravity="start"
+                android:layout_toEndOf="@+id/training_add_cost_icon"
+                android:layout_toRightOf="@+id/training_add_cost_icon"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:hint="@string/training_add_cost"
+                android:inputType="number"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/training_add_comment_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/training_add_cost_icon"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/menu_competition" />
+
+            <EditText
+                android:id="@+id/training_add_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_below="@+id/training_add_cost_icon"
+                android:layout_gravity="start"
+                android:layout_toEndOf="@+id/training_add_comment_icon"
+                android:layout_toRightOf="@+id/training_add_comment_icon"
+                android:hint="@string/training_add_comment"
+                android:inputType="text"
+                android:lines="2"
+                android:maxLines="2"
+                android:minLines="2"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/training_add_date_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/training_add_comment_icon"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/menu_ring" />
+
+            <TextView
+                android:id="@+id/training_selected_time"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/training_add_comment_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/training_add_date_icon"
+                android:layout_toRightOf="@+id/training_add_date_icon"
+                android:gravity="center_vertical"
+                android:text="@string/training_time"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/training_button_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/training_add_date_icon"
+                android:layout_gravity="center_vertical|center_horizontal|center"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:height="35dp"
+                android:background="@drawable/button"
+                android:minHeight="0dp"
+                android:onClick="mOnClickMethod"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/profile_submit_button"
+                android:textColor="#FAFAFA" />
+
+        </RelativeLayout>
+    </ScrollView>
+</layout>

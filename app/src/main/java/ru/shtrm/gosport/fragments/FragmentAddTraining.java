@@ -1,21 +1,12 @@
 package ru.shtrm.gosport.fragments;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,19 +19,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import org.osmdroid.api.IMapController;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Overlay;
 
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -56,9 +38,6 @@ import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
-import ru.shtrm.gosport.utils.MainFunctions;
-
-import static ru.shtrm.gosport.R.drawable.calendar;
 
 public class FragmentAddTraining extends Fragment implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     private static final String TAG = "FragmentAdd";
@@ -92,7 +71,7 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_addtraining, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_training, container, false);
         realmDB = Realm.getDefaultInstance();
 
         Toolbar toolbar = (Toolbar) (getActivity()).findViewById(R.id.toolbar);
@@ -210,15 +189,9 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
                     break;
                 }
 
+                String uuid = java.util.UUID.randomUUID().toString();
                 realmDB.beginTransaction();
-                Number currentIdNum = realmDB.where(Training.class).max("_id");
-                int nextId;
-                if(currentIdNum == null) {
-                    nextId = 1;
-                } else {
-                    nextId = currentIdNum.intValue() + 1;
-                }
-                Training training = realmDB.createObject(Training.class,nextId);
+                Training training = realmDB.createObject(Training.class,"uuid");
                 training.setStadium(stadiumAdapter.getItem(stadiumSpinner.getSelectedItemPosition()));
                 training.setComment(comment.getText().toString());
                 training.setCost(Integer.parseInt(cost.getText().toString()));
@@ -237,7 +210,7 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
                 }
                 training.setChangedAt(new Date());
                 training.setCreatedAt(new Date());
-                training.setUuid(java.util.UUID.randomUUID().toString());
+                training.setUuid(uuid);
                 training.setUser(user);
                 realmDB.commitTransaction();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TrainingsFragment.newInstance()).commit();

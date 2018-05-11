@@ -145,7 +145,7 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
                     image_name = null;
                 Log.e(TAG, "name=" + image_name);
 
-                Team team = realmDB.createObject(Team.class, MainActivity.NO_SYNC);
+                Team team = realmDB.createObject(Team.class, uuid);
                 team.setTitle(title.getText().toString());
                 team.setSport(sportAdapter.getItem(typeSpinner.getSelectedItemPosition()));
                 team.setLevel(levelAdapter.getItem(levelSpinner.getSelectedItemPosition()));

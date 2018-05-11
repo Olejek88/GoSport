@@ -116,21 +116,26 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
             if (training != null) {
                 if (parent.getId() == R.id.trainings_listView) {
                     if (training.getSport().getTitle().equals("Хоккей")) {
-                        viewHolder.icon.setImageResource(R.drawable.hockey_32);
+                        viewHolder.icon.setImageResource(R.drawable.user_hockey);
                     } else {
-                        viewHolder.icon.setImageResource(R.drawable.football_32);
+                        viewHolder.icon.setImageResource(R.drawable.menu_football);
                     }
                 }
                 else {
-                    viewHolder.title.setText(training.getTitle());
-                    viewHolder.comment.setText(training.getComment());
+                    if (viewHolder.title!=null)
+                        viewHolder.title.setText(training.getTitle());
+                    if (viewHolder.comment!=null)
+                        viewHolder.comment.setText(training.getComment());
                 }
-                viewHolder.contact.setText(training.getUser().getName()+" ("+training.getUser().getPhone()+")");
+                viewHolder.contact.setText(context.getResources().getString(R.string.training_contact,
+                        training.getUser().getName(),training.getUser().getPhone()));
                 if (training.getTeam()!=null)
-                    viewHolder.team.setText("["+training.getTeam().getTitle()+"]");
+                    viewHolder.team.setText(context.getResources().getString(R.string.training_team,
+                            training.getTeam().getTitle()));
                 if (training.getStadium()!=null)
                     viewHolder.stadium.setText(training.getStadium().getTitle());
-                viewHolder.cost.setText("Цена: " + Integer.toString(training.getCost()) + "р.");
+                viewHolder.cost.setText(context.getResources().getString(R.string.training_cost,
+                        training.getCost()));
                 viewHolder.sport.setText(training.getSport().getTitle());
                 Date lDate = training.getDate();
                 if (lDate != null) {

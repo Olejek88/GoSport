@@ -70,7 +70,8 @@ public class MyTrainingsFragment extends Fragment {
 	private void FillListViewTraining(Sport sport) {
         RealmResults<Training> trainings;
         if (sport != null) {
-            trainings = realmDB.where(Training.class).equalTo("sport.uuid", sport.getUuid()).findAll();
+            trainings = realmDB.where(Training.class).
+                    equalTo("sport.uuid", sport.getUuid()).findAll();
         } else {
             trainings = realmDB.where(Training.class).findAll();
         }

@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int NO_FRAGMENT = 0;
     private static final int FRAGMENT_USER = 1;
-    private static final int FRAGMENT_SPORTS = 2;
+    //private static final int FRAGMENT_SPORTS = 2;
     private static final int FRAGMENT_MAP = 3;
     private static final int FRAGMENT_STADIUMS = 4;
     private static final int FRAGMENT_TRAININGS = 5;
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int FRAGMENT_ADDTRAINING = 10;
     private static final int FRAGMENT_ADDSTADIUM = 11;
-    private static final int FRAGMENT_SETTRAINING = 12;
+    //private static final int FRAGMENT_SETTRAINING = 12;
 
     private static final int DRAWER_INFO = 13;
     private static final int DRAWER_EXIT = 14;
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
-
+        int larisaBlueColor = ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor);
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         assert bottomBar != null;
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
@@ -229,17 +229,20 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(@IdRes int tabId) {
                 switch (tabId) {
                     case R.id.menu_mytrainings:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, MyTrainingsFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_container, MyTrainingsFragment.newInstance()).commit();
                         break;
                     case R.id.menu_calendar:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TrainingsFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_container, TrainingsFragment.newInstance()).commit();
                         break;
                     case R.id.menu_user:
-                        //if (activeUserID>0)
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
                         break;
                     case R.id.menu_maps:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, MapFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_container, MapFragment.newInstance()).commit();
                         break;
                 }
             }
@@ -275,19 +278,26 @@ public class MainActivity extends AppCompatActivity {
                 .withHeaderBackground(R.drawable.hockey_header)
                 .withTextColor(ContextCompat.getColor(getApplicationContext(), R.color.almostblack))
                 .addProfiles(
-                        new ProfileSettingDrawerItem().withName("Добавить пользователя").withDescription("Добавить пользователя").withIcon(String.valueOf(GoogleMaterial.Icon.gmd_plus)).withIdentifier(PROFILE_ADD),
-                        new ProfileSettingDrawerItem().withName("Редактировать пользователя").withIcon(String.valueOf(GoogleMaterial.Icon.gmd_settings)).withIdentifier(PROFILE_SETTINGS)
+                        new ProfileSettingDrawerItem().withName("Добавить пользователя")
+                                .withDescription("Добавить пользователя")
+                                .withIcon(String.valueOf(GoogleMaterial.Icon.gmd_plus))
+                                .withIdentifier(PROFILE_ADD),
+                        new ProfileSettingDrawerItem().withName("Редактировать пользователя")
+                                .withIcon(String.valueOf(GoogleMaterial.Icon.gmd_settings))
+                                .withIdentifier(PROFILE_SETTINGS)
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
                         if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_ADD) {
                             currentFragment = FRAGMENT_USER;
-                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentAddUser.newInstance()).commit();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.frame_container, FragmentAddUser.newInstance()).commit();
                         }
                         if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTINGS) {
                             currentFragment = FRAGMENT_USER;
-                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentEditUser.newInstance("EditProfile")).commit();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.frame_container, FragmentEditUser.newInstance("EditProfile")).commit();
                         }
                         if (profile instanceof IDrawerItem && profile.getIdentifier() > PROFILE_SETTINGS) {
                             int profileId = profile.getIdentifier() - 2;
@@ -298,7 +308,8 @@ public class MainActivity extends AppCompatActivity {
                             changeActiveProfile(profilesList.get(profile_pos));
                             AuthorizedUser.getInstance().setUuid(profilesList.get(profile_pos).getUuid());
                             currentFragment = FRAGMENT_USER;
-                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
                         }
                         return false;
                     }
@@ -310,9 +321,23 @@ public class MainActivity extends AppCompatActivity {
 
         PrimaryDrawerItem taskPrimaryDrawerItem;
         if (new_trainings > 0) {
-            taskPrimaryDrawerItem = new PrimaryDrawerItem().withName(R.string.menu_mytrainings).withDescription("Текущие тренировки").withIcon(GoogleMaterial.Icon.gmd_calendar).withIdentifier(FRAGMENT_MYTRAININGS).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)).withBadge("" + new_trainings).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.red));
+            taskPrimaryDrawerItem = new PrimaryDrawerItem()
+                    .withName(R.string.menu_mytrainings)
+                    .withDescription("Текущие тренировки")
+                    .withIcon(GoogleMaterial.Icon.gmd_calendar)
+                    .withIdentifier(FRAGMENT_MYTRAININGS)
+                    .withSelectable(false)
+                    .withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor))
+                    .withBadge("" + new_trainings)
+                    .withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.red));
         } else {
-            taskPrimaryDrawerItem = new PrimaryDrawerItem().withName(R.string.menu_mytrainings).withDescription("Текущие тренировки").withIcon(GoogleMaterial.Icon.gmd_calendar).withIdentifier(FRAGMENT_MYTRAININGS).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor));
+            taskPrimaryDrawerItem = new PrimaryDrawerItem()
+                    .withName(R.string.menu_mytrainings)
+                    .withDescription("Текущие тренировки")
+                    .withIcon(GoogleMaterial.Icon.gmd_calendar)
+                    .withIdentifier(FRAGMENT_MYTRAININGS)
+                    .withSelectable(false)
+                    .withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor));
         }
 
         Drawer result = new DrawerBuilder()
@@ -321,17 +346,57 @@ public class MainActivity extends AppCompatActivity {
                 .withHasStableIds(true)
                 .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.menu_users).withDescription("Информация о игроке").withIcon(R.drawable.menu_user).withIdentifier(FRAGMENT_USER).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
-                        new PrimaryDrawerItem().withName(R.string.menu_calendar).withDescription("Записаться на игру").withIcon(R.drawable.menu_hockey).withIdentifier(FRAGMENT_CALENDAR).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
+                        new PrimaryDrawerItem().withName(R.string.menu_users)
+                                .withDescription("Информация о игроке")
+                                .withIcon(R.drawable.menu_user)
+                                .withIdentifier(FRAGMENT_USER)
+                                .withSelectable(false)
+                                .withIconColor(larisaBlueColor),
+                        new PrimaryDrawerItem().withName(R.string.menu_calendar)
+                                .withDescription("Записаться на игру")
+                                .withIcon(R.drawable.menu_hockey)
+                                .withIdentifier(FRAGMENT_CALENDAR)
+                                .withSelectable(false)
+                                .withIconColor(larisaBlueColor),
                         taskPrimaryDrawerItem,
-                        new PrimaryDrawerItem().withName("Карта").withDescription("площадок").withIcon(R.drawable.menu_football).withIdentifier(FRAGMENT_MAP).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
-                        new PrimaryDrawerItem().withName("Площадку").withDescription("добавить").withIcon(R.drawable.menu_ring).withIdentifier(FRAGMENT_STADIUMS).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
-                        new PrimaryDrawerItem().withName("Соревнования").withDescription("ближайшие").withIcon(R.drawable.menu_competition).withIdentifier(FRAGMENT_EVENTS).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
+                        new PrimaryDrawerItem().withName("Карта")
+                                .withDescription("площадок")
+                                .withIcon(R.drawable.menu_location)
+                                .withIdentifier(FRAGMENT_MAP)
+                                .withSelectable(false)
+                                .withIconColor(larisaBlueColor),
+                        new PrimaryDrawerItem().withName("Площадку")
+                                .withDescription("добавить")
+                                .withIcon(R.drawable.menu_ring)
+                                .withIdentifier(FRAGMENT_STADIUMS)
+                                .withSelectable(false)
+                                .withIconColor(larisaBlueColor),
+                        new PrimaryDrawerItem().withName("Соревнования")
+                                .withDescription("ближайшие")
+                                .withIcon(R.drawable.menu_competition)
+                                .withIdentifier(FRAGMENT_EVENTS)
+                                .withSelectable(false)
+                                .withIconColor(larisaBlueColor),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName("Команды").withDescription("спортивные").withIcon(R.drawable.menu_hockey).withIdentifier(FRAGMENT_TEAMS).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
+                        new PrimaryDrawerItem().withName("Команды")
+                                .withDescription("спортивные")
+                                .withIcon(R.drawable.user_team)
+                                .withIdentifier(FRAGMENT_TEAMS)
+                                .withSelectable(false)
+                                .withIconColor(larisaBlueColor),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName("О программе").withDescription("Информация о версии").withIcon(FontAwesome.Icon.faw_info).withIdentifier(DRAWER_INFO).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor)),
-                        new PrimaryDrawerItem().withName("Выход").withIcon(FontAwesome.Icon.faw_undo).withIdentifier(DRAWER_EXIT).withSelectable(false).withSelectable(false).withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor))
+                        new PrimaryDrawerItem().withName("О программе")
+                                .withDescription("Информация о версии")
+                                .withIcon(FontAwesome.Icon.faw_info)
+                                .withIdentifier(DRAWER_INFO)
+                                .withSelectable(false)
+                                .withIconColor(larisaBlueColor),
+                        new PrimaryDrawerItem().withName("Выход")
+                                .withIcon(FontAwesome.Icon.faw_undo)
+                                .withIdentifier(DRAWER_EXIT)
+                                .withSelectable(false)
+                                .withSelectable(false)
+                                .withIconColor(larisaBlueColor)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -339,28 +404,36 @@ public class MainActivity extends AppCompatActivity {
                         if (drawerItem != null) {
                             if (drawerItem.getIdentifier() == FRAGMENT_STADIUMS) {
                                 currentFragment = FRAGMENT_STADIUMS;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentAddStadium.newInstance()).commit();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame_container, FragmentAddStadium.newInstance()).commit();
                             } else if (drawerItem.getIdentifier() == FRAGMENT_MAP) {
                                 currentFragment = FRAGMENT_MAP;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, MapFragment.newInstance()).commit();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame_container, MapFragment.newInstance()).commit();
                             } else if (drawerItem.getIdentifier() == FRAGMENT_TRAININGS) {
                                 currentFragment = FRAGMENT_TRAININGS;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TrainingsFragment.newInstance()).commit();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame_container, MyTrainingsFragment.newInstance()).commit();
                             } else if (drawerItem.getIdentifier() == FRAGMENT_CALENDAR) {
                                 currentFragment = FRAGMENT_CALENDAR;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, MyTrainingsFragment.newInstance()).commit();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame_container, TrainingsFragment.newInstance()).commit();
                             } else if (drawerItem.getIdentifier() == FRAGMENT_TEAMS) {
                                 currentFragment = FRAGMENT_TEAMS;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TeamsFragment.newInstance()).commit();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame_container, TeamsFragment.newInstance()).commit();
                             } else if (drawerItem.getIdentifier() == FRAGMENT_ADDSTADIUM) {
                                 currentFragment = FRAGMENT_ADDSTADIUM;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentAddStadium.newInstance()).commit();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame_container, FragmentAddStadium.newInstance()).commit();
                             } else if (drawerItem.getIdentifier() == FRAGMENT_EVENTS) {
                                 currentFragment = FRAGMENT_EVENTS;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, EventsFragment.newInstance()).commit();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame_container, EventsFragment.newInstance()).commit();
                             } else if (drawerItem.getIdentifier() == FRAGMENT_USER) {
                                 currentFragment = FRAGMENT_USER;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
                             } else if (drawerItem.getIdentifier() == DRAWER_INFO) {
                                 startAboutDialog();
                             } else if (drawerItem.getIdentifier() == DRAWER_EXIT) {
@@ -394,7 +467,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
 
         if (activeUserID <= 0) {
             Toast.makeText(getApplicationContext(),
