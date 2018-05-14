@@ -94,7 +94,8 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
                 level = adapterData.get(position);
                 if (level != null)
                     viewHolder.title.setText(level.getTitle());
-            }
+                viewHolder.title.setTextColor(context.getResources().getColor(R.color.larisaTextColor));
+        }
 
         if (convertView == null) {
             TextView textView = new TextView(context);

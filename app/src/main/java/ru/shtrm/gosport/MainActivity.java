@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int FRAGMENT_EVENTS = 8;
     private static final int FRAGMENT_TEAMS = 9;
 
-    private static final int FRAGMENT_ADDTRAINING = 10;
+    //private static final int FRAGMENT_ADDTRAINING = 10;
     private static final int FRAGMENT_ADDSTADIUM = 11;
     //private static final int FRAGMENT_SETTRAINING = 12;
 
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     public int currentFragment = NO_FRAGMENT;
     Bundle savedInstance = null;
     int activeUserID = 0;
-    ProgressDialog mProgressDialog;
+    //ProgressDialog mProgressDialog;
 
     private boolean isLogged = false;
     private AccountHeader headerResult = null;
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private RealmResults<User> profilesList;
     private long users_id[];
     private int cnt = 0;
-    private ProgressDialog authorizationDialog;
+    //private ProgressDialog authorizationDialog;
     private boolean splashShown = false;
 
     private Realm realmDB;
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
             taskPrimaryDrawerItem = new PrimaryDrawerItem()
                     .withName(R.string.menu_mytrainings)
                     .withDescription("Текущие тренировки")
-                    .withIcon(GoogleMaterial.Icon.gmd_calendar)
+                    .withIcon(R.drawable.menu_calendar)
                     .withIdentifier(FRAGMENT_MYTRAININGS)
                     .withSelectable(false)
                     .withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor))
@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
             taskPrimaryDrawerItem = new PrimaryDrawerItem()
                     .withName(R.string.menu_mytrainings)
                     .withDescription("Текущие тренировки")
-                    .withIcon(GoogleMaterial.Icon.gmd_calendar)
+                    .withIcon(R.drawable.menu_calendar)
                     .withIdentifier(FRAGMENT_MYTRAININGS)
                     .withSelectable(false)
                     .withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor));
@@ -582,14 +582,26 @@ public class MainActivity extends AppCompatActivity {
         IProfile new_profile;
         Bitmap myBitmap;
         if (item.getChangedAt() != null)
-            myBitmap = getResizedBitmap(MainFunctions.getUserImagePath(getApplicationContext()), item.getImage(), 0, 600, item.getChangedAt().getTime());
+            myBitmap = getResizedBitmap(MainFunctions.
+                    getUserImagePath(getApplicationContext()),
+                    item.getImage(), 0, 600, item.getChangedAt().getTime());
         else
-            myBitmap = getResizedBitmap(MainFunctions.getUserImagePath(getApplicationContext()), item.getImage(), 0, 600, new Date().getTime());
+            myBitmap = getResizedBitmap(MainFunctions.
+                    getUserImagePath(getApplicationContext()),
+                    item.getImage(), 0, 600, new Date().getTime());
 
         if (myBitmap != null) {
-            new_profile = new ProfileDrawerItem().withName(item.getName()).withEmail(item.getPhone()).withIcon(myBitmap).withIdentifier((int) item.getid() + 2).withOnDrawerItemClickListener(onDrawerItemClickListener);
+            new_profile = new ProfileDrawerItem().withName(item.getName())
+                    .withEmail(item.getPhone())
+                    .withIcon(myBitmap)
+                    .withIdentifier((int) item.getid() + 2)
+                    .withOnDrawerItemClickListener(onDrawerItemClickListener);
         } else
-            new_profile = new ProfileDrawerItem().withName(item.getName()).withEmail(item.getPhone()).withIcon(R.drawable.profile_default_small).withIdentifier((int) item.getid() + 2).withOnDrawerItemClickListener(onDrawerItemClickListener);
+            new_profile = new ProfileDrawerItem().withName(item.getName())
+                    .withEmail(item.getPhone())
+                    .withIcon(R.drawable.profile_default_small)
+                    .withIdentifier((int) item.getid() + 2)
+                    .withOnDrawerItemClickListener(onDrawerItemClickListener);
         iprofilelist.add(new_profile);
         headerResult.addProfile(new_profile, headerResult.getProfiles().size());
     }

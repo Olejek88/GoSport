@@ -31,8 +31,6 @@ public class TeamsFragment extends Fragment {
 
     FloatingActionButton fab_check;
 
-    private String object_uuid;
-
     public static TeamsFragment newInstance() {
 		return new TeamsFragment();
 	}
@@ -59,14 +57,14 @@ public class TeamsFragment extends Fragment {
         SportAdapter sportAdapter = new SportAdapter(getContext(), sports);
         sportAdapter.notifyDataSetChanged();
         typeSpinner.setAdapter(sportAdapter);
-        typeSpinner.setOnItemSelectedListener(spinnerListener);
 
         teamListView = (ListView) rootView.findViewById(R.id.erl_team_listView);
         teamListView.setOnItemClickListener(new ListviewClickListener());
+        typeSpinner.setOnItemSelectedListener(spinnerListener);
 
 		initView();
 
-		rootView.setFocusableInTouchMode(true);
+        rootView.setFocusableInTouchMode(true);
 		rootView.requestFocus();
 
 		isInit = true;
@@ -81,9 +79,6 @@ public class TeamsFragment extends Fragment {
 	private void FillListViewTeam(String teamTypeUuid) {
         RealmResults<Team> teams;
         Bundle bundle = this.getArguments();
-        if(bundle != null) {
-            object_uuid = bundle.getString("object_uuid");
-        }
         if (teamTypeUuid != null) {
             teams = realmDB.where(Team.class).equalTo("sport.uuid", teamTypeUuid).findAll();
         } else {
@@ -117,18 +112,17 @@ public class TeamsFragment extends Fragment {
             Team team = (Team)parentView.getItemAtPosition(position);
             if (team != null) {
                 String team_uuid = team.getUuid();
-                //Intent teamInfo = new Intent(getActivity(),
-                //        TeamInfoActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("team_uuid", team_uuid);
-                //equipmentInfo.putExtras(bundle);
-                //getActivity().startActivity(equipmentInfo);
+                bundle.putString("uuid", team_uuid);
+                FragmentAddTeam teamFragment = FragmentAddTeam.newInstance();
+                teamFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_container, teamFragment).commit();
             }
         }
     }
 
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
-        //boolean userSelect = false;
 
         @Override
         public void onNothingSelected(AdapterView<?> parentView) {
@@ -137,14 +131,12 @@ public class TeamsFragment extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> parentView,
                                    View selectedItemView, int position, long id) {
-
             String type = null;
             Sport typeSelected;
             typeSelected = (Sport) typeSpinner.getSelectedItem();
             if (typeSelected != null) {
                 type = typeSelected.getUuid();
             }
-
             FillListViewTeam(type);
         }
     }
@@ -152,7 +144,8 @@ public class TeamsFragment extends Fragment {
     private class submitOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(final View v) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, FragmentAddTeam.newInstance()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().
+                    replace(R.id.frame_container, FragmentAddTeam.newInstance()).commit();
         }
     }
 

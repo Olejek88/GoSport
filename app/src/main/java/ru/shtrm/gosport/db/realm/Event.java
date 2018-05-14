@@ -14,6 +14,7 @@ public class Event extends RealmObject {
     private String description;
     private Sport sport;
     private Date date;
+    private User user;
     private Date createdAt;
     private Date changedAt;
 
@@ -71,6 +72,14 @@ public class Event extends RealmObject {
 
     public void setSport(Sport sport) {
         this.sport = sport;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreatedAt() {

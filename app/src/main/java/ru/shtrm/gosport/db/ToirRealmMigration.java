@@ -340,6 +340,16 @@ class ToirRealmMigration implements RealmMigration {
             schema.get("UserSport").removePrimaryKey();
             oldVersion++;
         }
+        if (oldVersion == 16) {
+            Log.d(TAG, "from version 16");
+            schema.get("Stadium")
+                    .addRealmObjectField("user", schema.get("User"));
+            schema.get("Event")
+                    .addRealmObjectField("user", schema.get("User"));
+            schema.get("Team")
+                    .addRealmObjectField("user", schema.get("User"));
+            oldVersion++;
+        }
 
         testPropsFields(realm);
     }

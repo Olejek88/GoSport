@@ -19,11 +19,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -45,12 +43,12 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import ru.shtrm.gosport.AuthorizedUser;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
-import ru.shtrm.gosport.db.adapters.StadiumAdapter;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Stadium;
-import ru.shtrm.gosport.gps.TaskItemizedOverlay;
+import ru.shtrm.gosport.db.realm.User;
 import ru.shtrm.gosport.utils.MainFunctions;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -156,7 +154,8 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
         }
 
         if (stadiumUuid!=null) {
-            Stadium stadium = realmDB.where(Stadium.class).equalTo("uuid", stadiumUuid).findFirst();
+            Stadium stadium = realmDB.where(Stadium.class).
+                    equalTo("uuid", stadiumUuid).findFirst();
             if (stadium !=null) {
                 title.setText(stadium.getTitle());
                 description.setText(stadium.getDescription());
@@ -303,16 +302,27 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
 
             case R.id.stadium_button_submit:
                 String image_name;
-
+                final User user = realmDB.where(User.class).
+                        equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
                 realmDB.beginTransaction();
                 if (stadiumUuid!=null) {
                     Stadium stadium = realmDB.where(Stadium.class).
                             equalTo("uuid", stadiumUuid).findFirst();
                     if (stadium != null) {
+                        if (stadium.getUser()!=null && stadium.getUser()!=user) {
+                            Toast.makeText(getActivity().getApplicationContext(),
+                                    "Вы не имеете права изменить эту площадку. " +
+                                            "Если в описании присутствует неточность - " +
+                                            "сообщите администратору через форму на сайте.",
+                                    Toast.LENGTH_LONG).show();
+                            break;
+                        }
+
                         stadium.setTitle(title.getText().toString());
                         stadium.setSport(sportAdapter.getItem(typeSpinner.getSelectedItemPosition()));
                         stadium.setDescription(description.getText().toString());
                         stadium.setAddress(address.getText().toString());
+                        stadium.setUser(user);
                         stadium.setChangedAt(new Date());
                         stadium.setLatitude(stadiumLatitude);
                         stadium.setLatitude(stadiumLongitude);
@@ -361,6 +371,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                     stadium.setChangedAt(new Date());
                     stadium.setCreatedAt(new Date());
                     stadium.setUuid(uuid);
+                    stadium.setUser(user);
                     stadium.setLatitude(stadiumLatitude);
                     stadium.setLatitude(stadiumLongitude);
                     if (image_name != null)

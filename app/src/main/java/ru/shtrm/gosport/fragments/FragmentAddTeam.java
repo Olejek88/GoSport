@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,31 +16,32 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-import ru.shtrm.gosport.MainActivity;
+import ru.shtrm.gosport.AuthorizedUser;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.adapters.LevelAdapter;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Team;
+import ru.shtrm.gosport.db.realm.User;
 import ru.shtrm.gosport.utils.MainFunctions;
+
+import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class FragmentAddTeam extends Fragment implements View.OnClickListener {
     private static final int PICK_PHOTO_FOR_TEAM = 1;
-    Spinner typeSpinner, levelSpinner;
+    private String teamUuid = null;
+    Spinner sportSpinner, levelSpinner;
     SportAdapter sportAdapter;
     LevelAdapter levelAdapter;
-    private static final String TAG = "FragmentAdd";
     private ImageView iView;
     private Bitmap teamBitmap = null;
     private EditText title, description;
-    private Sport sport;
     private Realm realmDB;
 
     public FragmentAddTeam() {
@@ -56,28 +56,57 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_team, container, false);
         realmDB = Realm.getDefaultInstance();
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            teamUuid = bundle.getString("uuid", "");
+        }
+
         iView = (ImageView) view.findViewById(R.id.team_add_image);
-        iView.setOnClickListener(this); // calling onClick() method
+        iView.setOnClickListener(this);
         Button one = (Button) view.findViewById(R.id.team_button_submit);
-        one.setOnClickListener(this); // calling onClick() method
-        typeSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
+        one.setOnClickListener(this);
+
+        sportSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
         levelSpinner = (Spinner) view.findViewById(R.id.profile_hockey_level);
         title = (EditText) view.findViewById(R.id.team_add_title);
         description = (EditText) view.findViewById(R.id.team_add_description);
 
-        RealmResults<Sport> sport;
-        sport = realmDB.where(Sport.class).findAll();
-
-        Spinner typeSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
+        RealmResults<Sport> sport = realmDB.where(Sport.class).findAll();
         sportAdapter = new SportAdapter(getActivity().getApplicationContext(), sport);
-        typeSpinner.setAdapter(sportAdapter);
+        sportSpinner.setAdapter(sportAdapter);
 
         Sport hockey = realmDB.where(Sport.class).equalTo("name","Хоккей").findFirst();
-        RealmResults<Level> level;
-        level = realmDB.where(Level.class).findAll();
-        Spinner levelSpinner = (Spinner) view.findViewById(R.id.profile_hockey_level);
+        RealmResults<Level> level = realmDB.where(Level.class).findAll();
         levelAdapter = new LevelAdapter(getActivity().getApplicationContext(), level, hockey);
         levelSpinner.setAdapter(levelAdapter);
+
+        if (teamUuid!=null) {
+            Team team = realmDB.where(Team.class).equalTo("uuid", teamUuid).findFirst();
+            if (team != null) {
+                title.setText(team.getTitle());
+                description.setText(team.getDescription());
+                // TODO разобраться с binding на imageview
+                String path = MainFunctions.getPicturesDirectory(getContext());
+                if (team.getPhoto()!=null) {
+                    Bitmap team_bitmap = getResizedBitmap(path, team.getPhoto(),
+                            0, 600, team.getChangedAt().getTime());
+                    if (team_bitmap != null) {
+                        iView.setImageBitmap(team_bitmap);
+                    }
+                }
+                for (int r = 0; r < sport.size(); r++) {
+                    if (team.getSport()!=null &&
+                            team.getSport().getUuid().equals(sport.get(r).getUuid()))
+                        sportSpinner.setSelection(r);
+                }
+                for (int r = 0; r < level.size(); r++) {
+                    if (team.getLevel()!=null &&
+                            team.getLevel().getUuid().equals(level.get(r).getUuid()))
+                        levelSpinner.setSelection(r);
+                }
+            }
+        }
 
         return view;
     }
@@ -118,54 +147,81 @@ public class FragmentAddTeam extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.team_add_image:
-                // do your code
                 pickImage();
                 break;
 
             case R.id.team_button_submit:
-                Team team_c = realmDB.where(Team.class).equalTo("name", title.getText().
-                        toString()).findFirst();
                 String image_name;
-                if (team_c!=null) {
-                     Toast.makeText(getActivity().getApplicationContext(),
-                            "Такая команда уже есть", Toast.LENGTH_LONG).show();
-                     break;
+                final User user = realmDB.where(User.class).
+                        equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
+                if (teamUuid!=null) {
+                    Team team = realmDB.where(Team.class).
+                            equalTo("uuid", teamUuid).findFirst();
+                    if (team != null) {
+                        if (team.getUser()!=null && team.getUser()!=user) {
+                            Toast.makeText(getActivity().getApplicationContext(),
+                                    "Вы не имеете права изменить эту команду. " +
+                                            "Если в описании присутствует неточность - " +
+                                            "сообщите администратору через форму на сайте.",
+                                    Toast.LENGTH_LONG).show();
+                            break;
+                        }
+                        realmDB.beginTransaction();
+                        team.setTitle(title.getText().toString());
+                        team.setDescription(description.getText().toString());
+                        team.setSport(sportAdapter.getItem(sportSpinner.getSelectedItemPosition()));
+                        team.setLevel(levelAdapter.getItem(levelSpinner.getSelectedItemPosition()));
+                        team.setChangedAt(new Date());
+                        realmDB.commitTransaction();
+
+                        if (teamBitmap != null) {
+                            image_name = team.getUuid() + ".jpg";
+                            MainFunctions.storeNewImage(teamBitmap, getContext(), 1024,
+                                    image_name);
+                        }
                     }
-                if (title.getText().length()<3)
-                    {
+                }
+                else {
+                    Team team_c = realmDB.where(Team.class).equalTo("name",
+                            title.getText().toString()).findFirst();
+                    if (team_c != null) {
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                "Такая команда уже есть", Toast.LENGTH_LONG).show();
+                        break;
+                    }
+                    if (title.getText().length() < 3) {
                         Toast.makeText(getActivity().getApplicationContext(),
                                 "Вы должны заполнить все поля!", Toast.LENGTH_LONG).show();
                         break;
                     }
-                realmDB.beginTransaction();
-                String uuid = java.util.UUID.randomUUID().toString();
-                if (teamBitmap!=null)
-                    image_name = uuid + ".jpg";
-                else
-                    image_name = null;
-                Log.e(TAG, "name=" + image_name);
+                    realmDB.beginTransaction();
+                    String uuid = java.util.UUID.randomUUID().toString();
+                    if (teamBitmap != null)
+                        image_name = uuid + ".jpg";
+                    else
+                        image_name = null;
 
-                Team team = realmDB.createObject(Team.class, uuid);
-                team.setTitle(title.getText().toString());
-                team.setSport(sportAdapter.getItem(typeSpinner.getSelectedItemPosition()));
-                team.setLevel(levelAdapter.getItem(levelSpinner.getSelectedItemPosition()));
-                team.setDescription(description.getText().toString());
-                team.setChangedAt(new Date());
-                team.setCreatedAt(new Date());
-                team.setUuid(uuid);
-                if (image_name!=null)
-                    team.setPhoto(image_name);
-                realmDB.commitTransaction();
+                    Team team = realmDB.createObject(Team.class, uuid);
+                    team.setTitle(title.getText().toString());
+                    team.setSport(sportAdapter.getItem(sportSpinner.getSelectedItemPosition()));
+                    team.setLevel(levelAdapter.getItem(levelSpinner.getSelectedItemPosition()));
+                    team.setDescription(description.getText().toString());
+                    team.setChangedAt(new Date());
+                    team.setCreatedAt(new Date());
+                    team.setUuid(uuid);
+                    if (image_name != null)
+                        team.setPhoto(image_name);
+                    realmDB.commitTransaction();
 
-                if (teamBitmap!=null)
-                    MainFunctions.storeNewImage(teamBitmap, getContext(), 1024, image_name);
-
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TeamsFragment.newInstance()).commit();
+                    if (teamBitmap != null)
+                        MainFunctions.storeNewImage(teamBitmap, getContext(), 1024, image_name);
+                }
+                getActivity().getSupportFragmentManager().
+                        beginTransaction().replace(R.id.frame_container, TeamsFragment.newInstance()).commit();
                 break;
             default:
                 break;
         }
-
     }
 
     @Override

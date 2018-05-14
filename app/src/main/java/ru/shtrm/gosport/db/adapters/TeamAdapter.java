@@ -117,15 +117,20 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
             } else {
                 viewHolder.name.setText(team.getTitle());
                 if (team.getSport() != null)
-                    viewHolder.type.setText(team.getSport().getTitle());
+                    viewHolder.type.setText(context.
+                            getResources().getString(R.string.sport,team.getSport().getTitle()));
                 if (team.getLevel() != null)
-                    viewHolder.level.setText(team.getLevel().getTitle());
+                    viewHolder.level.setText(context.
+                            getResources().getString(R.string.level,team.getLevel().getTitle()));
                 String path = MainFunctions.getUserImagePath(context);
-                Bitmap image_bitmap = getResizedBitmap(path, team.getPhoto(), 300, 0, team.getChangedAt().getTime());
-                if (image_bitmap != null) {
-                    viewHolder.icon.setImageBitmap(image_bitmap);
-                } else {
-                    viewHolder.icon.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image));
+                if (team.getPhoto()!=null) {
+                    Bitmap image_bitmap = getResizedBitmap(path,
+                            team.getPhoto(), 300, 0, team.getChangedAt().getTime());
+                    if (image_bitmap != null) {
+                        viewHolder.icon.setImageBitmap(image_bitmap);
+                    } else {
+                        viewHolder.icon.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image));
+                    }
                 }
             }
         }

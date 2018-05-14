@@ -16,6 +16,7 @@ public class Stadium extends RealmObject {
     private double longitude;
     private String photo;
     private String address;
+    private User user;
     private Date createdAt;
     private Date changedAt;
 
@@ -89,6 +90,14 @@ public class Stadium extends RealmObject {
 
     public void setImage(String image) {
         this.photo = image;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreatedAt() {

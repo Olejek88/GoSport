@@ -47,17 +47,6 @@ public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter
         return null;
     }
 
-    /*
-    @Override
-    public long getItemId(int position) {
-        Sport sport;
-        if (adapterData != null) {
-            sport = adapterData.get(position);
-            return sport.get_id();
-        }
-        return 0;
-    }*/
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
@@ -76,6 +65,9 @@ public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter
             sport = adapterData.get(position);
             if (sport != null) {
                 viewHolder.title.setText(sport.getTitle());
+                viewHolder.title.setTextSize(16);
+                viewHolder.title.setTextColor(context.getResources().getColor(R.color.larisaTextColor));
+                viewHolder.title.setPadding(10,10,10,10);
                 //textView.setText(sport.getTitle());
                 //textView.setTextSize(16);
                 //textView.setPadding(10, 10, 10, 10);
