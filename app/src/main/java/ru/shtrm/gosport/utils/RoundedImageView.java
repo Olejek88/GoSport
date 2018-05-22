@@ -80,12 +80,37 @@ public class RoundedImageView extends AppCompatImageView {
         return imageRounded;
     }
 
+    public static Bitmap getRoundedBitmapByPath(String path, String filename, int radius) {
+        File image_full = new File(path + filename);
+        Bitmap bmp = BitmapFactory.decodeFile(image_full.getAbsolutePath());
+        if (bmp != null) {
+            final int width = bmp.getWidth() + 2;
+            final int height = bmp.getHeight() + 2;
+            Bitmap imageRounded = Bitmap.createBitmap(width, height, bmp.getConfig());
+            BitmapShader shader = new BitmapShader(imageRounded, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setShader(shader);
+            Canvas canvas = new Canvas(imageRounded);
+            canvas.drawCircle(width / 2, height / 2, radius, paint);
+            paint.setShader(null);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.BLUE);
+            paint.setStrokeWidth(2);
+            canvas.drawCircle(width / 2, height / 2, radius-1, paint);
+            return imageRounded;
+        }
+        else return null;
+    }
+
     public static Bitmap getResizedBitmap(String path, String filename, int newWidth, int newHeight, long changedAt) {
         Bitmap imageBitmap;
         Bitmap imageBitmap2;
         float scaleWidth;
         float scaleHeight;
         // /storage/sdcard1/Android/data/ru.toir.mobile/users/4CD4A64F-F6CB-4A7C-B5A6-42936E656F31.jpg
+        if (path==null || filename==null) return null;
+
         File image = new File(path + filename.replace(".", "_m."));
         File image_full = new File(path + filename);
 

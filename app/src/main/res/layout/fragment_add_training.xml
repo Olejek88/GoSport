@@ -8,6 +8,7 @@
     </data>
 
     <ScrollView
+        android:id="@+id/training_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="70dp"
@@ -22,10 +23,9 @@
                 android:id="@+id/training_add_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
-                android:src="@drawable/menu_football" />
+                android:src="@drawable/user_football" />
 
             <EditText
                 android:id="@+id/training_add_title"
@@ -33,7 +33,6 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_toEndOf="@+id/training_add_icon"
-                android:layout_toRightOf="@+id/training_add_icon"
                 android:gravity="center_vertical|center_horizontal"
                 android:hint="@string/training_add_name"
                 android:inputType="text"
@@ -41,6 +40,7 @@
                 android:paddingRight="10dp"
                 android:paddingStart="10dp"
                 android:textColor="#000000"
+                android:text="@{training.title}"
                 android:textSize="16sp" />
 
             <ImageView
@@ -48,22 +48,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_below="@+id/training_add_icon"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/menu_hockey" />
 
             <Spinner
-                android:id="@+id/simple_spinner"
+                android:id="@+id/training_sport_spinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
                 android:layout_height="fill_parent"
                 android:layout_width="match_parent"
                 android:layout_alignParentBottom="false"
                 android:layout_below="@+id/training_add_icon"
                 android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_toEndOf="@+id/training_add_sport_icon"
-                android:layout_toRightOf="@+id/training_add_sport_icon"
                 android:prompt="@string/team_add_sport"
                 android:textSize="16sp" />
 
@@ -72,7 +69,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_below="@+id/training_add_sport_icon"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/menu_location" />
@@ -85,9 +81,7 @@
                 android:layout_alignParentBottom="false"
                 android:layout_below="@+id/training_add_sport_icon"
                 android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_toEndOf="@+id/training_add_stadium_icon"
-                android:layout_toRightOf="@+id/training_add_stadium_icon"
                 android:prompt="@string/training_add_stadium"
                 android:textSize="16sp" />
 
@@ -96,7 +90,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_below="@+id/training_add_stadium_icon"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/user_team" />
@@ -109,9 +102,7 @@
                 android:layout_alignParentBottom="false"
                 android:layout_below="@+id/training_add_stadium_icon"
                 android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_toEndOf="@+id/training_add_team_icon"
-                android:layout_toRightOf="@+id/training_add_team_icon"
                 android:prompt="@string/training_add_team"
                 android:textSize="16sp" />
 
@@ -120,7 +111,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_below="@+id/training_add_team_icon"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/user_level" />
@@ -133,9 +123,7 @@
                 android:layout_alignParentBottom="false"
                 android:layout_below="@+id/training_add_team_icon"
                 android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_toEndOf="@+id/training_add_level_icon"
-                android:layout_toRightOf="@+id/training_add_level_icon"
                 android:prompt="@string/training_add_level"
                 android:textSize="16sp" />
 
@@ -144,7 +132,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_below="@+id/training_add_level_icon"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/menu_user" />
@@ -156,11 +143,10 @@
                 android:layout_below="@+id/training_add_level_icon"
                 android:layout_gravity="start"
                 android:layout_toEndOf="@+id/training_add_cost_icon"
-                android:layout_toRightOf="@+id/training_add_cost_icon"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:hint="@string/training_add_cost"
                 android:inputType="number"
+                android:text="@{Integer.toString(training.cost)}"
                 android:textSize="16sp" />
 
             <ImageView
@@ -168,7 +154,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_below="@+id/training_add_cost_icon"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/menu_competition" />
@@ -176,18 +161,17 @@
             <EditText
                 android:id="@+id/training_add_comment"
                 android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_marginLeft="15dp"
+                android:layout_height="60dp"
                 android:layout_marginStart="15dp"
                 android:layout_below="@+id/training_add_cost_icon"
                 android:layout_gravity="start"
                 android:layout_toEndOf="@+id/training_add_comment_icon"
-                android:layout_toRightOf="@+id/training_add_comment_icon"
                 android:hint="@string/training_add_comment"
                 android:inputType="text"
                 android:lines="2"
                 android:maxLines="2"
                 android:minLines="2"
+                android:text="@{training.comment}"
                 android:textSize="16sp" />
 
             <ImageView
@@ -195,7 +179,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_below="@+id/training_add_comment_icon"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/menu_ring" />
@@ -206,12 +189,10 @@
                 android:layout_height="40dp"
                 android:layout_below="@+id/training_add_comment_icon"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:layout_toEndOf="@+id/training_add_date_icon"
-                android:layout_toRightOf="@+id/training_add_date_icon"
                 android:gravity="center_vertical"
-                android:text="@string/training_time"
+                android:text="@{training.dateFormatted}"
                 android:textSize="16sp" />
 
             <Button
@@ -221,7 +202,6 @@
                 android:layout_below="@+id/training_add_date_icon"
                 android:layout_gravity="center_vertical|center_horizontal|center"
                 android:layout_marginBottom="20dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
                 android:height="35dp"

@@ -1,21 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="user"
             type="ru.shtrm.gosport.db.realm.User" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tl_global_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="70dp"
             android:background="#FAFAFA"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -23,15 +28,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_image"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
+                    android:layout_height="200dp"
+                    android:gravity="top"
                     android:background="@color/md_blue_300"
-                    android:contentDescription="@string/image_description"
-                    android:scaleType="center"
-                    android:src="@drawable/user_no_image" />
+                    android:src="@drawable/user_no_image"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/larisaBlueColor"/>
 
                 <TextView
                     android:id="@+id/user_text_name"
@@ -55,7 +60,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_below="@+id/user_text_name"
-                    android:layout_marginLeft="15dp"
                     android:layout_marginStart="15dp"
                     android:contentDescription="@string/image_description"
                     android:src="@drawable/user_profile" />
@@ -66,9 +70,9 @@
                     android:layout_height="25dp"
                     android:layout_below="@+id/user_text_name"
                     android:layout_toEndOf="@+id/user_icon"
-                    android:layout_toRightOf="@+id/user_icon"
                     android:background="#FAFAFA"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@{user.type==0 ? @string/profile_type_player : @string/profile_type_orgs}"
                     android:textColor="@color/larisaTextColorABlack"
                     android:textSize="16sp" />
@@ -79,9 +83,9 @@
                     android:layout_height="25dp"
                     android:layout_below="@+id/user_text_type"
                     android:layout_toEndOf="@+id/user_icon"
-                    android:layout_toRightOf="@+id/user_icon"
                     android:background="#FAFAFA"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/profile_type"
                     android:textColor="@color/larisaTextColor"
                     android:textSize="14sp" />
@@ -91,7 +95,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_below="@+id/user_text_type_label"
-                    android:layout_marginLeft="15dp"
                     android:layout_marginStart="15dp"
                     android:clickable="false"
                     android:contentDescription="@string/image_description"
@@ -103,9 +106,9 @@
                     android:layout_height="25dp"
                     android:layout_below="@+id/user_text_type_label"
                     android:layout_toEndOf="@+id/user_age_icon"
-                    android:layout_toRightOf="@+id/user_age_icon"
                     android:background="#FAFAFA"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@{user.getBirthDateFormatted()}"
                     android:textColor="@color/larisaTextColorABlack"
                     android:textSize="16sp" />
@@ -116,10 +119,9 @@
                     android:layout_height="25dp"
                     android:layout_below="@+id/user_text_age"
                     android:layout_toEndOf="@+id/user_age_icon"
-                    android:layout_toRightOf="@+id/user_age_icon"
                     android:background="#FAFAFA"
-                    android:paddingLeft="10dp"
                     android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/profile_birth"
                     android:textColor="@color/larisaTextColor"
                     android:textSize="14sp" />
@@ -129,7 +131,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_below="@+id/user_text_age_label"
-                    android:layout_marginLeft="15dp"
                     android:layout_marginStart="15dp"
                     android:clickable="false"
                     android:contentDescription="@string/image_description"
@@ -141,11 +142,11 @@
                     android:layout_height="25dp"
                     android:layout_below="@+id/user_text_age_label"
                     android:layout_toEndOf="@+id/user_phone_icon"
-                    android:layout_toRightOf="@+id/user_phone_icon"
                     android:background="#FAFAFA"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/larisaTextColorABlack"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@{user.phone}"
+                    android:textColor="@color/larisaTextColorABlack"
                     android:textSize="16sp" />
 
                 <TextView
@@ -154,9 +155,9 @@
                     android:layout_height="25dp"
                     android:layout_below="@+id/user_text_phone"
                     android:layout_toEndOf="@+id/user_phone_icon"
-                    android:layout_toRightOf="@+id/user_phone_icon"
                     android:background="#FAFAFA"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/phone"
                     android:textColor="@color/larisaTextColor"
                     android:textSize="14sp" />
@@ -166,7 +167,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_below="@+id/user_text_phone_label"
-                    android:layout_marginLeft="15dp"
                     android:layout_marginStart="15dp"
                     android:clickable="false"
                     android:contentDescription="@string/image_description"
@@ -178,11 +178,11 @@
                     android:layout_height="25dp"
                     android:layout_below="@+id/user_text_phone_label"
                     android:layout_toEndOf="@+id/user_vk_icon"
-                    android:layout_toRightOf="@+id/user_vk_icon"
                     android:background="#FAFAFA"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/larisaTextColorABlack"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@{user.vk}"
+                    android:textColor="@color/larisaTextColorABlack"
                     android:textSize="16sp" />
 
                 <TextView
@@ -191,7 +191,6 @@
                     android:layout_height="25dp"
                     android:layout_below="@+id/user_text_vk"
                     android:layout_toEndOf="@+id/user_vk_icon"
-                    android:layout_toRightOf="@+id/user_vk_icon"
                     android:background="#FAFAFA"
                     android:paddingEnd="10dp"
                     android:paddingLeft="10dp"
@@ -213,11 +212,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_below="@+id/profile_divider1"
-                    android:layout_marginLeft="15dp"
                     android:layout_marginStart="15dp"
                     android:contentDescription="@string/image_description"
                     android:maxWidth="32dp"
-                    android:src="@drawable/hockey_32" />
+                    android:src="@drawable/user_hockey" />
 
                 <TextView
                     android:id="@+id/profile_text_hockey"
@@ -226,7 +224,6 @@
                     android:layout_below="@+id/profile_divider1"
                     android:layout_gravity="start"
                     android:layout_toEndOf="@+id/profile_hockey"
-                    android:layout_toRightOf="@+id/profile_hockey"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
@@ -240,39 +237,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profile_text_hockey"
-                    android:textColor="@color/larisaTextColor"
-                    android:text="@string/level"
-                    android:textSize="14sp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginStart="15dp" />
+                    android:layout_marginStart="15dp"
+                    android:text="@string/level"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/profile_hockey_amplua"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profile_hockey_level"
-                    android:textColor="@color/larisaTextColor"
-                    android:text="@string/amplua"
-                    android:textSize="14sp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginStart="15dp" />
+                    android:layout_marginStart="15dp"
+                    android:text="@string/amplua"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/profile_hockey_team"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profile_hockey_amplua"
-                    android:textColor="@color/larisaTextColor"
-                    android:text="@string/team"
-                    android:textSize="14sp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginStart="15dp" />
+                    android:layout_marginStart="15dp"
+                    android:text="@string/team"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp" />
 
                 <View
                     android:id="@+id/profile_divider2"
@@ -286,11 +283,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_below="@+id/profile_divider2"
-                    android:layout_marginLeft="15dp"
                     android:layout_marginStart="15dp"
                     android:contentDescription="@string/image_description"
                     android:maxWidth="32dp"
-                    android:src="@drawable/football_32" />
+                    android:src="@drawable/menu_football" />
 
                 <TextView
                     android:id="@+id/profile_text_football"
@@ -299,7 +295,6 @@
                     android:layout_below="@+id/profile_divider2"
                     android:layout_gravity="start"
                     android:layout_toEndOf="@+id/profile_football"
-                    android:layout_toRightOf="@+id/profile_football"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
@@ -313,37 +308,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profile_football"
-                    android:textColor="@color/larisaTextColor"
-                    android:textSize="14sp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginStart="15dp" />
+                    android:layout_marginStart="15dp"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/profile_football_amplua"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profile_football_level"
-                    android:textColor="@color/larisaTextColor"
-                    android:textSize="14sp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginStart="15dp" />
+                    android:layout_marginStart="15dp"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/profile_football_team"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profile_football_amplua"
-                    android:textColor="@color/larisaTextColor"
-                    android:textSize="14sp"
-                    android:text="@string/team"
                     android:layout_marginEnd="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginStart="15dp" />
+                    android:layout_marginStart="15dp"
+                    android:text="@string/team"
+                    android:textColor="@color/larisaTextColor"
+                    android:textSize="14sp" />
             </RelativeLayout>
         </ScrollView>
 
@@ -351,11 +346,11 @@
             android:id="@+id/user_edit_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginEnd="30dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="60dp"
+            android:layout_marginStart="15dp"
             android:src="@drawable/ic_plus_white_36dp"
-            app:fabSize="auto"
-            android:layout_gravity="center|end" />
+            app:backgroundTint="@color/larisaBlueColor"
+            app:fabSize="normal" />
     </android.support.design.widget.CoordinatorLayout>
 </layout>

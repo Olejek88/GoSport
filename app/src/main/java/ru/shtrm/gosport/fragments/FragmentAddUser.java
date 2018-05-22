@@ -2,10 +2,12 @@ package ru.shtrm.gosport.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.Realm;
+import ru.shtrm.gosport.AuthorizedUser;
 import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.realm.User;
@@ -40,6 +43,7 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
     private TextView birthDate;
     private Realm realmDB;
     private Bitmap userBitmap = null;
+    private Context mainActivityConnector = null;
     int selectedYear,selectedDay,selectedMonth;
 
     public FragmentAddUser() {
@@ -51,31 +55,29 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_user, container, false);
         realmDB = Realm.getDefaultInstance();
 
-        realmDB.beginTransaction();
+        /*realmDB.beginTransaction();
         User user = realmDB.where(User.class).findFirst();
         if (user!=null)
             user.deleteFromRealm();
-        realmDB.commitTransaction();
+        realmDB.commitTransaction();*/
 
-        iView = (ImageView) view.findViewById(R.id.profile_add_image);
+        iView = view.findViewById(R.id.profile_add_image);
         iView.setOnClickListener(this);
-        Button one = (Button) view.findViewById(R.id.profile_button_submit);
+        Button one = view.findViewById(R.id.profile_button_submit);
         one.setOnClickListener(this);
 
-        typeSpinner = (Spinner) view.findViewById(R.id.profile_add_type);
+        typeSpinner = view.findViewById(R.id.profile_add_type);
+        name = view.findViewById(R.id.profile_add_name);
+        birthDate = view.findViewById(R.id.profile_add_birth);
+        phone = view.findViewById(R.id.profile_add_phone);
+        vk = view.findViewById(R.id.profile_add_vk);
 
-        name = (EditText) view.findViewById(R.id.profile_add_name);
-        birthDate = (TextView) view.findViewById(R.id.profile_add_birth);
-        phone = (EditText) view.findViewById(R.id.profile_add_phone);
-        vk = (EditText) view.findViewById(R.id.profile_add_vk);
-
-        Spinner typeSpinner = (Spinner) view.findViewById(R.id.profile_add_type);
         ArrayAdapter<String> typeSpinnerAdapter =
-                new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item,
+                new ArrayAdapter<>(mainActivityConnector, android.R.layout.simple_spinner_dropdown_item,
                         getResources().getStringArray(R.array.profile_type));
         typeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(typeSpinnerAdapter);
@@ -96,7 +98,7 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
         int year = calendar.get(Calendar.YEAR);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog datePickerDialog =
-                new DatePickerDialog(getActivity(), dateCallBack, year, month, day);
+                new DatePickerDialog(mainActivityConnector, dateCallBack, year, month, day);
         datePickerDialog.show();
     }
 
@@ -126,13 +128,14 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                 return;
             }
             try {
-                InputStream inputStream = getActivity().getApplicationContext()
+                InputStream inputStream = mainActivityConnector.getApplicationContext()
                         .getContentResolver().openInputStream(data.getData());
                 userBitmap = BitmapFactory.decodeStream(inputStream);
                 if (userBitmap!=null) {
                     int width= (int) (300*(float)(userBitmap.getWidth()/userBitmap.getHeight()));
                     if (width>0) {
-                        Bitmap myBitmap2 = Bitmap.createScaledBitmap(userBitmap, width, 300, false);
+                        Bitmap myBitmap2 = Bitmap.
+                                createScaledBitmap(userBitmap, width, 300, false);
                         iView.setImageBitmap(myBitmap2);
                     }
                 }
@@ -156,7 +159,7 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                         name.getText().toString()).findFirst();
                 String image_name;
                 if (user!=null) {
-                     Toast.makeText(getActivity().getApplicationContext(),
+                     Toast.makeText(mainActivityConnector.getApplicationContext(),
                             "Пользователь с логином " + user.getLogin() +
                                     " уже есть на этом устройстве", Toast.LENGTH_LONG).show();
                      break;
@@ -164,7 +167,7 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                 if (name.getText().length()<2 ||
                         phone.getText().length()<8 || selectedYear<100)
                     {
-                        Toast.makeText(getActivity().getApplicationContext(),
+                        Toast.makeText(mainActivityConnector.getApplicationContext(),
                                 "Вы должны заполнить все поля!", Toast.LENGTH_LONG).show();
                         break;
                     }
@@ -179,10 +182,15 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                 }
                 String uuid = java.util.UUID.randomUUID().toString();
 
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, selectedYear);
+                cal.set(Calendar.MONTH, selectedMonth);
+                cal.set(Calendar.DAY_OF_MONTH, selectedDay);
+
                 User profile = realmDB.createObject(User.class,nextId);
                 profile.setName(name.getText().toString());
                 profile.set_id(MainActivity.NO_SYNC);
-                profile.setBirthDate(new Date(selectedYear-1900,selectedMonth,selectedDay));
+                profile.setBirthDate(cal.getTime());
                 profile.setPhone(phone.getText().toString());
                 profile.setVk(MainFunctions.getVkProfile(vk.getText().toString()));
                 profile.setType(typeSpinner.getSelectedItemPosition());
@@ -201,10 +209,12 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
                 user = realmDB.where(User.class).equalTo("name", name.getText().toString()).findFirst();
                 if (user!=null && user.get_id()!=null && user.get_id().length()>0)
                     {
-                       ((MainActivity)getActivity()).addProfile(profile);
-                        ((MainActivity)getActivity()).refreshProfileList();
-                       Fragment f = UserInfoFragment.newInstance();
-                       getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
+                       ((MainActivity)mainActivityConnector).addProfile(profile);
+                        ((MainActivity)mainActivityConnector).refreshProfileList();
+                        AuthorizedUser.getInstance().setUuid(user.getUuid());
+                        Fragment f = UserInfoFragment.newInstance();
+                        ((MainActivity)mainActivityConnector).getSupportFragmentManager().
+                               beginTransaction().replace(R.id.frame_container, f).commit();
                     }
                 break;
             default:
@@ -217,5 +227,14 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
     public void onDestroyView() {
         super.onDestroyView();
         realmDB.close();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivityConnector = getActivity();
+        // TODO решить что делать если контекст не приехал
+        if (mainActivityConnector==null)
+            onDestroyView();
     }
 }

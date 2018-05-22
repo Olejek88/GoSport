@@ -121,6 +121,14 @@ public class Training extends RealmObject {
         this.date = date;
     }
 
+    public String getDateFormatted(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.US);
+        if (date!=null)
+            return formatter.format(date);
+        else
+            return "";
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -137,8 +145,4 @@ public class Training extends RealmObject {
         this.changedAt = changedAt;
     }
 
-    public String getDateFormatted(){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        return formatter.format(date);
-    }
 }

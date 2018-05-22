@@ -23,7 +23,6 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.util.RecyclerViewCacheUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -136,7 +135,6 @@ public class EventInfoActivity extends AppCompatActivity {
                 .withShowDrawerOnFirstLaunch(true)
                 .build();
 
-        RecyclerViewCacheUtil.getInstance().withCacheSize(2).init(result);
         if (savedInstanceState == null) {
             // set the selection to the item with the identifier 11
             result.setSelection(21, false);

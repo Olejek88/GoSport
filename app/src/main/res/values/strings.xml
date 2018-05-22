@@ -153,10 +153,17 @@
     <string name="training_time">Время тренировки</string>
 
     <string name="formatted_date">%1$d/%2$d/%3$d</string>
+    <string name="formatted_date_time">%1$d/%2$d/%3$d %4$d:%5$d</string>
     <string name="level">Уровень: %1$s</string>
     <string name="amplua">Амплуа: %1$s</string>
     <string name="team">Команда: %1$s</string>
     <string name="sport">Спорт: %1$s</string>
 
-    <string name="not_selected">Не выбрана</string>
+    <string name="not_selected">не выбран</string>
+    <string name="user_add">Создайте профиль пользователя</string>
+    <string name="message_register">Пожалуйста зарегистрируйтесь (в меню слева)</string>
+    <string name="message_no_gps_permission">Нет разрешений на вывод карты!</string>
+    <string name="message_no_write_permission">Нет разрешений на запись данных!</string>
+    <string name="message_no_such_user">Нет такого пользователя!</string>
+    <string name="message_upgrade_references">Пожалуйста обновите справочники</string>
 </resources>

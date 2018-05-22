@@ -145,7 +145,9 @@ public class TeamsFragment extends Fragment {
         @Override
         public void onClick(final View v) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.frame_container, FragmentAddTeam.newInstance()).commit();
+                    replace(R.id.frame_container, FragmentAddTeam.newInstance()).
+                    addToBackStack("TeamsFragment").
+                    commit();
         }
     }
 

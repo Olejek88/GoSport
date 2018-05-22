@@ -2,8 +2,12 @@ package ru.shtrm.gosport.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -19,7 +23,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,10 +30,12 @@ import java.util.Date;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.AuthorizedUser;
+import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
+import ru.shtrm.gosport.databinding.FragmentAddTrainingBinding;
 import ru.shtrm.gosport.db.adapters.LevelAdapter;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
-import ru.shtrm.gosport.db.adapters.StadiumAdapter;
+import ru.shtrm.gosport.db.adapters.StadiumSpinnerAdapter;
 import ru.shtrm.gosport.db.adapters.TeamAdapter;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Sport;
@@ -39,11 +44,14 @@ import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
 
-public class FragmentAddTraining extends Fragment implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
-    private static final String TAG = "FragmentAdd";
+public class FragmentAddTraining extends Fragment implements View.OnClickListener {
+    private Context mainActivityConnector = null;
+    private Training training;
+    private String trainingUuid;
+
     Spinner typeSpinner,stadiumSpinner,teamSpinner,levelSpinner;
     SportAdapter sportAdapter;
-    StadiumAdapter stadiumAdapter;
+    StadiumSpinnerAdapter stadiumAdapter;
     TeamAdapter teamAdapter;
     LevelAdapter levelAdapter;
     private ImageView image_date;
@@ -70,49 +78,54 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_training, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        FragmentAddTrainingBinding binding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_add_training, container, false);
+        View view = binding.getRoot();
         realmDB = Realm.getDefaultInstance();
 
-        Toolbar toolbar = (Toolbar) (getActivity()).findViewById(R.id.toolbar);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            trainingUuid = bundle.getString("uuid", "");
+            training = realmDB.where(Training.class).equalTo("uuid",
+                    trainingUuid).findFirst();
+            if (training != null) {
+                binding.setTraining(training);
+                SetTraining(view);
+            }
+        }
+        realmDB = Realm.getDefaultInstance();
+        Toolbar toolbar = ((AppCompatActivity)mainActivityConnector).findViewById(R.id.toolbar);
         toolbar.setSubtitle("Добавить тренировку");
 
-        SpinnerListener spinnerListener = new SpinnerListener();
+        typeSpinner = view.findViewById(R.id.training_sport_spinner);
+        stadiumSpinner = view.findViewById(R.id.training_add_stadium);
+        teamSpinner = view.findViewById(R.id.training_add_team);
+        levelSpinner = view.findViewById(R.id.training_add_level);
+        title = view.findViewById(R.id.training_add_title);
+        cost = view.findViewById(R.id.training_add_cost);
+        comment = view.findViewById(R.id.training_add_comment);
+        date = view.findViewById(R.id.training_selected_time);
 
-        Button one = (Button) view.findViewById(R.id.training_button_submit);
+        //SpinnerListener spinnerListener = new SpinnerListener();
+        Button one = view.findViewById(R.id.training_button_submit);
         one.setOnClickListener(this);
 
-        title = (EditText) view.findViewById(R.id.training_add_title);
-        typeSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
-        stadiumSpinner = (Spinner) view.findViewById(R.id.training_add_stadium);
-        teamSpinner = (Spinner) view.findViewById(R.id.training_add_team);
-        levelSpinner = (Spinner) view.findViewById(R.id.training_add_level);
-        cost = (EditText) view.findViewById(R.id.training_add_cost);
-        comment = (EditText) view.findViewById(R.id.training_add_comment);
-        stadiumSpinner = (Spinner) view.findViewById(R.id.training_add_stadium);
-        teamSpinner = (Spinner) view.findViewById(R.id.training_add_team);
-        levelSpinner = (Spinner) view.findViewById(R.id.training_add_level);
-        date = (TextView) view.findViewById(R.id.training_selected_time);
-        image_date = (ImageView) view.findViewById(R.id.training_add_date_icon);
-
-        RealmResults<Sport> sport;
-        sport = realmDB.where(Sport.class).findAll();
+        RealmResults<Sport> sport = realmDB.where(Sport.class).findAll();
 
         FillSpinners(null, view);
 
-        Spinner typeSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
-        sportAdapter = new SportAdapter(getActivity().getApplicationContext(), sport);
-
+        sportAdapter = new SportAdapter(mainActivityConnector.getApplicationContext(), sport);
         typeSpinner.setAdapter(sportAdapter);
-        typeSpinner.setOnItemSelectedListener(spinnerListener);
+        typeSpinner.setOnItemSelectedListener(new SpinnerListener());
 
+        // TODO переделать в биндинг
+        date = view.findViewById(R.id.training_selected_time);
+        if (training == null) {
+            date.setText(R.string.training_time);
+        }
         date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startDatePickerDialog();
-            }
-        });
-        image_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDatePickerDialog();
@@ -122,31 +135,48 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
     }
 
     public void startDatePickerDialog() {
-        c = Calendar.getInstance();
-        int month = c.get(Calendar.MONTH);
-        int year = c.get(Calendar.YEAR);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+        calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog =
+                new DatePickerDialog(mainActivityConnector, dateCallBack, year, month, day);
         datePickerDialog.show();
     }
 
-    @Override
-    public void onDateSet(DatePicker dialog, int year, int monthOfYear, int dayOfMonth) {
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-        selectedYear=year;
-        selectedMonth=monthOfYear;
-        selectedDay=dayOfMonth;
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), this, hour, minute,
-                DateFormat.is24HourFormat(getActivity()));
-        timePickerDialog.show();
-    }
+    DatePickerDialog.OnDateSetListener dateCallBack = new DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
 
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        selectedHour=hourOfDay;
-        selectedMinute=minute;
-        date.setText(selectedDay+"/"+(selectedMonth+1)+"/"+selectedYear+" "+selectedHour+":"+selectedMinute);
+            selectedYear = year;
+            selectedMonth = monthOfYear;
+            selectedDay = dayOfMonth;
+            calendar.set(selectedYear, selectedMonth, selectedDay);
+            date.setText(getResources().getString(R.string.formatted_date,
+                    selectedDay, selectedMonth + 1, selectedYear));
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), timeCallBack,
+                    hour, minute, DateFormat.is24HourFormat(getActivity()));
+            timePickerDialog.show();
+        }
+    };
+
+    TimePickerDialog.OnTimeSetListener timeCallBack = new TimePickerDialog.OnTimeSetListener() {
+        public void onTimeSet(TimePicker view, int hour, int minute) {
+            date.setText(getResources().getString(R.string.formatted_date_time,
+                    selectedDay, selectedMonth + 1, selectedYear,
+                    selectedHour,selectedMinute));
+        }
+    };
+
+    private void SetTraining (View view) {
+        RealmResults<Sport> sport = realmDB.where(Sport.class).findAll();
+        FillSpinners(null, view);
+
+        sportAdapter = new SportAdapter(mainActivityConnector.getApplicationContext(), sport);
+        typeSpinner.setAdapter(sportAdapter);
+        typeSpinner.setOnItemSelectedListener(new SpinnerListener());
     }
 
     void FillSpinners(Sport sport, View view) {
@@ -160,16 +190,36 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
             levels = realmDB.where(Level.class).findAll();
         }
         else {
-            stadiums = realmDB.where(Stadium.class).equalTo("sport.uuid",sport.getUuid()).findAll();
-            teams = realmDB.where(Team.class).equalTo("sport.uuid",sport.getUuid()).findAll();
-            levels = realmDB.where(Level.class).equalTo("sport.uuid",sport.getUuid()).findAll();
+            stadiums = realmDB.where(Stadium.class).
+                    equalTo("sport.uuid",sport.getUuid()).findAll();
+            teams = realmDB.where(Team.class).
+                    equalTo("sport.uuid",sport.getUuid()).findAll();
+            levels = realmDB.where(Level.class).
+                    equalTo("sport.uuid",sport.getUuid()).findAll();
         }
-        stadiumAdapter = new StadiumAdapter(getActivity().getApplicationContext(), stadiums, sport);
+
+        stadiumAdapter = new StadiumSpinnerAdapter(mainActivityConnector.getApplicationContext(), stadiums, sport);
         stadiumSpinner.setAdapter(stadiumAdapter);
-        teamAdapter = new TeamAdapter(getActivity().getApplicationContext(), teams);
+        teamAdapter = new TeamAdapter(mainActivityConnector.getApplicationContext(), teams);
         teamSpinner.setAdapter(teamAdapter);
-        levelAdapter = new LevelAdapter(getActivity().getApplicationContext(), levels, sport);
+        levelAdapter = new LevelAdapter(mainActivityConnector.getApplicationContext(), levels, sport);
         levelSpinner.setAdapter(levelAdapter);
+
+        if (training != null) {
+            for (int r = 0; r < stadiums.size(); r++) {
+                if (training.getStadium().getUuid().equals(stadiums.get(r).getUuid()))
+                    stadiumSpinner.setSelection(r);
+            }
+            for (int r = 0; r < teams.size(); r++) {
+                if (training.getTeam().getUuid().equals(teams.get(r).getUuid()))
+                    teamSpinner.setSelection(r);
+            }
+            for (int r = 0; r < levels.size(); r++) {
+                if (training.getLevel() != null &&
+                        training.getLevel().getUuid().equals(levels.get(r).getUuid()))
+                    levelSpinner.setSelection(r);
+            }
+        }
     }
 
     @Override
@@ -177,15 +227,19 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
         switch (v.getId()) {
 
             case R.id.training_button_submit:
-                final User user = realmDB.where(User.class).equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
+                final User user = realmDB.where(User.class).
+                        equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
+
                 if (title.getText().length()<3)
                     {
-                        Toast.makeText(getActivity().getApplicationContext(),
+                        Toast.makeText(mainActivityConnector.getApplicationContext(),
                                 "Вы должны заполнить все поля!", Toast.LENGTH_LONG).show();
                         break;
                     }
                 if (user == null) {
-                    Toast.makeText(getActivity(), "Пожалуйста зарегистрируйтесь (в меню слева)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),
+                            mainActivityConnector.getResources().getString(R.string.message_register),
+                            Toast.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -213,7 +267,8 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
                 training.setUuid(uuid);
                 training.setUser(user);
                 realmDB.commitTransaction();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TrainingsFragment.newInstance()).commit();
+                ((MainActivity) mainActivityConnector).getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_container, TrainingsFragment.newInstance()).commit();
                 break;
             default:
                 break;
@@ -235,10 +290,17 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
         @Override
         public void onItemSelected(AdapterView<?> parentView,
                                    View selectedItemView, int position, long id) {
-            Sport typeSelected;
-            typeSelected = (Sport) typeSpinner.getSelectedItem();
+            Sport typeSelected = (Sport) typeSpinner.getSelectedItem();
             FillSpinners(typeSelected, parentView);
         }
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivityConnector = getActivity();
+        // TODO решить что делать если контекст не приехал
+        if (mainActivityConnector == null)
+            onDestroyView();
+    }
 }

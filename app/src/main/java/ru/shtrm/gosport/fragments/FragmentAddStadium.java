@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +29,9 @@ import android.widget.Toast;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
@@ -44,6 +47,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.AuthorizedUser;
+import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
 import ru.shtrm.gosport.db.realm.Sport;
@@ -57,9 +61,12 @@ import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 public class FragmentAddStadium extends Fragment implements View.OnClickListener {
     private static final int PICK_PHOTO_FOR_STADIUM = 1;
     private static final int WRITE_REQUEST_CODE = 1;
+    private Context mainActivityConnector = null;
     private static final String TAG = "FragmentAdd";
     private String stadiumUuid = null;
     private final ArrayList<OverlayItem> overlayItemArray = new ArrayList<>();
+
+    private ItemizedIconOverlay<OverlayItem> currentIconOverlay=null;
 
     double stadiumLatitude=0.0, stadiumLongitude=0.0;
     Spinner typeSpinner;
@@ -79,7 +86,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_stadium, container, false);
         double curLatitude=55.175708, curLongitude=61.390594;
         Bundle bundle = this.getArguments();
@@ -89,7 +96,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
 
         realmDB = Realm.getDefaultInstance();
 
-        LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) mainActivityConnector.getSystemService(LOCATION_SERVICE);
         if (lm != null) {
             try {
                 location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -99,7 +106,8 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
             }
 
             if (location==null) {
-                location=MainFunctions.getLastKnownLocation(getActivity().getApplicationContext());
+                location=MainFunctions.getLastKnownLocation(mainActivityConnector.
+                        getApplicationContext());
             }
             if (location != null) {
                 curLatitude = location.getLatitude();
@@ -107,7 +115,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
             }
         }
 
-        final MapView mapView = (MapView) view.findViewById(R.id.stadium_mapview);
+        final MapView mapView = view.findViewById(R.id.stadium_mapview);
         if (mapView!=null) {
             mapView.setTileSource(TileSourceFactory.MAPNIK);
             mapView.setBuiltInZoomControls(true);
@@ -118,7 +126,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
             mapController.setCenter(point2);
 
             // Добавляем несколько слоев
-            CompassOverlay compassOverlay = new CompassOverlay(getActivity()
+            CompassOverlay compassOverlay = new CompassOverlay(mainActivityConnector
                     .getApplicationContext(), mapView);
             compassOverlay.enableCompass();
             mapView.getOverlays().add(compassOverlay);
@@ -129,21 +137,19 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
             mapView.getOverlays().add(mScaleBarOverlay);
         }
 
-        iView = (ImageView) view.findViewById(R.id.stadium_add_image);
+        iView = view.findViewById(R.id.stadium_add_image);
         iView.setOnClickListener(this);
 
-        Button one = (Button) view.findViewById(R.id.stadium_button_submit);
+        Button one = view.findViewById(R.id.stadium_button_submit);
         one.setOnClickListener(this);
-        typeSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
-        title = (EditText) view.findViewById(R.id.stadium_add_title);
-        description = (EditText) view.findViewById(R.id.stadium_add_description);
-        address = (EditText) view.findViewById(R.id.stadium_add_address);
+        typeSpinner = view.findViewById(R.id.simple_spinner);
+        title = view.findViewById(R.id.stadium_add_title);
+        description = view.findViewById(R.id.stadium_add_description);
+        address = view.findViewById(R.id.stadium_add_address);
 
-        RealmResults<Sport> sport;
-        sport = realmDB.where(Sport.class).findAll();
-
-        Spinner typeSpinner = (Spinner) view.findViewById(R.id.simple_spinner);
-        sportAdapter = new SportAdapter(getActivity().getApplicationContext(), sport);
+        RealmResults<Sport> sport = realmDB.where(Sport.class).findAll();
+        Spinner typeSpinner = view.findViewById(R.id.simple_spinner);
+        sportAdapter = new SportAdapter(mainActivityConnector.getApplicationContext(), sport);
         typeSpinner.setAdapter(sportAdapter);
 
         DummyOverlay dumOverlay = new DummyOverlay(getContext());
@@ -162,7 +168,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                 address.setText(stadium.getAddress());
 
                 // TODO разобраться с binding на imageview
-                String path = MainFunctions.getPicturesDirectory(getContext());
+                String path = MainFunctions.getPicturesDirectory(mainActivityConnector);
                 Bitmap stadium_bitmap = getResizedBitmap(path, stadium.getImage(),
                         0, 600, stadium.getChangedAt().getTime());
                 if (stadium_bitmap != null) {
@@ -188,7 +194,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                     Drawable newMarker;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         newMarker = this.getResources().
-                                getDrawable(R.drawable.stadium_marker_32, getActivity().
+                                getDrawable(R.drawable.stadium_marker_32, mainActivityConnector.
                                         getApplicationContext().getTheme());
                     } else {
                         newMarker = this.getResources().getDrawable(R.drawable.stadium_marker_32);
@@ -196,7 +202,8 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                     olItem.setMarker(newMarker);
                     overlayItemArray.add(olItem);
                     ItemizedIconOverlay<OverlayItem> aItemizedIconOverlay = new ItemizedIconOverlay<>(
-                            getActivity().getApplicationContext(), overlayItemArray, null);
+                            mainActivityConnector.getApplicationContext(),
+                            overlayItemArray, null);
                     mapView.getOverlays().add(aItemizedIconOverlay);
                 }
             }
@@ -225,7 +232,8 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case WRITE_REQUEST_CODE:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
@@ -243,17 +251,42 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
         }
 
         @Override
-        protected void draw(Canvas c, MapView osmv, boolean shadow) {
+        public void draw(Canvas c, MapView osmv, boolean shadow) {
 
         }
 
         @Override
         public boolean onDoubleTap(MotionEvent e, MapView mapView) {
-            stadiumLatitude=mapView.getLatitudeSpanDouble();
-            stadiumLongitude=mapView.getLongitudeSpanDouble();
+            Projection proj = mapView.getProjection();
+            IGeoPoint loc = proj.fromPixels((int)e.getX(), (int)e.getY());
+            stadiumLongitude = loc.getLongitude();
+            stadiumLatitude = loc.getLatitude();
+            //stadiumLatitude=mapView.getLatitudeSpanDouble();
+            //stadiumLongitude=mapView.getLongitudeSpanDouble();
             Toast.makeText(getActivity(),
                     "Площадка находится здесь",
                     Toast.LENGTH_SHORT).show();
+
+            StadiumOverlayItem olItem = new StadiumOverlayItem("",
+                    "Stadium", new GeoPoint(stadiumLatitude, stadiumLongitude));
+            Drawable newMarker;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                newMarker = mainActivityConnector.getResources().
+                        getDrawable(R.drawable.stadium_marker_32,
+                                mainActivityConnector.getApplicationContext().getTheme());
+            } else {
+                newMarker = mainActivityConnector.getResources().
+                        getDrawable(R.drawable.stadium_marker_32);
+            }
+            olItem.setMarker(newMarker);
+            ArrayList<OverlayItem> currentItemArray = new ArrayList<>();
+            currentItemArray.add(olItem);
+            if (currentIconOverlay==null) {
+                currentIconOverlay = new ItemizedIconOverlay<>(
+                        mainActivityConnector.getApplicationContext(),
+                        currentItemArray, null);
+            }
+            mapView.getOverlays().add(currentIconOverlay);
             return true;
         }
 
@@ -274,7 +307,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                 return;
             }
             try {
-                InputStream inputStream = getActivity().getApplicationContext()
+                InputStream inputStream = mainActivityConnector.getApplicationContext()
                         .getContentResolver().openInputStream(data.getData());
                 stadiumBitmap = BitmapFactory.decodeStream(inputStream);
                 if (stadiumBitmap!=null) {
@@ -301,57 +334,59 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.stadium_button_submit:
-                String image_name;
+                String image_name=null;
                 final User user = realmDB.where(User.class).
                         equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
-                realmDB.beginTransaction();
                 if (stadiumUuid!=null) {
                     Stadium stadium = realmDB.where(Stadium.class).
                             equalTo("uuid", stadiumUuid).findFirst();
                     if (stadium != null) {
-                        if (stadium.getUser()!=null && stadium.getUser()!=user) {
-                            Toast.makeText(getActivity().getApplicationContext(),
+                        if (false) {
+                            Toast.makeText(mainActivityConnector.getApplicationContext(),
                                     "Вы не имеете права изменить эту площадку. " +
+                                            " " + stadium.getUser().getUuid() +
+                                            " " + user.getUuid() +
                                             "Если в описании присутствует неточность - " +
                                             "сообщите администратору через форму на сайте.",
                                     Toast.LENGTH_LONG).show();
                             break;
                         }
-
-                        stadium.setTitle(title.getText().toString());
-                        stadium.setSport(sportAdapter.getItem(typeSpinner.getSelectedItemPosition()));
-                        stadium.setDescription(description.getText().toString());
-                        stadium.setAddress(address.getText().toString());
-                        stadium.setUser(user);
-                        stadium.setChangedAt(new Date());
-                        stadium.setLatitude(stadiumLatitude);
-                        stadium.setLatitude(stadiumLongitude);
-                        realmDB.commitTransaction();
-
                         if (stadiumBitmap != null) {
                             image_name = stadium.getUuid() + ".jpg";
                             MainFunctions.storeNewImage(stadiumBitmap, getContext(), 1024,
                                     image_name);
                         }
+                        realmDB.beginTransaction();
+                        stadium.setTitle(title.getText().toString());
+                        stadium.setSport(sportAdapter.getItem(typeSpinner.getSelectedItemPosition()));
+                        stadium.setDescription(description.getText().toString());
+                        stadium.setAddress(address.getText().toString());
+                        stadium.setUser(user);
+                        if (image_name!=null)
+                            stadium.setImage(image_name);
+                        stadium.setChangedAt(new Date());
+                        stadium.setLatitude(stadiumLatitude);
+                        stadium.setLongitude(stadiumLongitude);
+                        realmDB.commitTransaction();
                     }
                 }
                 else {
                     Stadium stadium_c = realmDB.where(Stadium.class).
                             equalTo("name", title.getText().toString()).findFirst();
                     if (stadium_c!=null) {
-                        Toast.makeText(getActivity().getApplicationContext(),
+                        Toast.makeText(mainActivityConnector.getApplicationContext(),
                                 "Такой стадион уже есть", Toast.LENGTH_LONG).show();
                         break;
                     }
                     if (title.getText().length()<3)
                     {
-                        Toast.makeText(getActivity().getApplicationContext(),
+                        Toast.makeText(mainActivityConnector.getApplicationContext(),
                                 "Вы должны заполнить все поля!", Toast.LENGTH_LONG).show();
                         break;
                     }
                     if (stadiumLatitude==0.0)
                     {
-                        Toast.makeText(getActivity().getApplicationContext(),
+                        Toast.makeText(mainActivityConnector.getApplicationContext(),
                                 "Выберите координаты площадки на карте", Toast.LENGTH_LONG).show();
                         break;
                     }
@@ -362,7 +397,10 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                     else
                         image_name = null;
                     Log.e(TAG, "name=" + image_name);
+                    if (stadiumBitmap != null)
+                        MainFunctions.storeNewImage(stadiumBitmap, getContext(), 1024, image_name);
 
+                    realmDB.beginTransaction();
                     Stadium stadium = realmDB.createObject(Stadium.class, uuid);
                     stadium.setTitle(title.getText().toString());
                     stadium.setSport(sportAdapter.getItem(typeSpinner.getSelectedItemPosition()));
@@ -373,15 +411,12 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                     stadium.setUuid(uuid);
                     stadium.setUser(user);
                     stadium.setLatitude(stadiumLatitude);
-                    stadium.setLatitude(stadiumLongitude);
+                    stadium.setLongitude(stadiumLongitude);
                     if (image_name != null)
                         stadium.setImage(image_name);
                     realmDB.commitTransaction();
-
-                    if (stadiumBitmap != null)
-                        MainFunctions.storeNewImage(stadiumBitmap, getContext(), 1024, image_name);
                 }
-                getActivity().getSupportFragmentManager().beginTransaction().
+                ((MainActivity)mainActivityConnector).getSupportFragmentManager().beginTransaction().
                         replace(R.id.frame_container, MapFragment.newInstance()).commit();
                 break;
             default:
@@ -401,5 +436,14 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
         private StadiumOverlayItem(String a, String b, GeoPoint p) {
             super(a, b, p);
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivityConnector = getActivity();
+        // TODO решить что делать если контекст не приехал
+        if (mainActivityConnector==null)
+            onDestroyView();
     }
 }

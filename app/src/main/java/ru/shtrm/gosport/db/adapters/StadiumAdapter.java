@@ -113,7 +113,8 @@ public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAda
                 else {
                     viewHolder.title.setText(stadium.getTitle());
                     String path = MainFunctions.getUserImagePath(context);
-                    Bitmap image_bitmap = getResizedBitmap(path, stadium.getImage(), 600, 0, stadium.getChangedAt().getTime());
+                    Bitmap image_bitmap = getResizedBitmap(path, stadium.getImage(), 600,
+                            0, stadium.getChangedAt().getTime());
                     if (image_bitmap != null) {
                         viewHolder.image.setImageBitmap(image_bitmap);
                     }

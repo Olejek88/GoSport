@@ -1,11 +1,12 @@
 package ru.shtrm.gosport.fragments;
 
+import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,10 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-
 import io.realm.Realm;
 import ru.shtrm.gosport.AuthorizedUser;
+import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.databinding.UserInfoFragmentBinding;
 import ru.shtrm.gosport.db.realm.Sport;
@@ -28,18 +28,20 @@ import ru.shtrm.gosport.db.realm.User;
 import ru.shtrm.gosport.db.realm.UserSport;
 import ru.shtrm.gosport.utils.MainFunctions;
 
-import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
+//import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class UserInfoFragment extends Fragment {
     private Realm realmDB;
+    private Context mainActivityConnector = null;
 
     public static UserInfoFragment newInstance() {
         return (new UserInfoFragment());
     }
 
 	@Override
-	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        assert getActivity() != null;
         UserInfoFragmentBinding binding = DataBindingUtil.inflate(inflater,
                 R.layout.user_info_fragment,
                 container,false);
@@ -55,8 +57,7 @@ public class UserInfoFragment extends Fragment {
         } else {
             binding.setUser(user);
         }
-
-        Toolbar toolbar = (Toolbar)(getActivity()).findViewById(R.id.toolbar);
+        Toolbar toolbar = (getActivity()).findViewById(R.id.toolbar);
         toolbar.setSubtitle("Игрок");
 
 		initView(view);
@@ -75,29 +76,29 @@ public class UserInfoFragment extends Fragment {
         TextView tv_hockey_amplua, tv_hockey_level, tv_hockey_team;
         TextView tv_football_amplua, tv_football_level, tv_football_team;
 
-        tv_hockey_amplua = (TextView) view.findViewById(R.id.profile_hockey_amplua);
-        tv_hockey_level = (TextView) view.findViewById(R.id.profile_hockey_level);
-        tv_hockey_team = (TextView) view.findViewById(R.id.profile_hockey_team);
+        tv_hockey_amplua = view.findViewById(R.id.profile_hockey_amplua);
+        tv_hockey_level = view.findViewById(R.id.profile_hockey_level);
+        tv_hockey_team = view.findViewById(R.id.profile_hockey_team);
 
-        tv_football_amplua = (TextView) view.findViewById(R.id.profile_football_amplua);
-        tv_football_level = (TextView) view.findViewById(R.id.profile_football_level);
-        tv_football_team = (TextView) view.findViewById(R.id.profile_football_team);
+        tv_football_amplua = view.findViewById(R.id.profile_football_amplua);
+        tv_football_level = view.findViewById(R.id.profile_football_level);
+        tv_football_team = view.findViewById(R.id.profile_football_team);
 
-        user_image = (ImageView) view.findViewById(R.id.user_image);
-        call_image = (ImageView) view.findViewById(R.id.user_phone_icon);
+        user_image = view.findViewById(R.id.user_image);
+        call_image = view.findViewById(R.id.user_phone_icon);
 
-        edit_image = (FloatingActionButton) view.findViewById(R.id.user_edit_image);
+        edit_image = view.findViewById(R.id.user_edit_image);
         edit_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final User user = realmDB.where(User.class).equalTo("uuid",
                         AuthorizedUser.getInstance().getUuid()).findFirst();
                 if (user == null) {
-                    getActivity().getSupportFragmentManager().beginTransaction().
+                    ((MainActivity)mainActivityConnector).getSupportFragmentManager().beginTransaction().
                             replace(R.id.frame_container, FragmentAddUser.newInstance()).commit();
                 } else {
-                    getActivity().getSupportFragmentManager().beginTransaction().
-                            replace(R.id.frame_container, FragmentEditUser.newInstance("")).commit();
+                    ((MainActivity)mainActivityConnector).getSupportFragmentManager().beginTransaction().
+                            replace(R.id.frame_container, FragmentEditUser.newInstance()).commit();
                 }
             }
         });
@@ -105,7 +106,8 @@ public class UserInfoFragment extends Fragment {
         final User user = realmDB.where(User.class).equalTo("uuid",
                 AuthorizedUser.getInstance().getUuid()).findFirst();
         if (user == null) {
-            Toast.makeText(getActivity(), "Нет такого пользователя!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getResources().getString(R.string.message_no_such_user),
+                    Toast.LENGTH_SHORT).show();
         } else {
             if (user.getPhone() != null) {
                 call_image.setOnClickListener(new View.OnClickListener() {
@@ -117,9 +119,9 @@ public class UserInfoFragment extends Fragment {
                   }
               });
             }
-            String path = MainFunctions.getPicturesDirectory(getContext());
-            Bitmap user_bitmap = getResizedBitmap(path, user.getImage(),
-                    0, 600, user.getChangedAt().getTime());
+            Bitmap user_bitmap = MainFunctions.
+                    getBitmapByPath(MainFunctions.getPicturesDirectory(mainActivityConnector),
+                            user.getImage());
             if (user_bitmap != null) {
                 user_image.setImageBitmap(user_bitmap);
             }
@@ -143,9 +145,17 @@ public class UserInfoFragment extends Fragment {
                     if (userSportHockey.getTeam() != null)
                         tv_hockey_team.setText(getResources().getString(R.string.team,
                                 userSportHockey.getTeam().getTitle()));
+                    else
+                        tv_hockey_team.setText(getResources().
+                                getString(R.string.team, getString(R.string.not_selected)));
                 }
                 else {
-                    tv_hockey_amplua.setText("не выбрано");
+                    tv_hockey_team.setText(getResources().
+                            getString(R.string.team, getString(R.string.not_selected)));
+                    tv_hockey_amplua.setText(getResources().
+                            getString(R.string.amplua, getString(R.string.not_selected)));
+                    tv_hockey_level.setText(getResources().
+                            getString(R.string.level, getString(R.string.not_selected)));
                 }
             }
 
@@ -167,9 +177,12 @@ public class UserInfoFragment extends Fragment {
                                 getString(R.string.team, getString(R.string.not_selected)));
                 }
                 else {
-                    //tv_football_amplua.setText("не выбрано");
                     tv_football_team.setText(getResources().
                             getString(R.string.team, getString(R.string.not_selected)));
+                    tv_football_amplua.setText(getResources().
+                            getString(R.string.amplua, getString(R.string.not_selected)));
+                    tv_football_level.setText(getResources().
+                            getString(R.string.level, getString(R.string.not_selected)));
                 }
             }
         }
@@ -179,5 +192,14 @@ public class UserInfoFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         realmDB.close();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivityConnector = getActivity();
+        // TODO решить что делать если контекст не приехал
+        if (mainActivityConnector==null)
+            onDestroyView();
     }
 }

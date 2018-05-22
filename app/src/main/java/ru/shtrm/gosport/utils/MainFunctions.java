@@ -1,12 +1,20 @@
 package ru.shtrm.gosport.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -34,7 +42,6 @@ import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class MainFunctions {
 
-    private static Realm realmDB;
     private static final String TAG = "Func";
 
     public static void checkRealmNew() {
@@ -94,6 +101,15 @@ public class MainFunctions {
                 + File.separator;
     }
 
+    public static Bitmap getBitmapByPath(String path, String filename) {
+        File image_full = new File(path + filename);
+        Bitmap bmp = BitmapFactory.decodeFile(image_full.getAbsolutePath());
+        if (bmp != null) {
+            return bmp;
+        }
+        else return null;
+    }
+
     public static Bitmap storeNewImage(Bitmap image, Context context, int width, String image_name) {
         final Realm realmDB = Realm.getDefaultInstance();
         File mediaStorageDir = new File(getPicturesDirectory(context));
@@ -104,7 +120,11 @@ public class MainFunctions {
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()){
             if (!mediaStorageDir.mkdirs()){
-                return null;
+                if (isExternalStorageWritable()){
+                    Toast.makeText(context, "Нет разрешений на запись данных",
+                            Toast.LENGTH_LONG).show();
+                    return null;
+                }
             }
         }
         if (image_name.equals("")) {
@@ -127,7 +147,8 @@ public class MainFunctions {
 
                     realmDB.beginTransaction();
                     AuthorizedUser authorizedUser = AuthorizedUser.getInstance();
-                    User user = realmDB.where(User.class).equalTo("uuid", authorizedUser.getUuid()).findFirst();
+                    User user = realmDB.where(User.class).equalTo("uuid",
+                            authorizedUser.getUuid()).findFirst();
                     String uuid = java.util.UUID.randomUUID().toString();
                     LocalFiles localFile = realmDB.createObject(LocalFiles.class, uuid);
                     localFile.setUser(user);
@@ -147,52 +168,6 @@ public class MainFunctions {
             Log.d(TAG, "Error accessing file: " + e.getMessage());
         }
         return null;
-    }
-
-    public static void storeImage(String name, String object, Context context, Bitmap bmp) throws IOException {
-//        String target_filename = sd_card.getAbsolutePath() + File.separator + "Android" + File.separator + "data" + File.separator + getActivity().getPackageName() + File.separator + "img" + File.separator + name;
-
-        File picDir = context.getExternalFilesDir(name);
-        assert picDir != null;
-        Log.d(TAG, picDir.getName());
-        Bitmap bm = getResizedBitmap(picDir.getParent(), picDir.getName(), 1024, 0, new Date().getTime());
-
-
-
-        String target_filename = MainFunctions.getUserImagePath(context) + name;
-        final Realm realmDB = Realm.getDefaultInstance();
-        Log.d(TAG,target_filename);
-        File target_file = new File (target_filename);
-        if (!target_file.getParentFile().exists()) {
-            if (!target_file.getParentFile().mkdirs())
-                Toast.makeText(context, "Невозможно создать директорию!", Toast.LENGTH_LONG).show();
-        }
-        FileOutputStream out = new FileOutputStream(target_file);
-        if (bmp!=null) {
-            bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
-        }
-        out.flush();
-        out.close();
-
-        realmDB.beginTransaction();
-        Number currentIdNum = realmDB.where(LocalFiles.class).max("_id");
-        int nextId;
-        if(currentIdNum == null) {
-            nextId = 1;
-        } else {
-            nextId = currentIdNum.intValue() + 1;
-        }
-        AuthorizedUser authorizedUser = AuthorizedUser.getInstance();
-        User user = realmDB.where(User.class).equalTo("uuid", authorizedUser.getUuid()).findFirst();
-        LocalFiles localFile = realmDB.createObject(LocalFiles.class, nextId);
-        localFile.setUser(user);
-        localFile.setSent(false);
-        localFile.setObject(object);
-        localFile.setUuid(java.util.UUID.randomUUID().toString());
-        localFile.setFileName(name);
-        localFile.setChangedAt(new Date());
-        localFile.setCreatedAt(new Date());
-        realmDB.commitTransaction();
     }
 
     public static String getVkProfile(String vk_input) {
@@ -230,6 +205,11 @@ public class MainFunctions {
             }
         }
         return bestLocation;
+    }
+
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 }
 

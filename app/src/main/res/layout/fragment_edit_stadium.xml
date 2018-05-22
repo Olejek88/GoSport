@@ -25,8 +25,7 @@
             <ImageView
                 android:id="@+id/stadium_add_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/menu_ring" />
@@ -34,10 +33,9 @@
             <EditText
                 android:id="@+id/stadium_add_title"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_toEndOf="@+id/stadium_add_icon"
-                android:layout_toRightOf="@+id/stadium_add_icon"
                 android:gravity="center_horizontal"
                 android:hint="@string/stadium_add_name"
                 android:inputType="text"
@@ -50,35 +48,32 @@
             <ImageView
                 android:id="@+id/stadium_add_icon2"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/stadium_add_icon"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/user_level" />
 
             <Spinner
                 android:id="@+id/simple_spinner"
-                style="@android:style/Widget.Holo.Light.Spinner"
-                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="false"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="match_parent"
                 android:layout_below="@+id/stadium_add_icon"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_toEndOf="@+id/stadium_add_icon2"
-                android:layout_toRightOf="@+id/stadium_add_icon2"
                 android:prompt="@string/team_add_sport"
                 android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/stadium_add_icon3"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/stadium_add_icon2"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/menu_location" />
@@ -86,11 +81,10 @@
             <EditText
                 android:id="@+id/stadium_add_address"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/stadium_add_icon2"
                 android:layout_gravity="start"
                 android:layout_toEndOf="@+id/stadium_add_icon3"
-                android:layout_toRightOf="@+id/stadium_add_icon3"
                 android:hint="@string/stadium_add_address"
                 android:inputType="text"
                 android:paddingLeft="10dp"
@@ -102,21 +96,19 @@
             <ImageView
                 android:id="@+id/stadium_add_icon4"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/stadium_add_icon3"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
-                android:src="@drawable/menu_football" />
+                android:src="@drawable/user_football" />
 
             <EditText
                 android:id="@+id/stadium_add_description"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/stadium_add_icon3"
                 android:layout_gravity="start"
                 android:layout_toEndOf="@+id/stadium_add_icon4"
-                android:layout_toRightOf="@+id/stadium_add_icon4"
                 android:paddingLeft="10dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
@@ -135,8 +127,8 @@
                 android:layout_gravity="center"
                 android:background="@color/md_blue_300"
                 android:contentDescription="@string/image_description"
-                android:paddingLeft="10dp"
                 android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:src="@drawable/adduser" />
 
             <Button
@@ -146,7 +138,6 @@
                 android:layout_below="@+id/stadium_add_image"
                 android:layout_gravity="center_vertical|center_horizontal|center"
                 android:layout_marginBottom="20dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
                 android:height="35dp"

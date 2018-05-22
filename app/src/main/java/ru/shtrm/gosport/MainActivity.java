@@ -1,8 +1,9 @@
 package ru.shtrm.gosport;
 
-import android.app.ProgressDialog;
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,7 +41,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.mikepenz.materialdrawer.util.RecyclerViewCacheUtil;
+//import com.mikepenz.materialdrawer.util.RecyclerViewCacheUtil;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -75,6 +77,7 @@ import ru.shtrm.gosport.fragments.MapFragment;
 import ru.shtrm.gosport.fragments.MyTrainingsFragment;
 import ru.shtrm.gosport.fragments.TeamsFragment;
 import ru.shtrm.gosport.fragments.TrainingsFragment;
+import ru.shtrm.gosport.fragments.UserEmptyFragment;
 import ru.shtrm.gosport.fragments.UserInfoFragment;
 import ru.shtrm.gosport.rest.GSportAPIFactory;
 import ru.shtrm.gosport.utils.MainFunctions;
@@ -82,6 +85,9 @@ import ru.shtrm.gosport.utils.MainFunctions;
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int REQUEST_GPS_ACCESS = 1;
+    private static final int REQUEST_WRITE_STORAGE = 2;
+
     private static final int PROFILE_ADD = 1;
     private static final int PROFILE_SETTINGS = 2;
     private static final int MAX_USER_PROFILE = 5;
@@ -124,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean splashShown = false;
 
     private Realm realmDB;
+    private BottomBar bottomBar;
+
     private Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
         @Override
         public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
@@ -162,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     splashShown = true;
                     setMainLayout(savedInstance);
+                    CheckPermission ();
                 }
             }, 5000);
         } else {
@@ -219,10 +228,8 @@ public class MainActivity extends AppCompatActivity {
     //@SuppressWarnings("deprecation")
     void setMainLayout(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext());
         int larisaBlueColor = ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor);
-        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar = findViewById(R.id.bottomBar);
         assert bottomBar != null;
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -237,8 +244,7 @@ public class MainActivity extends AppCompatActivity {
                                 replace(R.id.frame_container, TrainingsFragment.newInstance()).commit();
                         break;
                     case R.id.menu_user:
-                        getSupportFragmentManager().beginTransaction().
-                                replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
+                        changeUserFragment();
                         break;
                     case R.id.menu_maps:
                         getSupportFragmentManager().beginTransaction().
@@ -254,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
             bottomBar.getTabAtPosition(1).setBadgeCount(new_trainings);
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar == null) {
             return;
         }
@@ -297,10 +303,10 @@ public class MainActivity extends AppCompatActivity {
                         if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTINGS) {
                             currentFragment = FRAGMENT_USER;
                             getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.frame_container, FragmentEditUser.newInstance("EditProfile")).commit();
+                                    .replace(R.id.frame_container, FragmentEditUser.newInstance()).commit();
                         }
                         if (profile instanceof IDrawerItem && profile.getIdentifier() > PROFILE_SETTINGS) {
-                            int profileId = profile.getIdentifier() - 2;
+                            long profileId = profile.getIdentifier() - 2;
                             int profile_pos;
                             for (profile_pos = 0; profile_pos < iprofilelist.size(); profile_pos++)
                                 if (users_id[profile_pos] == profileId) break;
@@ -308,8 +314,7 @@ public class MainActivity extends AppCompatActivity {
                             changeActiveProfile(profilesList.get(profile_pos));
                             AuthorizedUser.getInstance().setUuid(profilesList.get(profile_pos).getUuid());
                             currentFragment = FRAGMENT_USER;
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
+                            changeUserFragment();
                         }
                         return false;
                     }
@@ -402,42 +407,69 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
-                            if (drawerItem.getIdentifier() == FRAGMENT_STADIUMS) {
-                                currentFragment = FRAGMENT_STADIUMS;
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.frame_container, FragmentAddStadium.newInstance()).commit();
-                            } else if (drawerItem.getIdentifier() == FRAGMENT_MAP) {
-                                currentFragment = FRAGMENT_MAP;
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.frame_container, MapFragment.newInstance()).commit();
-                            } else if (drawerItem.getIdentifier() == FRAGMENT_TRAININGS) {
-                                currentFragment = FRAGMENT_TRAININGS;
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.frame_container, MyTrainingsFragment.newInstance()).commit();
-                            } else if (drawerItem.getIdentifier() == FRAGMENT_CALENDAR) {
-                                currentFragment = FRAGMENT_CALENDAR;
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.frame_container, TrainingsFragment.newInstance()).commit();
-                            } else if (drawerItem.getIdentifier() == FRAGMENT_TEAMS) {
-                                currentFragment = FRAGMENT_TEAMS;
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.frame_container, TeamsFragment.newInstance()).commit();
-                            } else if (drawerItem.getIdentifier() == FRAGMENT_ADDSTADIUM) {
-                                currentFragment = FRAGMENT_ADDSTADIUM;
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.frame_container, FragmentAddStadium.newInstance()).commit();
-                            } else if (drawerItem.getIdentifier() == FRAGMENT_EVENTS) {
-                                currentFragment = FRAGMENT_EVENTS;
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.frame_container, EventsFragment.newInstance()).commit();
-                            } else if (drawerItem.getIdentifier() == FRAGMENT_USER) {
-                                currentFragment = FRAGMENT_USER;
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
-                            } else if (drawerItem.getIdentifier() == DRAWER_INFO) {
-                                startAboutDialog();
-                            } else if (drawerItem.getIdentifier() == DRAWER_EXIT) {
-                                System.exit(0);
+                            int fragmentClick = ((int) drawerItem.getIdentifier());
+                            switch (fragmentClick) {
+                                case FRAGMENT_STADIUMS:
+                                    currentFragment = FRAGMENT_STADIUMS;
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.frame_container,
+                                                    FragmentAddStadium.newInstance()).commit();
+                                    bottomBar.selectTabWithId(R.id.menu_maps);
+                                    break;
+                                case FRAGMENT_MAP:
+                                    currentFragment = FRAGMENT_MAP;
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.frame_container,
+                                                    MapFragment.newInstance()).commit();
+                                    bottomBar.selectTabWithId(R.id.menu_maps);
+                                    break;
+                                case FRAGMENT_TRAININGS:
+                                    currentFragment = FRAGMENT_TRAININGS;
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.frame_container,
+                                                    MyTrainingsFragment.newInstance()).commit();
+                                    bottomBar.selectTabWithId(R.id.menu_mytrainings);
+                                    break;
+                                case FRAGMENT_CALENDAR:
+                                    currentFragment = FRAGMENT_CALENDAR;
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.frame_container,
+                                                    TrainingsFragment.newInstance()).commit();
+                                    bottomBar.selectTabWithId(R.id.menu_calendar);
+                                    break;
+                                case FRAGMENT_TEAMS:
+                                    currentFragment = FRAGMENT_TEAMS;
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.frame_container,
+                                                    TeamsFragment.newInstance()).commit();
+                                    break;
+                                case FRAGMENT_ADDSTADIUM:
+                                    currentFragment = FRAGMENT_ADDSTADIUM;
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.frame_container,
+                                                    FragmentAddStadium.newInstance()).commit();
+                                    break;
+                                case FRAGMENT_EVENTS:
+                                    currentFragment = FRAGMENT_EVENTS;
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.frame_container,
+                                                    EventsFragment.newInstance()).commit();
+                                    break;
+                                case FRAGMENT_USER:
+                                    currentFragment = FRAGMENT_USER;
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.frame_container,
+                                                    UserInfoFragment.newInstance()).commit();
+                                    bottomBar.selectTabWithId(R.id.menu_user);
+                                    break;
+                                case DRAWER_INFO:
+                                    startAboutDialog();
+                                    break;
+                                case DRAWER_EXIT:
+                                    System.exit(0);
+                                    break;
+                                default:
+                                    break;
                             }
                         }
                         return false;
@@ -447,7 +479,6 @@ public class MainActivity extends AppCompatActivity {
                 .withShowDrawerOnFirstLaunch(true)
                 .build();
 
-        RecyclerViewCacheUtil.getInstance().withCacheSize(2).init(result);
         if (savedInstanceState == null && activeUserID==0 ) {
             result.setSelection(21, false);
             for (cnt = 0; cnt < profilesList.size(); cnt++) {
@@ -466,9 +497,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
+        changeUserFragment();
 
         if (activeUserID <= 0) {
             Toast.makeText(getApplicationContext(),
@@ -1075,5 +1104,50 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    public void changeUserFragment() {
+        final User user = realmDB.where(User.class).equalTo("uuid",
+                AuthorizedUser.getInstance().getUuid()).findFirst();
+        if (user == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_container, UserEmptyFragment.newInstance()).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_container, UserInfoFragment.newInstance()).commit();
+        }
+    }
+    @Override
+    public void onBackPressed() {
+    }
+
+    private void CheckPermission () {
+        // Create the storage directory if it does not exist
+        if (!MainFunctions.isExternalStorageWritable()) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_WRITE_STORAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_GPS_ACCESS:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this,
+                            getResources().getString(R.string.message_no_gps_permission),
+                            Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_WRITE_STORAGE:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this,
+                            getResources().getString(R.string.message_no_write_permission),
+                            Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 }

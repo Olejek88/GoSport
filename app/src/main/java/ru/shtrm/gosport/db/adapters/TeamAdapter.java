@@ -23,6 +23,7 @@ import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.utils.MainFunctions;
+import ru.shtrm.gosport.utils.RoundedImageView;
 import ru.shtrm.gosport.utils.RoundedImageView.*;
 
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
@@ -54,7 +55,11 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
 
     public void setFilter(String text, Realm realmDB) {
         if (adapterData != null) {
-            adapterData = realmDB.where(Team.class).equalTo("title",text).or().contains("title",text, Case.INSENSITIVE).findAll();
+            adapterData = realmDB.where(Team.class).
+                    equalTo("title",text).
+                    or().
+                    contains("title",text, Case.INSENSITIVE).
+                    findAll();
             notifyDataSetChanged();
         }
     }
@@ -88,16 +93,16 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
                     parent.getId() == R.id.profile_hockey_team ||
                     parent.getId() == R.id.training_add_team) {
                 convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
-                viewHolder.name = (TextView) convertView.findViewById(R.id.spinner_item);
+                viewHolder.name = convertView.findViewById(R.id.spinner_item);
                 viewHolder.name.setTextColor(context.getResources().getColor(R.color.larisaTextColor));
                 convertView.setTag(viewHolder);
             }
             else {
                 convertView = inflater.inflate(R.layout.team_reference_item_layout, parent, false);
-                viewHolder.icon = (ImageView) convertView.findViewById(R.id.eril_image);
-                viewHolder.name = (TextView) convertView.findViewById(R.id.eril_title);
-                viewHolder.type = (TextView) convertView.findViewById(R.id.eril_type);
-                viewHolder.level = (TextView) convertView.findViewById(R.id.eril_division);
+                viewHolder.icon = convertView.findViewById(R.id.eril_image);
+                viewHolder.name = convertView.findViewById(R.id.eril_title);
+                viewHolder.type = convertView.findViewById(R.id.eril_type);
+                viewHolder.level = convertView.findViewById(R.id.eril_division);
                 convertView.setTag(viewHolder);
             }
         } else {
@@ -108,7 +113,10 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
         TextView textView = new TextView(context);
         if (adapterData != null && adapterData.size()>0) {
             team = adapterData.get(position);
-            if (parent.getId() == R.id.simple_spinner || parent.getId() == R.id.profile_football_team || parent.getId() == R.id.profile_hockey_team || parent.getId() == R.id.training_add_team) {
+            if (parent.getId() == R.id.simple_spinner ||
+                    parent.getId() == R.id.profile_football_team ||
+                    parent.getId() == R.id.profile_hockey_team ||
+                    parent.getId() == R.id.training_add_team) {
                 viewHolder.name.setText(team.getTitle());
                 textView.setText(team.getTitle());
                 textView.setTextSize(16);
@@ -124,12 +132,13 @@ public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
                             getResources().getString(R.string.level,team.getLevel().getTitle()));
                 String path = MainFunctions.getUserImagePath(context);
                 if (team.getPhoto()!=null) {
-                    Bitmap image_bitmap = getResizedBitmap(path,
-                            team.getPhoto(), 300, 0, team.getChangedAt().getTime());
+                    Bitmap image_bitmap = MainFunctions.
+                            getBitmapByPath(path, team.getPhoto());
                     if (image_bitmap != null) {
                         viewHolder.icon.setImageBitmap(image_bitmap);
                     } else {
-                        viewHolder.icon.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image));
+                        viewHolder.icon.setImageBitmap
+                                (BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image));
                     }
                 }
             }
