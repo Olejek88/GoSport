@@ -9,10 +9,10 @@ import android.content.Context;
 import android.widget.Toast;
 
 public class TaskItemizedOverlay extends ItemizedIconOverlay<OverlayItem> {
-	protected Context mContext;
+	private Context mContext;
 
-	public TaskItemizedOverlay(final Context context,
-			final List<OverlayItem> aList) {
+	protected TaskItemizedOverlay(final Context context,
+								  final List<OverlayItem> aList) {
 		super(context, aList, new OnItemGestureListener<OverlayItem>() {
 			@Override
 			public boolean onItemSingleTapUp(final int index,

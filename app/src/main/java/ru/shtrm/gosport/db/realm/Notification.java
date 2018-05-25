@@ -1,7 +1,5 @@
 package ru.shtrm.gosport.db.realm;
 
-import android.view.View;
-
 import java.util.Date;
 
 import io.realm.RealmObject;

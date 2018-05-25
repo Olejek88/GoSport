@@ -1,10 +1,13 @@
 package ru.shtrm.gosport.fragments;
 
-import android.content.Intent;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +18,17 @@ import android.widget.Spinner;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import ru.shtrm.gosport.MainActivity;
+import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.adapters.SportAdapter;
 import ru.shtrm.gosport.db.adapters.TeamAdapter;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Team;
 
-import ru.shtrm.gosport.R;
-
 public class TeamsFragment extends Fragment {
     private Realm realmDB;
-	private boolean isInit;
+    private Activity mainActivityConnector = null;
+    private boolean isInit;
 
 	private Spinner typeSpinner;
 	private ListView teamListView;
@@ -36,29 +40,28 @@ public class TeamsFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+	public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.team_reference_layout, container, false);
-        Toolbar toolbar = (Toolbar)(getActivity()).findViewById(R.id.toolbar);
+        Toolbar toolbar = ((AppCompatActivity)mainActivityConnector).findViewById(R.id.toolbar);
         toolbar.setSubtitle("Команды");
         realmDB = Realm.getDefaultInstance();
 
-        fab_check = (FloatingActionButton) rootView.findViewById(R.id.fab_check);
+        fab_check = rootView.findViewById(R.id.fab_check);
         fab_check.setOnClickListener(new submitOnClickListener());
 
 		// обработчик для выпадающих списков у нас один
         SpinnerListener spinnerListener = new SpinnerListener();
-        teamListView = (ListView) rootView.findViewById(R.id.erl_team_listView);
+        teamListView = rootView.findViewById(R.id.erl_team_listView);
 
         RealmResults<Sport> sports = realmDB.where(Sport.class).findAll();
-        typeSpinner = (Spinner) rootView.findViewById(R.id.simple_spinner);
+        typeSpinner = rootView.findViewById(R.id.simple_spinner);
 
-        SportAdapter sportAdapter = new SportAdapter(getContext(), sports);
+        SportAdapter sportAdapter = new SportAdapter(mainActivityConnector, sports);
         sportAdapter.notifyDataSetChanged();
         typeSpinner.setAdapter(sportAdapter);
 
-        teamListView = (ListView) rootView.findViewById(R.id.erl_team_listView);
+        teamListView = rootView.findViewById(R.id.erl_team_listView);
         teamListView.setOnItemClickListener(new ListviewClickListener());
         typeSpinner.setOnItemSelectedListener(spinnerListener);
 
@@ -78,13 +81,12 @@ public class TeamsFragment extends Fragment {
 
 	private void FillListViewTeam(String teamTypeUuid) {
         RealmResults<Team> teams;
-        Bundle bundle = this.getArguments();
         if (teamTypeUuid != null) {
             teams = realmDB.where(Team.class).equalTo("sport.uuid", teamTypeUuid).findAll();
         } else {
             teams = realmDB.where(Team.class).findAll();
         }
-        TeamAdapter teamAdapter = new TeamAdapter(getContext(), teams);
+        TeamAdapter teamAdapter = new TeamAdapter(mainActivityConnector, teams);
         teamListView.setAdapter(teamAdapter);
     }
 
@@ -116,7 +118,7 @@ public class TeamsFragment extends Fragment {
                 bundle.putString("uuid", team_uuid);
                 FragmentAddTeam teamFragment = FragmentAddTeam.newInstance();
                 teamFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().
+                ((MainActivity) mainActivityConnector).getSupportFragmentManager().beginTransaction().
                         replace(R.id.frame_container, teamFragment).commit();
             }
         }
@@ -144,11 +146,19 @@ public class TeamsFragment extends Fragment {
     private class submitOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(final View v) {
-            getActivity().getSupportFragmentManager().beginTransaction().
+            ((MainActivity) mainActivityConnector).getSupportFragmentManager().beginTransaction().
                     replace(R.id.frame_container, FragmentAddTeam.newInstance()).
                     addToBackStack("TeamsFragment").
                     commit();
         }
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivityConnector = getActivity();
+        // TODO решить что делать если контекст не приехал
+        if (mainActivityConnector == null)
+            onDestroyView();
+    }
 }

@@ -3,8 +3,6 @@ package ru.shtrm.gosport.db.realm;
 import java.util.Date;
 
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import ru.shtrm.gosport.db.realm.User;
 
 public class UserSport extends RealmObject {
     private String _id;

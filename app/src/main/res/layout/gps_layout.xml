@@ -13,7 +13,6 @@
         android:orientation="vertical">
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom"
@@ -28,14 +27,12 @@
                 android:clickable="true" />
 
             <LinearLayout
-                android:id="@+id/dragView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#03A9F4"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/gps_header"
                     android:layout_width="match_parent"
                     android:layout_height="15dp"
                     android:background="@color/larisaBlueColor" />
@@ -49,7 +46,6 @@
                     android:dividerHeight="1px" />
 
                 <TextView
-                    android:id="@+id/gps_TextView"
                     android:layout_width="0dp"
                     android:layout_height="10dp"
                     android:layout_gravity="bottom"

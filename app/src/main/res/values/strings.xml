@@ -3,11 +3,7 @@
     <string name="pref_push_notification">Включить уведомления</string>
     <string name="pref_push_notification_key">push_notification</string>
 
-    <string name="menu">Сменить настройки</string>
-    <string name="menu_equipment">Оборудование</string>
-    <string name="menu_maps">Карта</string>
     <string name="menu_mytrainings">Мои тренировки</string>
-    <string name="menu_stadium">Стадион</string>
     <string name="menu_calendar">Тренировки</string>
     <string name="menu_users">Пользователь</string>
 
@@ -16,95 +12,33 @@
 
     <string name="action_settings">Настройки приложения</string>
     <string name="action_about">О программе</string>
-    <string name="cancel">Отмена</string>
     <string name="action_update">Обновить приложение</string>
     <string name="pref_cat_main">Основные</string>
-    <string name="pref_cat_rfid">Настройки устройства</string>
     <string name="pref_cat_show">Настройки отображения</string>
 
-    <string name="pref_autonome_mode">Работать автономно</string>
-    <string name="load_test_data">Загрузить тестовые данные</string>
-    <string name="delete_test_data">Удалить справочники</string>
-
-    <string name="pref_update_url">Сервер обновления</string>
-    <string name="pref_update_url_dialog_title">Введите URL сервера обновления</string>
     <string name="pref_server_url">Сервер системы</string>
     <string name="pref_server_url_dialog_title">Введите URL сервера системы</string>
-    <string name="login">Войти</string>
     <string name="serverUrl">serverUrl</string>
-    <string name="updateUrl">updateUrl</string>
-    <string name="references">Справочники</string>
-    <string name="back">Назад</string>
-    <string name="ok">ОК</string>
-    <string name="make_photo">Снять</string>
     <string name="image_description">изображение</string>
     <string name="description"> </string>
-    <string name="id">Идентификатор: %1$s</string>
-    <string name="whois">Должность</string>
-    <string name="current_location">Текущие координаты</string>
-    <string name="no_gps_data">Нет данных GPS</string>
-    <string name="current_status">Текущий статус</string>
-    <string name="operation_list">Список последних операций</string>
-    <string name="gps_status">Состояние GPS</string>
-    <string name="gprs_status">Связь GPRS</string>
-    <string name="server_date_connect">Дата связи с сервером</string>
-    <string name="tasks_quantity">Статистика нарядов</string>
-    <string name="boss_contact">Контакт начальника</string>
     <string name="type">Тип:</string>
     <string name="service">Сервис:</string>
-    <string name="critical">Критичность:</string>
-    <string name="last_date">Дата обслуживания</string>
-    <string name="regular_date">Следующая поверка</string>
-    <string name="last_result">Результат обслуживания:</string>
-    <string name="documentation">Документация</string>
-    <string name="pleaseScanImg">Наведите камеру на код</string>
-    <string name="scan_process">Процесс сканирования</string>
-    <string name="empty"></string>
-    <string name="created">Создан: </string>
-    <string name="off">Отключен: </string>
     <string name="status">Статус: %1$s</string>
-    <string name="closed">Закрыт: </string>
-    <string name="operation_status_title">Статус операции</string>
-    <string name="equipment_title">Оборудование:</string>
-    <string name="operation_title">Операция:</string>
-    <string name="status_title">Статус: </string>
-    <string name="result_title">Результат: </string>
-    <string name="step_image_descr">Изображение шага операции</string>
-    <string name="task_title">Наряд: </string>
-    <string name="stat_status">Состояние:</string>
-    <string name="operation">Операция:</string>
-    <string name="operation_step_title">Шаг:</string>
-    <string name="additional_information">Дополнительная информация</string>
-    <string name="operation_step_descr_title">Описание шага обслуживания</string>
-    <string name="operation_status_change_title">Изменить статус операции</string>
-    <string name="operation_choose_status">Выберите статус завершения операции</string>
-    <string name="divider"> | </string>
-    <string name="num500">500</string>
     <string name="application_full_name">Тренируйся! Организовывай!</string>
-    <string name="open_documentation">Открыть документацию</string>
-    <string name="bluetooth_server">Bluetooth сервер</string>
-    <string name="title_activity_btserver">BTServerActivity</string>
 
     <string name="profile_add_name">Имя пользователя</string>
-    <string name="profile_add_age">Возраст</string>
     <string name="profile_add_vk">Профиль в контакте</string>
-    <string name="profile_image">Изображение аватар</string>
 
     <string name="team_add_name">Название команды</string>
     <string name="team_add_description">Описание</string>
     <string name="team_add_sport">Вид спорта</string>
-    <string name="team_add_image">Логотип команды</string>
 
     <string name="stadium_add_name">Название площадки</string>
-    <string name="stadium_add_description">Описание</string>
-    <string name="stadium_add_sport">Вид спорта</string>
     <string name="stadium_add_address">Адрес</string>
-    <string name="stadium_add_photo">Фотография площадки</string>
 
     <string name="training_add_name">Название тренировки</string>
     <string name="training_add_comment">Описание тренировки</string>
     <string name="training_add_cost">Цена тренировки</string>
-    <string name="training_add_date">Выберите дату/даты</string>
     <string name="training_add_stadium">Стадион</string>
     <string name="training_add_team">Команда</string>
     <string name="training_add_level">Уровень</string>
@@ -117,27 +51,13 @@
     <string name="training_phone_label">Контакт</string>
 
     <string name="profile_type">Тип пользователя</string>
-    <string name="profile_whois">Должность</string>
-    <string name="profile_login">Логин</string>
-    <string name="profile_password">Пароль</string>
     <string name="profile_submit_button">Добавить</string>
-    <string name="profile_edit_button">Изменить</string>
     <string name="profile_submit_delete">Удалить пользователя</string>
-    <string name="driver">Драйвер</string>
-    <string name="update_server">Сервер обновления</string>
-    <string name="system_server">Сервер системы</string>
 
-    <string name="tire"> - </string>
-    <string name="input_value">введите данные</string>
     <string name="program_version">Lets Go Sport! v0.1.1\n Олег Иванов\n (letsgosport.ru) (&#169;)2018</string>
-
-    <string name="toirSettings">Настройки приложения</string>
-
-    <string name="dialog_accept">Принять</string>
-    <string name="dialog_cancel">Отменить</string>
+    <string name="author">(c)2018 Olejek http://shtrm.ru</string>
 
     <string name="phone">Телефон</string>
-    <string name="profile_age">Возраст</string>
 
     <string name="profile_level">Уровень игрока</string>
     <string name="profile_team">Команда</string>

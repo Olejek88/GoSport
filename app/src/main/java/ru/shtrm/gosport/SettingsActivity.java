@@ -100,26 +100,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             appVersion = "unknown";
         }
         setupSimplePreferencesScreen();
-
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext());
-
-        // получаем список драйверов по имени класса
-        List<String> driverClassList = new ArrayList<>();
-        try {
-            DexFile df = new DexFile(getApplicationContext().getPackageCodePath());
-            Enumeration<String> iter = df.entries();
-            while (iter.hasMoreElements()) {
-                String classPath = iter.nextElement();
-                if (classPath.contains("ru.toir.mobile.rfid.driver") && !classPath.contains("$")) {
-                    driverClassList.add(classPath);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
         // элемент интерфейса со списком драйверов считывателей
         basicSettingScr = (PreferenceScreen) this.findPreference("preferenceBasicScreen");
     }

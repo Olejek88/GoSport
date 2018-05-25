@@ -50,7 +50,6 @@
         android:layout_below="@+id/eril_title" />
 
     <TextView
-        android:id="@+id/eril_inventory_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -82,7 +81,6 @@
         android:layout_toRightOf="@+id/eril_last_operation_date_label" />
 
     <TextView
-        android:id="@+id/eril_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/eril_last_operation_date_label"
@@ -106,7 +104,6 @@
         android:layout_marginBottom="5dp" />
 
     <TextView
-        android:id="@+id/eril_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/eril_image"

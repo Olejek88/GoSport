@@ -12,10 +12,10 @@ import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.UserSport;
 
 public class LoadTestData {
-    public static Sport sport_hockey, sport_football;
+    private static Sport sport_hockey, sport_football;
     public static RealmList<Sport> sports;
-    public static Level level_hockey, level_football;
-    public static RealmList<Level> levels;
+    private static Level level_hockey;
+    //public static RealmList<Level> levels;
     public static Amplua amplua;
     public static Team team;
     public static Stadium stadium;
@@ -29,7 +29,7 @@ public class LoadTestData {
         final String sportFootballUuid = "5562ed77-9bf0-4542-b127-f4ecefce49da";
 
         final String noTeamUuid = "5562ed77-9bf0-4542-b127-f4ecffffaaaa";
-        final String noTeamUuid2 = "5562ed77-9bf0-4542-b127-f4ecffffbbbb";
+        //final String noTeamUuid2 = "5562ed77-9bf0-4542-b127-f4ecffffbbbb";
 
         final String levelHockeyNewbee = "4462ed77-9bf0-4542-b127-f4ecefce4aaa";
         final String levelHockeyDebutant = "5562ed77-9bf0-4542-b127-f4ecefce4aada";
@@ -52,10 +52,10 @@ public class LoadTestData {
         final String levelFootballMaster = "2dd8d4f8-5c98-5445-86ed-97debc2559f8";
         final String levelFootballVeteran = "2dd8d4f8-5c98-5445-86ed-97daaa2559f8";
 
-        final String ampluaFootballGoalie = "3462ed77-9bf0-4542-b127-f4ecefce444a";
-        final String ampluaFootballDefender = "3462ed77-9bf0-4542-b127-f4eceece423a";
-        final String ampluaFootballForward = "3462ed77-9bf0-4542-b127-f4ecedce423a";
-        final String ampluaFootballUniversal = "3462ed77-9bf0-4542-b127-f4eceace423a";
+        //final String ampluaFootballGoalie = "3462ed77-9bf0-4542-b127-f4ecefce444a";
+        //final String ampluaFootballDefender = "3462ed77-9bf0-4542-b127-f4eceece423a";
+        //final String ampluaFootballForward = "3462ed77-9bf0-4542-b127-f4ecedce423a";
+        //final String ampluaFootballUniversal = "3462ed77-9bf0-4542-b127-f4eceace423a";
 
         // Sport --------------------
         realmDB.executeTransaction(new Realm.Transaction() {

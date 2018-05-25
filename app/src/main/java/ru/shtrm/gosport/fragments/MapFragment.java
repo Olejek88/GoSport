@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -44,12 +45,12 @@ public class MapFragment extends Fragment {
     private Context mainActivityConnector = null;
     private static final int GPS_REQUEST_CODE = 1;
 	private final ArrayList<OverlayItem> overlayItemArray = new ArrayList<>();
+    StadiumOverlayItem olItem;
 
 	Location location;
     StadiumAdapter stadiumAdapter;
     Realm realmDB;
     private double curLatitude, curLongitude;
-	private int LastItemPosition = -1;
 
     public MapFragment() {
     }
@@ -75,7 +76,8 @@ public class MapFragment extends Fragment {
             try {
                 location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             } catch (SecurityException e) {
-                Toast.makeText(getActivity(), "Нет разрешений на определение местоположения",
+                Toast.makeText(getActivity(),
+                        mainActivityConnector.getResources().getString(R.string.message_no_gps_permission),
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -108,10 +110,7 @@ public class MapFragment extends Fragment {
                 curLatitude = item.getLatitude();
                 curLongitude = item.getLongitude();
 
-                //GeoPoint endPoint = new GeoPoint(curLatitude, curLongitude);
-                //waypoints.add(endPoint);
-
-                StadiumOverlayItem olItem = new StadiumOverlayItem(
+                olItem = new StadiumOverlayItem(
                         item.getTitle() + ", " + item.getSport().getTitle(), "Stadium",
                         new GeoPoint(curLatitude, curLongitude));
                 Drawable newMarker;
@@ -130,8 +129,9 @@ public class MapFragment extends Fragment {
         stadiumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				OverlayItem item = overlayItemArray.get(position);
-				// Get the new Drawable
+				final OverlayItem item = overlayItemArray.get(position);
+
+				/*
 				Drawable marker = view.getResources().getDrawable(
 						R.drawable.stadium_marker_32);
 				// Set the new marker
@@ -142,7 +142,20 @@ public class MapFragment extends Fragment {
 							R.drawable.stadium_marker_32);
 					item2.setMarker(marker);
 				}
-				LastItemPosition = position;
+				LastItemPosition = position;*/
+
+				item.getPoint().getLongitude();
+				if (mapView!=null) {
+                    mapView.getController().setZoom(17f);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mapView.getController().animateTo(
+                                    new GeoPoint(item.getPoint().getLatitude(),
+                                            item.getPoint().getLongitude()));
+                        }
+                    }, 500);
+                }
 			}
 		});
 

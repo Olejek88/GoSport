@@ -85,7 +85,7 @@ public class FragmentEditUser extends Fragment implements View.OnClickListener {
             Toast.makeText(mainActivityConnector.getApplicationContext(),
                     "Пользователь не выбран, пожалуйста выберите или содайте профиль",
                     Toast.LENGTH_LONG).show();
-            getActivity().getSupportFragmentManager().beginTransaction().
+            ((MainActivity) mainActivityConnector).getSupportFragmentManager().beginTransaction().
                     replace(R.id.frame_container, FragmentWelcome.newInstance()).commit();
         } else {
             binding.setUser(user);

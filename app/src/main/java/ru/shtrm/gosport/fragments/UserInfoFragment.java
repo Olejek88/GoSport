@@ -28,8 +28,6 @@ import ru.shtrm.gosport.db.realm.User;
 import ru.shtrm.gosport.db.realm.UserSport;
 import ru.shtrm.gosport.utils.MainFunctions;
 
-//import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
-
 public class UserInfoFragment extends Fragment {
     private Realm realmDB;
     private Context mainActivityConnector = null;

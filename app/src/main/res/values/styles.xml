@@ -4,22 +4,8 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-    </style>
-
-    <style name="textNormalSize">
-        <item name="android:textSize">16sp</item>
-    </style>
 
     <style name="CustomTheme" parent="MaterialDrawerTheme.Light">
         <item name="windowActionModeOverlay">true</item>
@@ -33,42 +19,8 @@
         <item name="android:textColor">@color/larisaTextColorABlack</item>
     </style>
 
-    <style name="PreferenceCategory" parent="CustomTheme">
-        <item name="android:textColor">@color/larisaTextColorABlack</item>
-    </style>
-
-    <style name="PreferenceTitleStyle">
-        <item name="android:textColor">@color/larisaTextColorABlack</item>
-    </style>
-
     <style name="CMOptionsMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
 	     <item name="android:popupBackground">#ffffff</item>
 	</style>
-
-    <style name="PopupMenuStyle" parent="android:Widget.Holo.Light.PopupMenu">
-        <item name="android:popupBackground">@android:color/white</item>
-    </style>
-
-    <style name="FullscreenTheme" parent="MaterialDrawerTheme.Light.TranslucentStatus">
-    </style>
-
-    <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
-        <item name="colorAccent">@color/larisaBlueColor</item>
-        <item name="android:textColorSecondary">@color/larisaBlueColor</item>
-    </style>
-
-    <style name="ToolbarStyle">
-        <item name="android:background">@color/larisaBlueColor</item>
-    </style>
-
-    <style name="custom_dialog" parent="@android:style/Theme.Holo.Dialog">
-        <item name="android:windowTitleStyle">@style/custom_dialog_title</item>
-    </style>
-
-    <style name="custom_dialog_title" parent="android:Widget.TextView">
-        <item name="android:background">@color/larisaBlueColor</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
 
 </resources>

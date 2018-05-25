@@ -94,17 +94,17 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int NO_FRAGMENT = 0;
     private static final int FRAGMENT_USER = 1;
-    //private static final int FRAGMENT_SPORTS = 2;
     private static final int FRAGMENT_MAP = 3;
     private static final int FRAGMENT_STADIUMS = 4;
-    private static final int FRAGMENT_TRAININGS = 5;
     private static final int FRAGMENT_CALENDAR = 6;
-    private static final int FRAGMENT_MYTRAININGS = 7;
+    private static final int FRAGMENT_MY_TRAININGS = 7;
     private static final int FRAGMENT_EVENTS = 8;
     private static final int FRAGMENT_TEAMS = 9;
+    private static final int FRAGMENT_ADD_STADIUM = 11;
 
+    //private static final int FRAGMENT_SPORTS = 2;
+    //private static final int FRAGMENT_TRAININGS = 5;
     //private static final int FRAGMENT_ADDTRAINING = 10;
-    private static final int FRAGMENT_ADDSTADIUM = 11;
     //private static final int FRAGMENT_SETTRAINING = 12;
 
     private static final int DRAWER_INFO = 13;
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
                     .withName(R.string.menu_mytrainings)
                     .withDescription("Текущие тренировки")
                     .withIcon(R.drawable.menu_calendar)
-                    .withIdentifier(FRAGMENT_MYTRAININGS)
+                    .withIdentifier(FRAGMENT_MY_TRAININGS)
                     .withSelectable(false)
                     .withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor))
                     .withBadge("" + new_trainings)
@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
                     .withName(R.string.menu_mytrainings)
                     .withDescription("Текущие тренировки")
                     .withIcon(R.drawable.menu_calendar)
-                    .withIdentifier(FRAGMENT_MYTRAININGS)
+                    .withIdentifier(FRAGMENT_MY_TRAININGS)
                     .withSelectable(false)
                     .withIconColor(ContextCompat.getColor(getApplicationContext(), R.color.larisaBlueColor));
         }
@@ -423,8 +423,8 @@ public class MainActivity extends AppCompatActivity {
                                                     MapFragment.newInstance()).commit();
                                     bottomBar.selectTabWithId(R.id.menu_maps);
                                     break;
-                                case FRAGMENT_MYTRAININGS:
-                                    currentFragment = FRAGMENT_MYTRAININGS;
+                                case FRAGMENT_MY_TRAININGS:
+                                    currentFragment = FRAGMENT_MY_TRAININGS;
                                     getSupportFragmentManager().beginTransaction()
                                             .replace(R.id.frame_container,
                                                     MyTrainingsFragment.newInstance()).commit();
@@ -443,8 +443,8 @@ public class MainActivity extends AppCompatActivity {
                                             .replace(R.id.frame_container,
                                                     TeamsFragment.newInstance()).commit();
                                     break;
-                                case FRAGMENT_ADDSTADIUM:
-                                    currentFragment = FRAGMENT_ADDSTADIUM;
+                                case FRAGMENT_ADD_STADIUM:
+                                    currentFragment = FRAGMENT_ADD_STADIUM;
                                     getSupportFragmentManager().beginTransaction()
                                             .replace(R.id.frame_container,
                                                     FragmentAddStadium.newInstance()).commit();

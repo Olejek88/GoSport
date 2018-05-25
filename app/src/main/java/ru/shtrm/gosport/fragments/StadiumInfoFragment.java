@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -113,7 +114,7 @@ public class StadiumInfoFragment extends Fragment {
         if (trainings.size() > 2) {
             trainings.subList(0, 5);
         }
-        TrainingAdapter trainingAdapter =
+        final TrainingAdapter trainingAdapter =
                 new TrainingAdapter(mainActivityConnector, trainings, stadium.getSport());
         tv_stadium_trainings.setAdapter(trainingAdapter);
 
@@ -131,6 +132,23 @@ public class StadiumInfoFragment extends Fragment {
                         replace(R.id.frame_container, f).commit();
             }
         });
+
+        tv_stadium_trainings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> av, View v, int pos, long id)
+            {
+                Training training = trainingAdapter.getItem(pos);
+                if (training != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("uuid", training.getUuid());
+                    TrainingInfoFragment trainingInfoFragment = TrainingInfoFragment.newInstance();
+                    trainingInfoFragment.setArguments(bundle);
+                    ((MainActivity) mainActivityConnector).getSupportFragmentManager().beginTransaction().
+                            replace(R.id.frame_container, trainingInfoFragment).commit();
+                }
+            }
+        });
+
     }
 
     @Override

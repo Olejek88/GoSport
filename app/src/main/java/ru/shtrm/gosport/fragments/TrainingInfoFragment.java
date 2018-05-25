@@ -18,11 +18,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,19 +34,15 @@ import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.Realm;
 import ru.shtrm.gosport.AuthorizedUser;
-import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.databinding.TrainingInfoFragmentBinding;
-import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
 import ru.shtrm.gosport.db.realm.UserTraining;
-import ru.shtrm.gosport.utils.MainFunctions;
 
 import static android.content.Context.LOCATION_SERVICE;
 

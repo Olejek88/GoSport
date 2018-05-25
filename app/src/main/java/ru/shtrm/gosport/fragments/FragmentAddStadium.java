@@ -17,7 +17,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,10 +27,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
@@ -122,7 +121,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
             mapView.setTileSource(TileSourceFactory.MAPNIK);
             mapView.setBuiltInZoomControls(true);
             IMapController mapController = mapView.getController();
-            mapController.setZoom(17);
+            mapController.setZoom(17f);
 
             GeoPoint point2 = new GeoPoint(curLatitude, curLongitude);
             mapController.setCenter(point2);
@@ -254,7 +253,8 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
     private class DummyOverlay extends org.osmdroid.views.overlay.Overlay {
 
         private DummyOverlay(Context ctx) {
-            super(ctx); // TODO Auto-generated constructor stub
+            super();
+            ///super(ctx); // TODO Auto-generated constructor stub
         }
 
         @Override
@@ -348,7 +348,7 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
                     Stadium stadium = realmDB.where(Stadium.class).
                             equalTo("uuid", stadiumUuid).findFirst();
                     if (stadium != null) {
-                        if (false) {
+                        if (!stadium.getUser().getUuid().equals(user.getUuid())) {
                             Toast.makeText(mainActivityConnector.getApplicationContext(),
                                     "Вы не имеете права изменить эту площадку. " +
                                             " " + stadium.getUser().getUuid() +

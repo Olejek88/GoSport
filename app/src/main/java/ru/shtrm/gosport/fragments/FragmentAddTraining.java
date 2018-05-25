@@ -109,11 +109,6 @@ public class FragmentAddTraining extends Fragment implements View.OnClickListene
 
         // TODO переделать в биндинг
         date = view.findViewById(R.id.training_selected_time);
-        if (training == null || (training!=null && training.getDate()==null)) {
-            //String dateS = mainActivityConnector.getResources().getString(R.string.training_time);
-            //date.setText(dateS);
-            //date.setTextColor(mainActivityConnector.getResources().getColor(R.color.larisaTextColor));
-        }
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
