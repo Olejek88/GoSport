@@ -22,7 +22,7 @@
             <ImageView
                 android:id="@+id/training_add_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/user_football" />
@@ -30,10 +30,10 @@
             <EditText
                 android:id="@+id/training_add_title"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_toEndOf="@+id/training_add_icon"
-                android:gravity="center_vertical|center_horizontal"
+                android:gravity="center_vertical"
                 android:hint="@string/training_add_name"
                 android:inputType="text"
                 android:paddingLeft="10dp"
@@ -46,7 +46,7 @@
             <ImageView
                 android:id="@+id/training_add_sport_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/training_add_icon"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
@@ -67,7 +67,7 @@
             <ImageView
                 android:id="@+id/training_add_stadium_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/training_add_sport_icon"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
@@ -88,7 +88,7 @@
             <ImageView
                 android:id="@+id/training_add_team_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/training_add_stadium_icon"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="false"
                 android:layout_below="@+id/training_add_stadium_icon"
-                android:layout_marginEnd="15dp"
+                android:layout_marginEnd="10dp"
                 android:layout_toEndOf="@+id/training_add_team_icon"
                 android:prompt="@string/training_add_team"
                 android:textSize="16sp" />
@@ -109,7 +109,7 @@
             <ImageView
                 android:id="@+id/training_add_level_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/training_add_team_icon"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="false"
                 android:layout_below="@+id/training_add_team_icon"
-                android:layout_marginEnd="15dp"
+                android:layout_marginEnd="10dp"
                 android:layout_toEndOf="@+id/training_add_level_icon"
                 android:prompt="@string/training_add_level"
                 android:textSize="16sp" />
@@ -130,7 +130,7 @@
             <ImageView
                 android:id="@+id/training_add_cost_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/training_add_level_icon"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
@@ -139,11 +139,12 @@
             <EditText
                 android:id="@+id/training_add_cost"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/training_add_level_icon"
-                android:layout_gravity="start"
                 android:layout_toEndOf="@+id/training_add_cost_icon"
                 android:layout_marginStart="15dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="center_vertical"
                 android:hint="@string/training_add_cost"
                 android:inputType="number"
                 android:text="@{Integer.toString(training.cost)}"
@@ -152,7 +153,7 @@
             <ImageView
                 android:id="@+id/training_add_comment_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/training_add_cost_icon"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
@@ -161,23 +162,23 @@
             <EditText
                 android:id="@+id/training_add_comment"
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="15dp"
                 android:layout_below="@+id/training_add_cost_icon"
                 android:layout_gravity="start"
                 android:layout_toEndOf="@+id/training_add_comment_icon"
                 android:hint="@string/training_add_comment"
                 android:inputType="text"
-                android:lines="2"
+                android:lines="1"
                 android:maxLines="2"
-                android:minLines="2"
+                android:minLines="1"
                 android:text="@{training.comment}"
                 android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/training_add_date_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_below="@+id/training_add_comment_icon"
                 android:layout_marginStart="15dp"
                 android:contentDescription="@string/image_description"
@@ -185,14 +186,15 @@
 
             <TextView
                 android:id="@+id/training_selected_time"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
                 android:layout_below="@+id/training_add_comment_icon"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="10dp"
                 android:layout_toEndOf="@+id/training_add_date_icon"
                 android:gravity="center_vertical"
-                android:text="@{training.dateFormatted}"
+                android:textColor="#000000"
+                android:text="@{training!=null ? training.dateFormatted : @string/training_time}"
                 android:textSize="16sp" />
 
             <Button

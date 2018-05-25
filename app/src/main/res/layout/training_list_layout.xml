@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="60dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
         android:src="@drawable/ic_plus_white_36dp"
         app:backgroundTint="@color/larisaBlueColor"
         app:fabSize="normal" />

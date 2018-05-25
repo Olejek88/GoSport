@@ -27,6 +27,7 @@ import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.db.realm.UserTraining;
 import ru.shtrm.gosport.utils.MainFunctions;
 
 import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
@@ -83,27 +84,27 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
             if (parent.getId() == R.id.trainings_listView) {
                 convertView = inflater.inflate(R.layout.training_item_layout, parent, false);
                 viewHolder = new ViewHolder();
-                viewHolder.icon = (ImageView) convertView.findViewById(R.id.training_sport_icon);
-                viewHolder.cost = (TextView) convertView.findViewById(R.id.training_cost);
-                viewHolder.date = (TextView) convertView.findViewById(R.id.training_date);
-                viewHolder.stadium = (TextView) convertView.findViewById(R.id.training_stadium);
-                viewHolder.level = (TextView) convertView.findViewById(R.id.training_sport_level);
-                viewHolder.sport = (TextView) convertView.findViewById(R.id.training_sport);
-                viewHolder.contact = (TextView) convertView.findViewById(R.id.training_contact);
-                viewHolder.team = (TextView) convertView.findViewById(R.id.training_sport_team);
+                viewHolder.icon = convertView.findViewById(R.id.training_sport_icon);
+                viewHolder.cost = convertView.findViewById(R.id.training_cost);
+                viewHolder.date = convertView.findViewById(R.id.training_date);
+                viewHolder.stadium = convertView.findViewById(R.id.training_stadium);
+                viewHolder.level = convertView.findViewById(R.id.training_sport_level);
+                viewHolder.sport = convertView.findViewById(R.id.training_sport);
+                viewHolder.contact = convertView.findViewById(R.id.training_contact);
+                viewHolder.team = convertView.findViewById(R.id.training_sport_team);
                 convertView.setTag(viewHolder);
             } else {
                 convertView = inflater.inflate(R.layout.simple_item, parent, false);
                 viewHolder = new ViewHolder();
-                viewHolder.title = (TextView) convertView.findViewById(R.id.training_text_name);
-                viewHolder.comment = (TextView) convertView.findViewById(R.id.training_comment);
-                viewHolder.cost = (TextView) convertView.findViewById(R.id.training_cost);
-                viewHolder.date = (TextView) convertView.findViewById(R.id.training_date);
-                viewHolder.level = (TextView) convertView.findViewById(R.id.training_sport_level);
-                viewHolder.sport = (TextView) convertView.findViewById(R.id.training_sport);
-                viewHolder.contact = (TextView) convertView.findViewById(R.id.training_contact);
-                viewHolder.stadium = (TextView) convertView.findViewById(R.id.training_stadium);
-                viewHolder.team = (TextView) convertView.findViewById(R.id.training_team);
+                viewHolder.title = convertView.findViewById(R.id.training_text_name);
+                viewHolder.comment = convertView.findViewById(R.id.training_comment);
+                viewHolder.cost = convertView.findViewById(R.id.training_cost);
+                viewHolder.date = convertView.findViewById(R.id.training_date);
+                viewHolder.level = convertView.findViewById(R.id.training_sport_level);
+                viewHolder.sport = convertView.findViewById(R.id.training_sport);
+                viewHolder.contact = convertView.findViewById(R.id.training_contact);
+                viewHolder.stadium = convertView.findViewById(R.id.training_stadium);
+                viewHolder.team = convertView.findViewById(R.id.training_team);
                 convertView.setTag(viewHolder);
             }
         } else {

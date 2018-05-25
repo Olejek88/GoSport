@@ -115,4 +115,20 @@ public class Stadium extends RealmObject {
     public void setChangedAt(Date changedAt) {
         this.changedAt = changedAt;
     }
+
+    public Stadium getEmptyStadium () {
+        Stadium stadium = new Stadium();
+        stadium.set_id(null);
+        stadium.setUser(null);
+        stadium.setLongitude(0);
+        stadium.setLatitude(0);
+        stadium.setAddress("");
+        stadium.setImage(null);
+        stadium.setChangedAt(null);
+        stadium.setCreatedAt(null);
+        stadium.setDescription("");
+        stadium.setTitle("Нет площадки");
+        stadium.setUuid("");
+        return stadium;
+    }
 }

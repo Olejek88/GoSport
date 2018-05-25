@@ -350,7 +350,6 @@ class ToirRealmMigration implements RealmMigration {
                     .addRealmObjectField("user", schema.get("User"));
             oldVersion++;
         }
-
         testPropsFields(realm);
     }
 

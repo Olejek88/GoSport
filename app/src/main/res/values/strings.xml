@@ -113,7 +113,7 @@
     <string name="training_cost">Цена: %1$dр.</string>
     <string name="training_date">Дата тренировки</string>
     <string name="training_team_label">Команда</string>
-    <string name="training_cost_label">Дата тренировки</string>
+    <string name="training_cost_label">Цена тренировки</string>
     <string name="training_phone_label">Контакт</string>
 
     <string name="profile_type">Тип пользователя</string>
@@ -129,7 +129,7 @@
 
     <string name="tire"> - </string>
     <string name="input_value">введите данные</string>
-    <string name="program_version">Lets Go Sport! v0.0.1\n Олег Иванов\n (letsgosport.ru) (&#169;)2017</string>
+    <string name="program_version">Lets Go Sport! v0.1.1\n Олег Иванов\n (letsgosport.ru) (&#169;)2018</string>
 
     <string name="toirSettings">Настройки приложения</string>
 
@@ -153,7 +153,7 @@
     <string name="training_time">Время тренировки</string>
 
     <string name="formatted_date">%1$d/%2$d/%3$d</string>
-    <string name="formatted_date_time">%1$d/%2$d/%3$d %4$d:%5$d</string>
+    <string name="formatted_date_time">%1$02d/%2$02d/%3$d %4$02d:%5$02d</string>
     <string name="level">Уровень: %1$s</string>
     <string name="amplua">Амплуа: %1$s</string>
     <string name="team">Команда: %1$s</string>
@@ -165,5 +165,6 @@
     <string name="message_no_gps_permission">Нет разрешений на вывод карты!</string>
     <string name="message_no_write_permission">Нет разрешений на запись данных!</string>
     <string name="message_no_such_user">Нет такого пользователя!</string>
+    <string name="message_no_such_training">Нет такой тренировки!</string>
     <string name="message_upgrade_references">Пожалуйста обновите справочники</string>
 </resources>

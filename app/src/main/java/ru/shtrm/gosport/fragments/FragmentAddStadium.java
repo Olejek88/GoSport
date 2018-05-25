@@ -15,7 +15,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -228,6 +230,11 @@ public class FragmentAddStadium extends Fragment implements View.OnClickListener
         String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         requestPermissions(permissions, WRITE_REQUEST_CODE);
 
+        FragmentTransaction fragmentTransaction = ((MainActivity)mainActivityConnector).
+                getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_container, MapFragment.newInstance()).addToBackStack(null);
+        fragmentTransaction.commit();
+        fragmentTransaction.addToBackStack(null);
         return view;
     }
 

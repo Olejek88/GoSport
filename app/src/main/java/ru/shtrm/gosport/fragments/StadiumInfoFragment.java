@@ -1,11 +1,14 @@
 package ru.shtrm.gosport.fragments;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
+import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.databinding.StadiumInfoFragmentBinding;
 import ru.shtrm.gosport.db.adapters.TrainingAdapter;
@@ -29,13 +33,12 @@ import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class StadiumInfoFragment extends Fragment {
     private Realm realmDB;
+    private Context mainActivityConnector = null;
 
     public static StadiumInfoFragment newInstance() {
         return (new StadiumInfoFragment());
     }
-
     StadiumInfoFragmentBinding binding;
-    private final static String TAG = "StadiumInfoFragment";
     FloatingActionButton fab;
 
     private ImageView tv_stadium_image;
@@ -63,14 +66,13 @@ public class StadiumInfoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.stadium_info_fragment,
                 container,false);
         View view = binding.getRoot();
-
-        Toolbar toolbar = (Toolbar)(getActivity()).findViewById(R.id.toolbar);
+        Toolbar toolbar = ((AppCompatActivity)mainActivityConnector).findViewById(R.id.toolbar);
         toolbar.setSubtitle("Информация по площадке");
 
         realmDB = Realm.getDefaultInstance();
@@ -78,9 +80,9 @@ public class StadiumInfoFragment extends Fragment {
         assert b != null;
         stadium_uuid = b.getString("uuid");
 
-        tv_stadium_image =(ImageView) view.findViewById(R.id.stadium_image);
-        tv_stadium_trainings =(ListView) view.findViewById(R.id.list_view);
-        fab = (FloatingActionButton) view.findViewById(R.id.stadium_edit_button);
+        tv_stadium_image = view.findViewById(R.id.stadium_image);
+        tv_stadium_trainings = view.findViewById(R.id.trainings_listView);
+        fab = view.findViewById(R.id.stadium_edit_button);
 
         initView();
         return view;
@@ -90,13 +92,14 @@ public class StadiumInfoFragment extends Fragment {
         final Stadium stadium = realmDB.where(Stadium.class).
                 equalTo("uuid", stadium_uuid).findFirst();
         if (stadium == null) {
-            Toast.makeText(getContext(), "Неизвестный стадион: " + stadium_uuid, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Неизвестный стадион: " + stadium_uuid,
+                    Toast.LENGTH_LONG).show();
             return;
         }
         binding.setStadium(stadium);
 
         // TODO разобраться с binding на imageview
-        String path = MainFunctions.getPicturesDirectory(getContext());
+        String path = MainFunctions.getPicturesDirectory(mainActivityConnector);
         Bitmap stadium_bitmap = getResizedBitmap(path, stadium.getImage(),
                 0, 600, stadium.getChangedAt().getTime());
         if (stadium_bitmap != null) {
@@ -111,7 +114,7 @@ public class StadiumInfoFragment extends Fragment {
             trainings.subList(0, 5);
         }
         TrainingAdapter trainingAdapter =
-                new TrainingAdapter(getContext(), trainings, stadium.getSport());
+                new TrainingAdapter(mainActivityConnector, trainings, stadium.getSport());
         tv_stadium_trainings.setAdapter(trainingAdapter);
 
         setListViewHeightBasedOnChildren(tv_stadium_trainings);
@@ -124,10 +127,19 @@ public class StadiumInfoFragment extends Fragment {
                 bundle.putString("uuid", stadium.getUuid());
                 Fragment f = FragmentAddStadium.newInstance();
                 f.setArguments(bundle);
-                getActivity().getSupportFragmentManager().
-                        beginTransaction().replace(R.id.frame_container, f).commit();
+                ((MainActivity) mainActivityConnector).getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_container, f).commit();
             }
         });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivityConnector = getActivity();
+        // TODO решить что делать если контекст не приехал
+        if (mainActivityConnector == null)
+            onDestroyView();
     }
 }
 

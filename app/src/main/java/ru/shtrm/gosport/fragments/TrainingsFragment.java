@@ -30,6 +30,7 @@ public class TrainingsFragment extends Fragment {
 
 	private Spinner typeSpinner;
 	private ListView trainingListView;
+    TrainingAdapter trainingAdapter = null;
 
     FloatingActionButton fab_check;
 
@@ -48,6 +49,10 @@ public class TrainingsFragment extends Fragment {
         fab_check = rootView.findViewById(R.id.fab_check);
         fab_check.setOnClickListener(new submitOnClickListener());
 
+        //realmDB.beginTransaction();
+        //realmDB.where(Training.class).findAll().deleteAllFromRealm();
+        //realmDB.commitTransaction();
+
         SpinnerListener spinnerListener = new SpinnerListener();
         RealmResults<Sport> sports = realmDB.where(Sport.class).findAll();
         typeSpinner = rootView.findViewById(R.id.simple_spinner);
@@ -58,11 +63,44 @@ public class TrainingsFragment extends Fragment {
         typeSpinner.setOnItemSelectedListener(spinnerListener);
 
         trainingListView = rootView.findViewById(R.id.trainings_listView);
-        trainingListView.setOnItemClickListener(new ListviewClickListener());
 
         initView();
 
-		rootView.setFocusableInTouchMode(true);
+        trainingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> av, View v, int pos, long id)
+            {
+                Training training = trainingAdapter.getItem(pos);
+                if (training != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("uuid", training.getUuid());
+                    TrainingInfoFragment trainingInfoFragment = TrainingInfoFragment.newInstance();
+                    trainingInfoFragment.setArguments(bundle);
+                    ((MainActivity) mainActivityConnector).getSupportFragmentManager().beginTransaction().
+                            replace(R.id.frame_container, trainingInfoFragment).commit();
+                }
+            }
+        });
+
+        trainingListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> av, View v, int pos, long id)
+            {
+                Training training = trainingAdapter.getItem(pos);
+                if (training != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("uuid", training.getUuid());
+                    Fragment f = FragmentAddTraining.newInstance();
+                    f.setArguments(bundle);
+                    ((AppCompatActivity)mainActivityConnector).getSupportFragmentManager().
+                            beginTransaction().replace(R.id.frame_container, f).commit();
+
+                }
+                return true;
+            }
+        });
+
+        rootView.setFocusableInTouchMode(true);
 		rootView.requestFocus();
 
 		return rootView;
@@ -80,12 +118,13 @@ public class TrainingsFragment extends Fragment {
         }*/
         if (sport != null) {
             trainings = realmDB.where(Training.class).
-                    equalTo("sport.uuid", sport.getUuid()).findAll();
+                    equalTo("sport.uuid", sport.getUuid()).
+                    findAllSorted("date");
         } else {
-            trainings = realmDB.where(Training.class).findAll();
+            trainings = realmDB.where(Training.class).findAllSorted("date");
         }
-        TrainingAdapter traningAdapter = new TrainingAdapter(mainActivityConnector, trainings, sport);
-        trainingListView.setAdapter(traningAdapter);
+        trainingAdapter = new TrainingAdapter(mainActivityConnector, trainings, sport);
+        trainingListView.setAdapter(trainingAdapter);
     }
 
 	@Override
@@ -96,30 +135,6 @@ public class TrainingsFragment extends Fragment {
 			initView();
 		}
 	}
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        realmDB.close();
-    }
-
-    private class ListviewClickListener implements
-            AdapterView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> parentView,
-                                View selectedItemView, int position, long id) {
-            Training training = (Training) parentView.getItemAtPosition(position);
-            if (training != null) {
-                Bundle bundle = new Bundle();
-                bundle.putString("uuid", training.getUuid());
-                TrainingInfoFragment trainingInfoFragment = TrainingInfoFragment.newInstance();
-                trainingInfoFragment.setArguments(bundle);
-                ((MainActivity) mainActivityConnector).getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_container, trainingInfoFragment).commit();
-            }
-        }
-    }
 
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
 
@@ -153,5 +168,11 @@ public class TrainingsFragment extends Fragment {
         // TODO решить что делать если контекст не приехал
         if (mainActivityConnector == null)
             onDestroyView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        realmDB.close();
     }
 }

@@ -59,12 +59,6 @@ public class FragmentAddUser extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_add_user, container, false);
         realmDB = Realm.getDefaultInstance();
 
-        /*realmDB.beginTransaction();
-        User user = realmDB.where(User.class).findFirst();
-        if (user!=null)
-            user.deleteFromRealm();
-        realmDB.commitTransaction();*/
-
         iView = view.findViewById(R.id.profile_add_image);
         iView.setOnClickListener(this);
         Button one = view.findViewById(R.id.profile_button_submit);

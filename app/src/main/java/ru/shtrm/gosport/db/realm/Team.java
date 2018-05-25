@@ -96,4 +96,19 @@ public class Team extends RealmObject {
     public void setChangedAt(Date changedAt) {
         this.changedAt = changedAt;
     }
+
+    public Team getEmptyTeam () {
+        Team team = new Team();
+        team.set_id(null);
+        team.setUser(null);
+        team.setChangedAt(null);
+        team.setCreatedAt(null);
+        team.setDescription("");
+        team.setTitle("Нет команды");
+        team.setUuid("");
+        team.setPhoto(null);
+        team.setLevel(null);
+        return team;
+    }
+
 }

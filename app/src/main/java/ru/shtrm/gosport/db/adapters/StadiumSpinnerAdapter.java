@@ -32,7 +32,7 @@ public class StadiumSpinnerAdapter extends RealmBaseAdapter<Stadium> implements 
         super(data);
         this.inflater = LayoutInflater.from(context);
         this.context = context;
-        sport = sport;
+        this.sport = sport;
     }
     public StadiumSpinnerAdapter(@NonNull Context context, RealmList<Stadium> data) {
         super(data);

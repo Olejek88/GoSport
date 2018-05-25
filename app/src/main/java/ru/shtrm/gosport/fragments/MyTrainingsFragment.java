@@ -1,39 +1,38 @@
 package ru.shtrm.gosport.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.CalendarView;
 import android.widget.ListView;
-import android.widget.Spinner;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import ru.shtrm.gosport.MainActivity;
 import ru.shtrm.gosport.R;
-import ru.shtrm.gosport.db.adapters.SportAdapter;
-import ru.shtrm.gosport.db.adapters.TrainingAdapter;
+import ru.shtrm.gosport.db.adapters.UserTrainingListAdapter;
 import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Stadium;
-import ru.shtrm.gosport.db.realm.Training;
+import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.db.realm.UserTraining;
 
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_MULTIPLE;
 
 public class MyTrainingsFragment extends Fragment {
     private Realm realmDB;
+    private Context mainActivityConnector = null;
+
 	private ListView trainingListView;
-    //CalendarView simpleCalendarView;
     MaterialCalendarView simpleCalendarView;
 
     public static MyTrainingsFragment newInstance() {
@@ -41,18 +40,17 @@ public class MyTrainingsFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.mytrainings, container, false);
-        Toolbar toolbar = (Toolbar)(getActivity()).findViewById(R.id.toolbar);
-        //simpleCalendarView = (CalendarView) rootView.findViewById(R.id.calendarView);
-        simpleCalendarView = (MaterialCalendarView) rootView.findViewById(R.id.calendarView);
+        Toolbar toolbar = ((AppCompatActivity)mainActivityConnector).findViewById(R.id.toolbar);
+        simpleCalendarView = rootView.findViewById(R.id.calendarView);
         simpleCalendarView.setSelectionMode(SELECTION_MODE_MULTIPLE);
         toolbar.setSubtitle("Мои тренировки");
         realmDB = Realm.getDefaultInstance();
 
-        trainingListView = (ListView) rootView.findViewById(R.id.trainings_listView);
+        trainingListView = rootView.findViewById(R.id.trainings_listView);
         trainingListView.setOnItemClickListener(new ListviewClickListener());
 
         initView();
@@ -68,22 +66,28 @@ public class MyTrainingsFragment extends Fragment {
     }
 
 	private void FillListViewTraining(Sport sport) {
-        RealmResults<Training> trainings;
+        RealmResults<UserTraining> userTrainings;
+        User user = new User().getActiveUser(realmDB);
+        if (user==null) return;
         if (sport != null) {
-            trainings = realmDB.where(Training.class).
-                    equalTo("sport.uuid", sport.getUuid()).findAll();
+            userTrainings = realmDB.where(UserTraining.class).
+                    equalTo("training.sport.uuid", sport.getUuid()).
+                    equalTo("user.uuid", user.getUuid()).
+                    findAll();
         } else {
-            trainings = realmDB.where(Training.class).findAll();
+            userTrainings = realmDB.where(UserTraining.class).
+                    equalTo("user.uuid", user.getUuid()).
+                    findAll();
         }
-        TrainingAdapter traningAdapter = new TrainingAdapter(getContext(), trainings, sport);
-        trainingListView.setAdapter(traningAdapter);
+        UserTrainingListAdapter trainingAdapter = new UserTrainingListAdapter(mainActivityConnector,
+                userTrainings);
+        trainingListView.setAdapter(trainingAdapter);
 
-        Date newdate1,newdate2;
-        newdate1 = new Date();
+        Date newDate;
         simpleCalendarView.setDateSelected(new Date(), true);
-        for (Training training : trainings) {
-            newdate2 = training.getDate();
-            simpleCalendarView.setDateSelected(training.getDate(),true);
+        for (UserTraining userTraining : userTrainings) {
+            newDate = userTraining.getTraining().getDate();
+            simpleCalendarView.setDateSelected(newDate,true);
         }
     }
 
@@ -102,19 +106,29 @@ public class MyTrainingsFragment extends Fragment {
         realmDB.close();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivityConnector = getActivity();
+        // TODO решить что делать если контекст не приехал
+        if (mainActivityConnector == null)
+            onDestroyView();
+    }
+
     private class ListviewClickListener implements
             AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parentView,
                                 View selectedItemView, int position, long id) {
-            Training training = (Training) parentView.getItemAtPosition(position);
-            if (training != null) {
+            UserTraining userTraining = (UserTraining) parentView.getItemAtPosition(position);
+            if (userTraining != null) {
                 Bundle bundle = new Bundle();
-                bundle.putString("training_uuid", training.getUuid());
+                bundle.putString("uuid", userTraining.getTraining().getUuid());
                 TrainingInfoFragment trainingInfoFragment = TrainingInfoFragment.newInstance();
                 trainingInfoFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, trainingInfoFragment).commit();
+                ((MainActivity) mainActivityConnector).getSupportFragmentManager().beginTransaction().
+                replace(R.id.frame_container, trainingInfoFragment).commit();
             }
         }
     }

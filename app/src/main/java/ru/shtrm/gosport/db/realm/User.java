@@ -4,8 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import ru.shtrm.gosport.AuthorizedUser;
 
 public class User extends RealmObject {
     @PrimaryKey
@@ -148,5 +150,10 @@ public class User extends RealmObject {
 
     public void setChangedAt(Date changedAt) {
         this.changedAt = changedAt;
+    }
+
+    public User getActiveUser (Realm realmDB) {
+        return realmDB.where(User.class).
+                equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
     }
 }

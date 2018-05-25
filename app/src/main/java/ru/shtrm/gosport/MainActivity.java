@@ -69,7 +69,7 @@ import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
-import ru.shtrm.gosport.fragments.EventsFragment;
+import ru.shtrm.gosport.fragments.FragmentEvents;
 import ru.shtrm.gosport.fragments.FragmentAddStadium;
 import ru.shtrm.gosport.fragments.FragmentAddUser;
 import ru.shtrm.gosport.fragments.FragmentEditUser;
@@ -364,27 +364,27 @@ public class MainActivity extends AppCompatActivity {
                                 .withSelectable(false)
                                 .withIconColor(larisaBlueColor),
                         taskPrimaryDrawerItem,
-                        new PrimaryDrawerItem().withName("Карта")
-                                .withDescription("площадок")
+                        new PrimaryDrawerItem().withName("Карта площадок")
+                                .withDescription("Расположение")
                                 .withIcon(R.drawable.menu_location)
                                 .withIdentifier(FRAGMENT_MAP)
                                 .withSelectable(false)
                                 .withIconColor(larisaBlueColor),
-                        new PrimaryDrawerItem().withName("Площадку")
-                                .withDescription("добавить")
+                        new PrimaryDrawerItem().withName("Добавить площадку")
+                                .withDescription("Стадион или корт")
                                 .withIcon(R.drawable.menu_ring)
                                 .withIdentifier(FRAGMENT_STADIUMS)
                                 .withSelectable(false)
                                 .withIconColor(larisaBlueColor),
                         new PrimaryDrawerItem().withName("Соревнования")
-                                .withDescription("ближайшие")
+                                .withDescription("Туриниры и чемпионаты")
                                 .withIcon(R.drawable.menu_competition)
                                 .withIdentifier(FRAGMENT_EVENTS)
                                 .withSelectable(false)
                                 .withIconColor(larisaBlueColor),
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName("Команды")
-                                .withDescription("спортивные")
+                                .withDescription("По видам спорта")
                                 .withIcon(R.drawable.user_team)
                                 .withIdentifier(FRAGMENT_TEAMS)
                                 .withSelectable(false)
@@ -423,8 +423,8 @@ public class MainActivity extends AppCompatActivity {
                                                     MapFragment.newInstance()).commit();
                                     bottomBar.selectTabWithId(R.id.menu_maps);
                                     break;
-                                case FRAGMENT_TRAININGS:
-                                    currentFragment = FRAGMENT_TRAININGS;
+                                case FRAGMENT_MYTRAININGS:
+                                    currentFragment = FRAGMENT_MYTRAININGS;
                                     getSupportFragmentManager().beginTransaction()
                                             .replace(R.id.frame_container,
                                                     MyTrainingsFragment.newInstance()).commit();
@@ -453,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
                                     currentFragment = FRAGMENT_EVENTS;
                                     getSupportFragmentManager().beginTransaction()
                                             .replace(R.id.frame_container,
-                                                    EventsFragment.newInstance()).commit();
+                                                    FragmentEvents.newInstance()).commit();
                                     break;
                                 case FRAGMENT_USER:
                                     currentFragment = FRAGMENT_USER;
