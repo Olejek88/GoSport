@@ -8,13 +8,13 @@ import ru.shtrm.gosport.db.ToirRealm;
 
 @SuppressWarnings("unused")
 public class GoSportApplication extends Application {
-
 	public static String serverUrl = "";
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
+		// TODO убрать после отладки
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         serverUrl = "http://192.168.1.71:3000";
 

@@ -116,11 +116,8 @@ public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListA
             training = adapterData.get(position);
             if (training != null) {
                 if (parent.getId() == R.id.trainings_listView) {
-                    if (training.getSport().getTitle().equals("Хоккей")) {
-                        viewHolder.icon.setImageResource(R.drawable.user_hockey);
-                    } else {
-                        viewHolder.icon.setImageResource(R.drawable.menu_football);
-                    }
+                    viewHolder.icon.setImageResource(
+                            Sport.getResourceIdBySport (training.getSport()));
                 }
                 else {
                     if (viewHolder.title!=null)

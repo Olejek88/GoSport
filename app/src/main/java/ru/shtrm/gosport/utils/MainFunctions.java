@@ -1,22 +1,17 @@
 package ru.shtrm.gosport.utils;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Shader;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -29,8 +24,8 @@ import java.util.List;
 import java.util.Locale;
 
 import io.realm.Realm;
-import ru.shtrm.gosport.AuthorizedUser;
-import ru.shtrm.gosport.MainActivity;
+import ru.shtrm.gosport.R;
+import ru.shtrm.gosport.model.AuthorizedUser;
 import ru.shtrm.gosport.db.realm.Journal;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.LocalFiles;
@@ -38,7 +33,6 @@ import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
 
 import static android.content.Context.LOCATION_SERVICE;
-import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class MainFunctions {
 
@@ -61,7 +55,8 @@ public class MainFunctions {
 
     public static void addToJournal(final String description) {
         final Realm realmDB = Realm.getDefaultInstance();
-        final User user = realmDB.where(User.class).equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
+        final User user = realmDB.where(User.class).
+                equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
         if (user != null) {
             realmDB.executeTransaction(new Realm.Transaction() {
                 @Override
@@ -82,13 +77,13 @@ public class MainFunctions {
     public static int getActiveTrainingsCount() {
         int count = 0;
         final Realm realmDB = Realm.getDefaultInstance();
-        final User user = realmDB.where(User.class).equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
+        final User user = realmDB.where(User.class).
+                equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
         if (user != null) {
             count = realmDB.where(Training.class)
                     .equalTo("user.uuid", user.getUuid())
                     .findAll().size();
         }
-
         realmDB.close();
         return count;
     }
@@ -102,25 +97,24 @@ public class MainFunctions {
     }
 
     public static Bitmap getBitmapByPath(String path, String filename) {
-        File image_full = new File(path + filename);
-        Bitmap bmp = BitmapFactory.decodeFile(image_full.getAbsolutePath());
+        File imageFull = new File(path + filename);
+        Bitmap bmp = BitmapFactory.decodeFile(imageFull.getAbsolutePath());
         if (bmp != null) {
             return bmp;
-        }
-        else return null;
+        } else return null;
     }
 
     public static Bitmap storeNewImage(Bitmap image, Context context, int width, String image_name) {
+        final String imageName = image_name;
         final Realm realmDB = Realm.getDefaultInstance();
         File mediaStorageDir = new File(getPicturesDirectory(context));
 
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
-
         // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()){
-            if (!mediaStorageDir.mkdirs()){
-                if (isExternalStorageWritable()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                if (isExternalStorageWritable()) {
                     Toast.makeText(context, "Нет разрешений на запись данных",
                             Toast.LENGTH_LONG).show();
                     return null;
@@ -129,7 +123,7 @@ public class MainFunctions {
         }
         if (image_name.equals("")) {
             String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm", Locale.US).format(new Date());
-            image_name="file_"+ timeStamp +".jpg";
+            image_name = "file_" + timeStamp + ".jpg";
         }
         // Create a media file name
         File pictureFile;
@@ -145,20 +139,22 @@ public class MainFunctions {
                     fos.flush();
                     fos.close();
 
-                    realmDB.beginTransaction();
-                    AuthorizedUser authorizedUser = AuthorizedUser.getInstance();
-                    User user = realmDB.where(User.class).equalTo("uuid",
-                            authorizedUser.getUuid()).findFirst();
-                    String uuid = java.util.UUID.randomUUID().toString();
-                    LocalFiles localFile = realmDB.createObject(LocalFiles.class, uuid);
-                    localFile.setUser(user);
-                    localFile.setSent(false);
-                    localFile.setObject("file");
-                    localFile.setUuid(uuid);
-                    localFile.setFileName(image_name);
-                    localFile.setChangedAt(new Date());
-                    localFile.setCreatedAt(new Date());
-                    realmDB.commitTransaction();
+                    realmDB.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            User user = realmDB.where(User.class).equalTo("uuid",
+                                    AuthorizedUser.getInstance().getUuid()).findFirst();
+                            String uuid = java.util.UUID.randomUUID().toString();
+                            LocalFiles localFile = realmDB.createObject(LocalFiles.class, uuid);
+                            localFile.setUser(user);
+                            localFile.setSent(false);
+                            localFile.setObject("file");
+                            localFile.setUuid(uuid);
+                            localFile.setFileName(imageName);
+                            localFile.setChangedAt(new Date());
+                            localFile.setCreatedAt(new Date());
+                        }
+                    });
                     return myBitmap;
                 }
             }
@@ -183,11 +179,11 @@ public class MainFunctions {
 
     public static Location getLastKnownLocation(Context context) {
         LocationManager mLocationManager;
-        Location location=null;
-        mLocationManager = (LocationManager)context.getSystemService(LOCATION_SERVICE);
-        if (mLocationManager==null) return null;
+        Location location = null;
+        mLocationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+        if (mLocationManager == null) return null;
         List<String> providers = mLocationManager.getProviders(true);
-        if (providers==null) return null;
+        if (providers == null) return null;
         Location bestLocation = null;
         for (String provider : providers) {
             try {
@@ -211,6 +207,30 @@ public class MainFunctions {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
     }
-}
 
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+        int totalHeight = 5;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
+
+    public static void toast(Context context, String message) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.show();
+    }
+}
 

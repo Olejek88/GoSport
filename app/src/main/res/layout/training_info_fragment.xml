@@ -2,13 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="training"
             type="ru.shtrm.gosport.db.realm.Training" />
         <variable
             name="handler"
-            type="ru.shtrm.gosport.fragments.TrainingInfoFragment"/>
+            type="ru.shtrm.gosport.ui.fragments.TrainingInfoFragment"/>
     </data>
 
     <LinearLayout
@@ -252,7 +251,7 @@
                         android:layout_below="@+id/training_team_icon"
                         android:layout_marginStart="15dp"
                         android:contentDescription="@string/image_description"
-                        android:src="@drawable/user_phone" />
+                        android:src="@drawable/menu_phone" />
 
                     <TextView
                         android:id="@+id/training_phone"
@@ -297,6 +296,32 @@
                         android:text="@{training.comment}"
                         android:textColor="#000000"
                         android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/training_player_header"
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:adjustViewBounds="true"
+                        android:background="@color/larisaBlueColor"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="15dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingStart="15dp"
+                        android:scaleType="centerCrop"
+                        android:text="@string/players_subscribed"
+                        android:textColor="#ffffff"
+                        android:layout_below="@+id/training_comment"
+                        android:textSize="18sp" />
+
+                    <ListView
+                        android:id="@+id/players_listView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/training_player_header"
+                        android:divider="#333333"
+                        android:dividerHeight="1px" />
+
                 </RelativeLayout>
 
             </ScrollView>

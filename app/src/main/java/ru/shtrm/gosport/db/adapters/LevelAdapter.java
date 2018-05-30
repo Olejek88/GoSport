@@ -70,18 +70,12 @@ public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            if (parent.getId() == R.id.reference_listView) {
-                convertView = inflater.inflate(R.layout.listview, parent, false);
-                viewHolder.title = (TextView) convertView.findViewById(R.id.lv_firstLine);
-                viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
-                convertView.setTag(viewHolder);
-            }
             if (parent.getId() == R.id.simple_spinner ||
                     parent.getId() == R.id.profile_football_level ||
                     parent.getId() == R.id.profile_hockey_level ||
                     parent.getId() == R.id.training_add_level) {
                 convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
-                viewHolder.title = (TextView) convertView.findViewById(R.id.spinner_item);
+                viewHolder.title = convertView.findViewById(R.id.spinner_item);
                 viewHolder.title.setTextColor(context.getResources().getColor(R.color.larisaTextColor));
                 convertView.setTag(viewHolder);
             }

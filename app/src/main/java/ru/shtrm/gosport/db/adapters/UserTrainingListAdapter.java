@@ -19,6 +19,7 @@ import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Training;
+import ru.shtrm.gosport.db.realm.UserSport;
 import ru.shtrm.gosport.db.realm.UserTraining;
 
 public class UserTrainingListAdapter extends RealmBaseAdapter<UserTraining> implements ListAdapter {
@@ -86,11 +87,8 @@ public class UserTrainingListAdapter extends RealmBaseAdapter<UserTraining> impl
             if (userTraining != null) {
                 training = userTraining.getTraining();
                 if (training!=null) {
-                    if (userTraining.getTraining().getSport().getTitle().equals("Хоккей")) {
-                        viewHolder.icon.setImageResource(R.drawable.user_hockey);
-                    } else {
-                        viewHolder.icon.setImageResource(R.drawable.menu_football);
-                    }
+                    viewHolder.icon.setImageResource(
+                            Sport.getResourceIdBySport (userTraining.getTraining().getSport()));
                     if (viewHolder.title != null)
                         viewHolder.title.setText(training.getTitle());
                     if (viewHolder.comment != null)

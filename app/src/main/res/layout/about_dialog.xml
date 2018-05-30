@@ -47,6 +47,7 @@
             android:layout_span="2"
             android:padding="5dip"
             android:textColor="#333333"
+            android:text="@string/author"
             android:textSize="14sp"
             android:textStyle="italic" />
     </TableRow>

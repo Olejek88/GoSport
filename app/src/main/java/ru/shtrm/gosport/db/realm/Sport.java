@@ -4,6 +4,7 @@ import java.util.Date;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import ru.shtrm.gosport.R;
 
 public class Sport extends RealmObject {
     @PrimaryKey
@@ -53,4 +54,15 @@ public class Sport extends RealmObject {
         this.changedAt = changedAt;
     }
 
+    public static int getResourceIdBySport (Sport sport) {
+        if (sport.getTitle().equals("Хоккей"))
+            return R.drawable.menu_hockey;
+        if (sport.getTitle().equals("Футбол"))
+            return R.drawable.user_football;
+        if (sport.getTitle().equals("Волейбол"))
+            return R.drawable.menu_volleyball;
+        if (sport.getTitle().equals("Баскетбол"))
+            return R.drawable.menu_basketball;
+        return R.drawable.menu_user;
+    }
 }

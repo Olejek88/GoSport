@@ -1,8 +1,12 @@
 package ru.shtrm.gosport.db.realm;
 
+import java.util.ArrayList;
 import java.util.Date;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class UserSport extends RealmObject {
     private String _id;
@@ -85,6 +89,20 @@ public class UserSport extends RealmObject {
 
     public void setChangedAt(Date changedAt) {
         this.changedAt = changedAt;
+    }
+
+    static public ArrayList<UserSport> getUserSportsByTraining(Realm realmDB, Training training) {
+        ArrayList<UserSport> userSports = new ArrayList<>();
+        RealmResults<UserTraining> userTrainings = realmDB.where(UserTraining.class).
+                equalTo("training.uuid", training.getUuid()).
+                findAll();
+        for (UserTraining userTraining : userTrainings) {
+            UserSport userSport = realmDB.where(UserSport.class).
+                    equalTo("user.uuid", userTraining.getUser().getUuid()).
+                    findFirst();
+            userSports.add(userSport);
+        }
+        return userSports;
     }
 
 }

@@ -25,6 +25,7 @@
     <string name="service">Сервис:</string>
     <string name="status">Статус: %1$s</string>
     <string name="application_full_name">Тренируйся! Организовывай!</string>
+    <string name="application_declaration">Организовываем и тренируемся!</string>
 
     <string name="profile_add_name">Имя пользователя</string>
     <string name="profile_add_vk">Профиль в контакте</string>
@@ -78,13 +79,18 @@
     <string name="amplua">Амплуа: %1$s</string>
     <string name="team">Команда: %1$s</string>
     <string name="sport">Спорт: %1$s</string>
+    <string name="players_subscribed">Записавшиеся игроки</string>
 
     <string name="not_selected">не выбран</string>
     <string name="user_add">Создайте профиль пользователя</string>
+    <string name="message_db_is_not_actual">База данных не актуальна!</string>
+    <string name="message_db_cannot_open">Не удалось открыть/обновить базу данных!</string>
+    <string name="message_db_is_actual">База данных актуальна!</string>
     <string name="message_register">Пожалуйста зарегистрируйтесь (в меню слева)</string>
     <string name="message_no_gps_permission">Нет разрешений на вывод карты!</string>
     <string name="message_no_write_permission">Нет разрешений на запись данных!</string>
     <string name="message_no_such_user">Нет такого пользователя!</string>
     <string name="message_no_such_training">Нет такой тренировки!</string>
     <string name="message_upgrade_references">Пожалуйста обновите справочники</string>
+    <string name="message_please_register">Пожалуйста зарегистрируйтесь</string>
 </resources>

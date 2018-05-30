@@ -1,13 +1,16 @@
 package ru.shtrm.gosport.db.realm;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.Sort;
 import io.realm.annotations.PrimaryKey;
-import ru.shtrm.gosport.AuthorizedUser;
+import ru.shtrm.gosport.model.AuthorizedUser;
 
 public class User extends RealmObject {
     @PrimaryKey
@@ -26,6 +29,7 @@ public class User extends RealmObject {
     private String vk;
     private Date createdAt;
     private Date changedAt;
+
 
     public long getid() {
         return id;
@@ -155,5 +159,16 @@ public class User extends RealmObject {
     public User getActiveUser (Realm realmDB) {
         return realmDB.where(User.class).
                 equalTo("uuid", AuthorizedUser.getInstance().getUuid()).findFirst();
+    }
+
+    static public ArrayList<User> getUsersByTraining(Realm realmDB, Training training) {
+        ArrayList<User> users = new ArrayList<>();
+        RealmResults<UserTraining> userTrainings = realmDB.where(UserTraining.class).
+                equalTo("training.uuid", training.getUuid()).
+                findAllSorted("name", Sort.DESCENDING);
+        for (UserTraining userTraining : userTrainings) {
+            users.add(userTraining.getUser());
+        }
+        return users;
     }
 }

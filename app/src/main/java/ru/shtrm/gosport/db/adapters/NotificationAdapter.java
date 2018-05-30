@@ -8,14 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import java.util.Date;
-
 import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.realm.Notification;
-import ru.shtrm.gosport.db.realm.Training;
 
 public class NotificationAdapter extends RealmBaseAdapter<Notification> implements ListAdapter {
     public static final String TABLE_NAME = "Notification";
@@ -69,15 +66,10 @@ public class NotificationAdapter extends RealmBaseAdapter<Notification> implemen
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            if (parent.getId() == R.id.reference_listView) {
-                convertView = inflater.inflate(R.layout.listview, parent, false);
-                viewHolder.training = (TextView) convertView.findViewById(R.id.lv_firstLine);
-                convertView.setTag(viewHolder);
-            }
-
             if (parent.getId() == R.id.simple_spinner) {
-                convertView = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
-                viewHolder.training = (TextView) convertView.findViewById(android.R.id.text1);
+                convertView = inflater.inflate(android.R.layout.simple_spinner_dropdown_item,
+                        parent, false);
+                viewHolder.training = convertView.findViewById(android.R.id.text1);
                 convertView.setTag(viewHolder);
             }
         } else {
@@ -117,7 +109,6 @@ public class NotificationAdapter extends RealmBaseAdapter<Notification> implemen
 
     private static class ViewHolder {
         TextView training;
-        TextView date;
         boolean view;
     }
 

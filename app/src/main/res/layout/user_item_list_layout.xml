@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="3dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="top"
+        android:src="@drawable/no_image"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/larisaBlueColor"/>
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:textColor="#222222"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_toEndOf="@+id/user_image"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/user_type"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#454545"
+        android:textSize="14sp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/user_image"
+        android:layout_below="@+id/user_name" />
+
+    <TextView
+        android:id="@+id/user_level"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:textColor="#454545"
+        android:textSize="14sp"
+        android:layout_toEndOf="@+id/user_type"
+        android:layout_below="@+id/user_name" />
+
+
+</RelativeLayout>
