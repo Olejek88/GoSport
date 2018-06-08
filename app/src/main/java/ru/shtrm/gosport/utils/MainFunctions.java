@@ -14,6 +14,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.osmdroid.util.GeoPoint;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -231,6 +233,32 @@ public class MainFunctions {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
+    }
+
+    public static GeoPoint getCurrentGeoPoint(Context context) {
+        Location location = null;
+        LocationManager lm = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+        // дефолтные координаты - центр Челябинска
+        // это на тот случай, если никак нельзя определить последние координаты
+        double curLatitude=55.175708, curLongitude=61.390594;
+        if (lm != null) {
+            try {
+                location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            } catch (SecurityException e) {
+                Toast.makeText(context,
+                        context.getResources().getString(R.string.message_no_gps_permission),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            if (location == null) {
+                location = MainFunctions.getLastKnownLocation(context);
+            }
+            if (location != null) {
+                curLatitude = location.getLatitude();
+                curLongitude = location.getLongitude();
+            }
+        }
+        return new GeoPoint(curLatitude, curLongitude);
     }
 }
 

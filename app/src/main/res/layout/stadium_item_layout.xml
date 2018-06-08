@@ -7,11 +7,9 @@
         android:id="@+id/stadium_image"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:contentDescription="@string/description" />
@@ -21,14 +19,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
         android:textColor="#222222"
         android:textSize="16sp"
         android:gravity="center_vertical"
-        android:layout_toRightOf="@+id/stadium_image"
         android:layout_toEndOf="@+id/stadium_image"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -38,9 +33,7 @@
         android:layout_height="wrap_content"
         android:textColor="#454545"
         android:textSize="14sp"
-        android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:layout_toRightOf="@+id/stadium_image"
         android:layout_toEndOf="@+id/stadium_image"
         android:layout_below="@+id/stadium_title" />
 
@@ -50,9 +43,7 @@
         android:layout_height="wrap_content"
         android:textColor="#454545"
         android:textSize="14sp"
-        android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:layout_toRightOf="@+id/stadium_image"
         android:layout_toEndOf="@+id/stadium_image"
         android:layout_below="@+id/stadium_type" />
 
