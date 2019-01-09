@@ -9,13 +9,12 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
-import ru.shtrm.gosport.db.realm.Event;
 import ru.shtrm.gosport.R;
+import ru.shtrm.gosport.db.realm.Event;
 import ru.shtrm.gosport.db.realm.Sport;
 
 public class EventAdapter extends RealmBaseAdapter<Event> implements ListAdapter {

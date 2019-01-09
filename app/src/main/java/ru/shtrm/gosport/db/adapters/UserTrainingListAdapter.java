@@ -14,12 +14,10 @@ import java.util.Date;
 import java.util.Locale;
 
 import io.realm.RealmBaseAdapter;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Training;
-import ru.shtrm.gosport.db.realm.UserSport;
 import ru.shtrm.gosport.db.realm.UserTraining;
 
 public class UserTrainingListAdapter extends RealmBaseAdapter<UserTraining> implements ListAdapter {

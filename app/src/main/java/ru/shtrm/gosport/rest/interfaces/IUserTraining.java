@@ -8,7 +8,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.UserTraining;
 
 public interface IUserTraining {

@@ -1,12 +1,10 @@
 package ru.shtrm.gosport.db.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -17,9 +15,6 @@ import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Stadium;
-import ru.shtrm.gosport.utils.MainFunctions;
-
-import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class StadiumSpinnerAdapter extends RealmBaseAdapter<Stadium> implements ListAdapter {
 

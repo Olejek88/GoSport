@@ -14,10 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import io.realm.RealmBaseAdapter;
-import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
-import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.UserSport;
 import ru.shtrm.gosport.utils.MainFunctions;
 

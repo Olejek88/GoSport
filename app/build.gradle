@@ -10,7 +10,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
+        //multiDexEnabled   true
     }
     compileOptions {
         //sourceCompatibility JavaVersion.VERSION_1_8
@@ -32,11 +32,12 @@ android {
 
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.0'
-    implementation 'org.osmdroid:osmdroid-android:6.0.1@aar'
+    implementation 'org.osmdroid:osmdroid-android:6.0.3'
     implementation 'com.mikepenz:iconics-core:3.0.3@aar'
     //noinspection GradleDependency
-    implementation 'com.android.support:recyclerview-v7:27.1.0'
+    //implementation 'com.android.support:recyclerview-v7:27.0.2'
     //noinspection GradleDependency
+    implementation 'com.android.support:support-v4:27.1.0'
     implementation 'com.android.support:design:27.1.0'
     //noinspection GradleDependency
     implementation 'com.android.support:appcompat-v7:27.1.0'
@@ -53,7 +54,7 @@ dependencies {
     implementation 'com.mikepenz:google-material-typeface:2.2.0.1@aar'
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.uphyca:stetho_realm:2.1.0'
-    implementation 'io.realm:android-adapters:2.0.0'
+    implementation 'io.realm:android-adapters:2.1.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.okhttp3:okhttp:3.8.0'

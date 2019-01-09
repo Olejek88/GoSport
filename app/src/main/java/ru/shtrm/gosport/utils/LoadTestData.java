@@ -4,9 +4,9 @@ import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmList;
-import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Amplua;
+import ru.shtrm.gosport.db.realm.Level;
+import ru.shtrm.gosport.db.realm.Sport;
 import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.UserSport;

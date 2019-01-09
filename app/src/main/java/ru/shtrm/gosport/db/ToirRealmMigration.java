@@ -16,19 +16,11 @@ import java.util.Set;
 
 import dalvik.system.DexFile;
 import io.realm.DynamicRealm;
-import io.realm.DynamicRealmObject;
 import io.realm.RealmMigration;
 import io.realm.RealmObject;
 import io.realm.RealmObjectSchema;
 import io.realm.RealmSchema;
 import io.realm.exceptions.RealmException;
-import ru.shtrm.gosport.db.realm.Amplua;
-import ru.shtrm.gosport.db.realm.Level;
-import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Stadium;
-import ru.shtrm.gosport.db.realm.Team;
-import ru.shtrm.gosport.db.realm.Training;
-import ru.shtrm.gosport.db.realm.User;
 
 class ToirRealmMigration implements RealmMigration {
     private final String TAG = this.getClass().getName();

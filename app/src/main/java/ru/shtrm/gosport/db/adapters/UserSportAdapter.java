@@ -8,16 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import java.util.logging.Level;
-
 import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
-import ru.shtrm.gosport.db.realm.Amplua;
-import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Team;
-import ru.shtrm.gosport.db.realm.User;
 import ru.shtrm.gosport.db.realm.UserSport;
 
 public class UserSportAdapter extends RealmBaseAdapter<UserSport> implements ListAdapter {

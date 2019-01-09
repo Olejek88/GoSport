@@ -1,12 +1,13 @@
 package ru.shtrm.gosport.gps;
 
-import java.util.List;
+import android.content.Context;
+import android.widget.Toast;
 
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
-import android.content.Context;
-import android.widget.Toast;
+
+import java.util.List;
 
 public class TaskItemizedOverlay extends ItemizedIconOverlay<OverlayItem> {
 	private Context mContext;

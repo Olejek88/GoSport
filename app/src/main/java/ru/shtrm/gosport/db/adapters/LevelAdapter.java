@@ -1,7 +1,6 @@
 package ru.shtrm.gosport.db.adapters;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Team;
 
 public class LevelAdapter extends RealmBaseAdapter<Level> implements ListAdapter {
     public static final String TABLE_NAME = "Level";

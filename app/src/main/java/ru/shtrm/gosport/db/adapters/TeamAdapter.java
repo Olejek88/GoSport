@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +11,14 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import java.util.Date;
-
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
-import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.utils.MainFunctions;
-import ru.shtrm.gosport.utils.RoundedImageView;
-import ru.shtrm.gosport.utils.RoundedImageView.*;
-
-import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class TeamAdapter extends RealmBaseAdapter<Team> implements ListAdapter {
     public static final String TABLE_NAME = "Team";

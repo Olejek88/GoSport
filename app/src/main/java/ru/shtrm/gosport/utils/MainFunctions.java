@@ -27,12 +27,12 @@ import java.util.Locale;
 
 import io.realm.Realm;
 import ru.shtrm.gosport.R;
-import ru.shtrm.gosport.model.AuthorizedUser;
 import ru.shtrm.gosport.db.realm.Journal;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.LocalFiles;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
+import ru.shtrm.gosport.model.AuthorizedUser;
 
 import static android.content.Context.LOCATION_SERVICE;
 

@@ -4,28 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import io.realm.Realm;
 import okhttp3.MediaType;
@@ -35,7 +26,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import ru.shtrm.gosport.GoSportApplication;
 import ru.shtrm.gosport.db.realm.Amplua;
-import ru.shtrm.gosport.db.realm.Event;
 import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.LocalFiles;
 import ru.shtrm.gosport.db.realm.ReferenceUpdate;
@@ -44,12 +34,7 @@ import ru.shtrm.gosport.db.realm.Stadium;
 import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.Training;
 import ru.shtrm.gosport.db.realm.User;
-import ru.shtrm.gosport.model.AuthorizedUser;
 import ru.shtrm.gosport.rest.GSportAPIFactory;
-import ru.shtrm.gosport.rest.IServiceProvider;
-import ru.shtrm.gosport.rest.Request;
-import ru.shtrm.gosport.rest.Response;
-import ru.shtrm.gosport.rest.RestClient;
 import ru.shtrm.gosport.ui.MainActivity;
 
 public class DataManager {
@@ -277,11 +262,13 @@ public class DataManager {
         List <LocalFiles> files;
 
         // only retain a weak reference to the activity
+/*
         sendFiles(MainActivity context, List <LocalFiles> filesToSend) {
             activityReference = new WeakReference<>(context);
             files = filesToSend;
             mContext = context;
         }
+*/
 
         @NonNull
         private RequestBody createPartFromString(String descriptionString) {
@@ -368,8 +355,7 @@ public class DataManager {
         //task.execute(sendFiles);
     }
 
-    /*
-    private void sendObjects (List < Training > trainings) {
+    private static void sendObjects (List < Training > trainings) {
         AsyncTask<Training[], Void, String> task = new AsyncTask<Training[], Void, String>() {
             @Override
             protected String doInBackground(Training[]... lists) {
@@ -394,6 +380,7 @@ public class DataManager {
         task.execute(trainingsArray);
     }
 
+    /*
     private void sendUser () {
         AsyncTask<User[], Void, String> task = new AsyncTask<User[], Void, String>() {
             @Override

@@ -6,7 +6,6 @@ import java.util.Date;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
-import io.realm.Sort;
 
 public class UserSport extends RealmObject {
     private String _id;

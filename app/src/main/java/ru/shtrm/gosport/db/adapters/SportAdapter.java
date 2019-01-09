@@ -1,13 +1,10 @@
 package ru.shtrm.gosport.db.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -15,10 +12,7 @@ import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
-import ru.shtrm.gosport.db.realm.Amplua;
 import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Team;
-import ru.shtrm.gosport.utils.MainFunctions;
 
 public class SportAdapter extends RealmBaseAdapter<Sport> implements ListAdapter {
     public static final String TABLE_NAME = "Sport";

@@ -118,6 +118,8 @@ public class StadiumAdapter extends RealmBaseAdapter<Stadium> implements ListAda
                     if (image_bitmap != null) {
                         viewHolder.image.setImageBitmap(image_bitmap);
                     }
+                    else
+                        viewHolder.image.setImageResource(R.drawable.no_image);
                     if (viewHolder.descr!=null)
                         viewHolder.descr.setText(stadium.getDescription());
                     viewHolder.sport.setText(stadium.getSport().getTitle());

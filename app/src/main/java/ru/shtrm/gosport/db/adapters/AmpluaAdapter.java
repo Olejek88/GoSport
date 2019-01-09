@@ -1,7 +1,6 @@
 package ru.shtrm.gosport.db.adapters;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
 import ru.shtrm.gosport.db.realm.Amplua;
-import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Sport;
 
 public class AmpluaAdapter extends RealmBaseAdapter<Amplua> implements ListAdapter {

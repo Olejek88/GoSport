@@ -1,10 +1,7 @@
 package ru.shtrm.gosport.db.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -21,16 +17,8 @@ import io.realm.RealmBaseAdapter;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 import ru.shtrm.gosport.R;
-import ru.shtrm.gosport.db.realm.Level;
 import ru.shtrm.gosport.db.realm.Sport;
-import ru.shtrm.gosport.db.realm.Stadium;
-import ru.shtrm.gosport.db.realm.Team;
 import ru.shtrm.gosport.db.realm.Training;
-import ru.shtrm.gosport.db.realm.User;
-import ru.shtrm.gosport.db.realm.UserTraining;
-import ru.shtrm.gosport.utils.MainFunctions;
-
-import static ru.shtrm.gosport.utils.RoundedImageView.getResizedBitmap;
 
 public class TrainingAdapter extends RealmBaseAdapter<Training> implements ListAdapter {
 
