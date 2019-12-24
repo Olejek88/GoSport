@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="stadium"
+            type="ru.shtrm.gosport.db.realm.Stadium" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/coordinatorLayout"
+        android:layout_marginBottom="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FAFAFA"
+            android:scrollbars="vertical">
+
+            <RelativeLayout
+                android:id="@+id/stadium_info_common"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/stadium_image"
+                    android:layout_width="fill_parent"
+                    android:layout_height="200dp"
+                    android:layout_gravity="top"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/no_image" />
+
+                <TextView
+                    android:id="@+id/stadium_text_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/stadium_image"
+                    android:adjustViewBounds="true"
+                    android:background="@color/larisaBlueColor"
+                    android:gravity="fill_vertical"
+                    android:padding="5dp"
+                    android:scaleType="centerCrop"
+                    android:textColor="#ffffff"
+                    android:text="@{stadium.title}"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/stadium_text_description"
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/stadium_text_name"
+                    android:adjustViewBounds="true"
+                    android:maxLines="2"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingEnd="15dp"
+                    android:paddingRight="15dp"
+                    android:scaleType="centerCrop"
+                    android:textColor="#000000"
+                    android:text="@{stadium.description}"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/stadium_icon1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/stadium_text_description"
+                    android:layout_marginStart="15dp"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/menu_location" />
+
+                <TextView
+                    android:id="@+id/stadium_text_address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/stadium_text_description"
+                    android:layout_toEndOf="@id/stadium_icon1"
+                    android:background="#FAFAFA"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingEnd="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="#000000"
+                    android:text="@{stadium.address}"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/stadium_icon2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/stadium_icon1"
+                    android:layout_marginStart="15dp"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/menu_hockey" />
+
+                <TextView
+                    android:id="@+id/stadium_text_sport"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/stadium_icon1"
+                    android:layout_toEndOf="@id/stadium_icon2"
+                    android:background="#FAFAFA"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:text="@{stadium.sport.title}"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <View
+                    android:id="@+id/stadium_divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/stadium_icon2"
+                    android:background="#777777" />
+
+                <ListView
+                    android:id="@+id/trainings_listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/stadium_divider1"
+                    android:divider="#333333"
+                    android:dividerHeight="1px" />
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/stadium_edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="15dp"
+            android:src="@drawable/ic_plus_white_36dp"
+            app:backgroundTint="@color/larisaBlueColor"
+            app:fabSize="normal"
+            app:layout_behavior="ru.shtrm.gosport.utils.ScrollAwareFABBehavior" />
+
+        <include layout="@layout/stadium_action" />
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
