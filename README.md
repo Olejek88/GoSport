@@ -19,9 +19,9 @@
 <li> API: Retrofit2
 </ul>
 <br/><br/>
-<img src="images/1.jpg" alt="screen" />
-<img src="images/2.jpg" alt="screen" />
-<img src="images/3.jpg" alt="screen" />
-<img src="images/4.jpg" alt="screen" />
-<img src="images/5.jpg" alt="screen" />
-<img src="images/6.jpg" alt="screen" />
+<img src="images/1.jpg" alt="screen" align="left" />
+<img src="images/2.jpg" alt="screen" align="left" />
+<img src="images/3.jpg" alt="screen" align="left" />
+<img src="images/4.jpg" alt="screen" align="left" />
+<img src="images/5.jpg" alt="screen" align="left" />
+<img src="images/6.jpg" alt="screen" align="left" />
